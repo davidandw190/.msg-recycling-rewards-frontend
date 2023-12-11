@@ -1,40 +1,39 @@
 <section>
   <div class="container">
-    <div class="row justify-content-center my-5">
-      <div class="col-md-6" style="margin-top: 50px;">
-        <div class="card">
+    <div class="row justify-content-center align-items-center my-5">
+      <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg p-4" style="max-width: 550px; width: 100%;">
           <div class="card-body">
             <div class="text-center">
-              <h2><i style="margin-right: 5px; font-size: 30px; margin-top: 20px" class="material-icons">recycling</i>.msgRecyclingRewards</h2>
+              <h2><i style="font-size: 30px; margin-top: 20px" class="material-icons">recycling</i>.msgRecyclingRewards</h2>
               <h5 class="card-title mt-4 mb-5">Account Login</h5>
             </div>
             <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert">
-              <p>State error here</p>
+              <p> Error message will be diplayed here. </p>
               <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <form >
-              <div class="form-outline mb-4">
-                <label class="form-label" >Email Address</label>
+            <form>
+              <div class="mb-4">
+                <label class="form-label">Email Address</label>
                 <input type="email" name="email" class="form-control" required>
               </div>
-              <div class="form-outline mb-4">
+              <div class="mb-4">
                 <label class="form-label">Password</label>
                 <input type="password" name="password" class="form-control" required>
               </div>
-              <div class="d-flex justify-content-center mb-4">
-                <button type="submit" class="btn btn-primary">
-                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
-                  <span>Loading...</span>
-                  <span>Log in</span>
+              <div class="d-grid gap-2 mb-4">
+                <button type="submit" class="btn btn-purple">
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  <span class="ms-2">Log in</span>
                 </button>
               </div>
             </form>
             <div class="row mb-4">
               <div class="col d-flex justify-content-center">
-                <a routerLink="/register">Become a .msgRecycler</a>
+                <a routerLink="/register" class="link">Become a .msgRecycler</a>
               </div>
               <div class="col">
-                <a routerLink="/reset-password">Forgot your password?</a>
+                <a routerLink="/reset-password" class="link">Forgot your password?</a>
               </div>
             </div>
           </div>
@@ -43,7 +42,7 @@
     </div>
   </div>
 
-  <!--  &lt;!&ndash; Success screen &ndash;&gt;-->
+<!--  &lt;!&ndash; Success screen &ndash;&gt;-->
   <!--  <div class="container">-->
   <!--    &lt;!&ndash; <div class="container"> &ndash;&gt;-->
   <!--    <div class="row justify-content-center my-5">-->
