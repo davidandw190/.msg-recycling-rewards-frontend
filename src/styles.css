@@ -1,1 +1,67 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i');
+@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css');
+
+body{
+  background-color:#ecf2f5;
+}
+
+.disabled {
+  pointer-events:none;
+  opacity:0.6;
+}
+
+.pointer {
+  cursor: pointer;
+}
+.card {
+  box-shadow: 0 0 2px 0 rgb(0 0 0 / 10%);
+  margin-bottom: 24px;
+}
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 0 solid #ecf2f5;
+  border-radius: .25rem;
+}
+.avatar-lg {
+  height: 4.5rem;
+  width: 4.5rem;
+}
+
+
+.font-13 {
+  font-size: 13px!important;
+}
+
+input[type="text"]:disabled {
+  border: 0;
+  outline: 0;
+  background-color: #ecf2f5;
+}
+
+/*.select-cl {*/
+/*  background-color: #ecf2f5;*/
+/*  border: 0;*/
+/*  outline: 0;*/
+/*}*/
+
+.cell-1 {
+  border-collapse: separate;
+  border-spacing: 0 4em;
+  background: #fff;
+  border-bottom: 5px solid transparent;
+  /*background-color: gold;*/
+  background-clip: padding-box;
+}
+
+thead {
+  background: #dddcdc;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
