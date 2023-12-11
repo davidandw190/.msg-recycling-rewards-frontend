@@ -69,4 +69,7 @@ export class LoginComponent {
       )
   }
 
+  loginPage(): void {
+    this.loginState$ = of({ dataState: DataState.LOADED });
+  }
 }
