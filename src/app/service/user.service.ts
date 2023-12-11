@@ -19,9 +19,26 @@ export class UserService {
    * @returns {Observable<CustomHttpResponse<Profile>>} Observable containing server response.
    */
   login$ = (email: string, password: string): Observable<CustomHttpResponse<Profile>> => <Observable<CustomHttpResponse<Profile>>>
-    this.http.post<CustomHttpResponse<Profile>>(`${this.server}/user/login`, { email: email, password: password })
+    this.http.post<CustomHttpResponse<Profile>>
+    (`${this.server}/user/login`, { email: email, password: password })
       .pipe(
         tap(console.log),
+
+        catchError(this.handleError)
+      );
+
+  /**
+   * Verifies a user's code by sending a GET request to the server with email and code parameters.
+   * @param {string} email - User's email address.
+   * @param {string} code - Verification code.
+   * @returns {Observable<CustomHttpResponse<Profile>>} Observable containing server response.
+   */
+  verifyLoginCode$ = (email: string, code: string): Observable<CustomHttpResponse<Profile>> => <Observable<CustomHttpResponse<Profile>>>
+    this.http.get<CustomHttpResponse<Profile>>
+    (`${this.server}/user/verify/code/${email}/${code}`)
+      .pipe(
+        tap(console.log),
+
         catchError(this.handleError)
       );
 
