@@ -1,1 +1,44 @@
-<p>navbar works!</p>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #A01540">
+  <div class="container">
+    <a class="navbar-brand text-color" [routerLink]="['/']">
+      <i class="material-icons">recycling</i>
+      <span class="brand-name">.msgRecyclingRewards</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Leaderboard
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" [routerLink]="['/leaderboards/monthly']"><i class="bi bi-person-plus-fill"></i> Monthly Leaderboard</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/leaderboard']"><i class="bi bi-people-fill"></i> Global Leaderboard</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Challenges
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            EcoLearn
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://robohash.org/recyclingcenter" width="20" height="20" class="user-avatar-md rounded-circle">
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" [routerLink]="['/profile']"><i class="bi bi-person-circle"></i> User Name</a></li>
+            <li style="cursor: pointer;"><a class="dropdown-item"><i class="bi bi-box-arrow-in-right"></i> Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
