@@ -1,5 +1,5 @@
 import {UserService} from "../service/user.service";
-import {BehaviorSubject, catchError, Observable, throwError} from "rxjs";
+import {BehaviorSubject, catchError, Observable, switchMap, throwError} from "rxjs";
 import {CustomHttpResponse} from "../interface/custom-http-response";
 import {Profile} from "../interface/profile";
 import {
@@ -50,6 +50,35 @@ export class TokenInterceptor implements HttpInterceptor {
       );
   }
 
+  /**
+   * Handles the token refresh process.
+   *
+   * @param request - The original HTTP request.
+   * @param next - The HTTP handler for the next interceptor or the backend.
+   * @returns Observable<HttpEvent<unknown>> - Observable for handling the HTTP event after token refresh.
+   */
+  private handleRefreshToken(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    if (!this.isTokenRefreshing) {
+      console.log('Refreshing Token...');
+      this.isTokenRefreshing = true;
+      this.refreshTokenSubject.next(null);
+
+      return this.userService.refreshToken$().pipe(
+        switchMap((response) => {
+          console.log('Token Refresh Response:', response);
+          this.isTokenRefreshing = false;
+          this.refreshTokenSubject.next(response);
+          console.log('New Token:', response.data.access_token);
+          console.log('Sending original request:', request);
+          return next.handle(this.addAuthorizationTokenHeader(request, response.data.access_token));
+        })
+      );
+
+    } else {
+      return this.waitForTokenRefresh(request, next);
+    }
+  }
+
   private isNonSecuredRoute(url: string) {
     return false;
   }
@@ -62,7 +91,7 @@ export class TokenInterceptor implements HttpInterceptor {
     return false;
   }
 
-  private handleRefreshToken(request: HttpRequest<unknown>, next: HttpHandler) {
+  private waitForTokenRefresh(request: HttpRequest<unknown>, next: HttpHandler) {
     return undefined;
   }
 }
