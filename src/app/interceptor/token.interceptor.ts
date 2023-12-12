@@ -1,5 +1,5 @@
 import { UserService } from "../service/user.service";
-import { BehaviorSubject, catchError, Observable, switchMap, throwError } from "rxjs";
+import { BehaviorSubject, catchError, filter, Observable, switchMap, take, throwError } from "rxjs";
 import { CustomHttpResponse } from "../interface/custom-http-response";
 import { Profile } from "../interface/profile";
 import {
@@ -112,7 +112,20 @@ export class TokenInterceptor implements HttpInterceptor {
     return error instanceof HttpErrorResponse && error.status === 401 && error.error.reason.includes('expired');
   }
 
-  private waitForTokenRefresh(request: HttpRequest<unknown>, next: HttpHandler) {
-    return undefined;
+  /**
+   * Waits for the token refresh to complete before retrying the original request.
+   *
+   * @param request - The original HTTP request.
+   * @param next - The HTTP handler for the next interceptor or the backend.
+   * @returns Observable<HttpEvent<unknown>> - Observable for handling the HTTP event after token refresh.
+   */
+  private waitForTokenRefresh(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    return this.refreshTokenSubject.pipe(
+      filter(response => response !== null),
+      take(1),
+      switchMap((response) => {
+        return next.handle(this.addAuthorizationTokenHeader(request, response.data.access_token));
+      })
+    );
   }
 }
