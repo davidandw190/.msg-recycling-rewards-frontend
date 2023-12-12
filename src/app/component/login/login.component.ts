@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {DataState} from "../../enum/data-state.enum";
 import {BehaviorSubject, catchError, map, Observable, of, startWith} from "rxjs";
 import {LoginState} from "../../interface/login-state";
 import {UserService} from "../../service/user.service";
 import {Router} from "@angular/router";
 import {NgForm} from "@angular/forms";
+import {Key} from "../../enum/key.enum";
 
 @Component({
   selector: 'app-login',
@@ -38,6 +39,8 @@ export class LoginComponent {
               phone: response.data.user.phone.substring(response.data.user.phone.length - 4)
             };
           } else {
+            localStorage.setItem(Key.TOKEN, response.data.access_token);
+            localStorage.setItem(Key.REFRESH_TOKEN, response.data.refresh_token);
             this.router.navigate(['/']);
             return { dataState: DataState.LOADED, loginSuccess: true };
           }
@@ -55,6 +58,9 @@ export class LoginComponent {
     this.loginState$ = this.userService.verifyLoginCode$(this.emailSubject.value, verifyCodeForm.value.code)
       .pipe(
         map(response => {
+
+          localStorage.setItem(Key.TOKEN, response.data.access_token);
+          localStorage.setItem(Key.REFRESH_TOKEN, response.data.refresh_token);
           this.router.navigate(['/']);
           return { dataState: DataState.LOADED, loginSuccess: true };
         }),
@@ -63,7 +69,7 @@ export class LoginComponent {
           phone: this.phoneSubject.value.substring(this.phoneSubject.value.length - 4) }),
 
         catchError((error: string) => {
-          return of({ dataState: DataState.ERROR, isUsingMfa: true, loginSuccess: false, error,
+          return of({ dataState: DataState.ERROR, isUsingMfa: true, loginSuccess: false, error: error,
             phone: this.phoneSubject.value.substring(this.phoneSubject.value.length - 4) })
         })
       )
