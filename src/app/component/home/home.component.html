@@ -1,1 +1,69 @@
-<p>home works!</p>
+<!-- Main Content -->
+<section class="main-section">
+  <app-navbar></app-navbar>
+  <div class="container mt-3">
+    <div class="row">
+      <div class="col">
+        <h4 class="fw-bold text-start">Recycling Centers</h4>
+      </div>
+      <div class="col text-end">
+<!--        <h4 class="fw-bold"><i class="bi bi-file-earmark-excel" style="cursor: pointer; color: green; font-size: 30px;"></i></h4>-->
+      </div>
+    </div>
+
+    <!-- Table and Pagination Content -->
+    <div class="table-responsive mt-3">
+      <table class="table table-hover">
+        <!-- Table Header -->
+        <thead class="bg-primary text-white">
+        <tr>
+          <th scope="col">Photo</th>
+          <th scope="col">Name</th>
+          <th scope="col">Contact</th>
+          <th scope="col">Location</th>
+          <th scope="col">Materials</th>
+          <th scope="col">Working Intervals</th>
+          <th scope="col">Status</th>
+          <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <!-- Table Body -->
+        <tbody class="table-body">
+        <tr class="cell-1">
+          <td><img src="https://robohash.org/recyclingcenter" width="42" height="42" class="rounded-circle"></td>
+          <td>Center</td>
+          <td>0787767484</td>
+          <td>Timisoara</td>
+          <td>PAPER</td>
+          <td>08:00 - 22:00</td>
+          <td>
+            <span class="badge bg-success">OPEN</span>
+          </td>
+          <td>
+            <button type="button" [routerLink]="['/centers']" class="btn btn-info">View</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-end">
+        <li class="page-item pointer">
+          <a class="page-link" aria-label="Previous">
+            <span aria-hidden="true">&laquo; Prev</span>
+          </a>
+        </li>
+        <li class="page-item pointer">
+          <a class="page-link">1</a>
+        </li>
+        <li class="page-item pointer">
+          <a class="page-link" aria-label="Next">
+            <span aria-hidden="true">Next &raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</section>
