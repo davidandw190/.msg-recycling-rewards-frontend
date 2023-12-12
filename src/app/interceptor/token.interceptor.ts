@@ -1,7 +1,7 @@
-import {UserService} from "../service/user.service";
-import {BehaviorSubject, catchError, Observable, switchMap, throwError} from "rxjs";
-import {CustomHttpResponse} from "../interface/custom-http-response";
-import {Profile} from "../interface/profile";
+import { UserService } from "../service/user.service";
+import { BehaviorSubject, catchError, Observable, switchMap, throwError } from "rxjs";
+import { CustomHttpResponse } from "../interface/custom-http-response";
+import { Profile } from "../interface/profile";
 import {
   HttpErrorResponse,
   HttpEvent,
@@ -10,7 +10,8 @@ import {
   HttpRequest,
   HttpResponse
 } from "@angular/common/http";
-import {Injectable} from "@angular/core";
+import { Injectable } from "@angular/core";
+import { Key } from "../enum/key.enum";
 
 /**
  * TokenInterceptor is responsible for adding authentication tokens to outgoing HTTP requests
@@ -22,8 +23,7 @@ export class TokenInterceptor implements HttpInterceptor {
   private isTokenRefreshing: boolean = false;
   private refreshTokenSubject: BehaviorSubject<CustomHttpResponse<Profile>> = new BehaviorSubject(null);
 
-  constructor(private userService: UserService) {
-  }
+  constructor(private userService: UserService) {}
 
   /**
    * Intercepts HTTP requests and adds the Authorization token to secure routes.
@@ -79,16 +79,37 @@ export class TokenInterceptor implements HttpInterceptor {
     }
   }
 
-  private isNonSecuredRoute(url: string) {
-    return false;
+  /**
+   * Checks if the URL corresponds to a non-secured route.
+   *
+   * @param url - The URL of the HTTP request.
+   * @returns boolean - True if the URL is a non-secured route, otherwise false.
+   */
+  private isNonSecuredRoute(url: string): boolean {
+    const nonSecuredRoutes: string[] = ['/user/verify', '/user/login', '/user/register', '/user/refresh/token', '/user/reset-password'];
+    return nonSecuredRoutes.some(route => url.includes(route));
   }
 
-  private addAuthorizationTokenHeader(request: HttpRequest<unknown>) {
-    return undefined;
+  /**
+   * Adds the Authorization token to the request headers.
+   *
+   * @param request - The HTTP request.
+   * @param token - Optional token parameter to be used instead of the one from local storage.
+   * @returns HttpRequest<any> - The modified HTTP request.
+   */
+  private addAuthorizationTokenHeader(request: HttpRequest<unknown>, token?: string): HttpRequest<any> {
+    const authToken: string = token || localStorage.getItem(Key.TOKEN);
+    return request.clone({ setHeaders: { Authorization: `Bearer ${authToken}` } });
   }
 
-  private isTokenExpiredError(error: HttpErrorResponse) {
-    return false;
+  /**
+   * Checks if the error is due to an expired token.
+   *
+   * @param error - The HTTP error response.
+   * @returns boolean - True if the error is due to an expired token, otherwise false.
+   */
+  private isTokenExpiredError(error: HttpErrorResponse): boolean {
+    return error instanceof HttpErrorResponse && error.status === 401 && error.error.reason.includes('expired');
   }
 
   private waitForTokenRefresh(request: HttpRequest<unknown>, next: HttpHandler) {
