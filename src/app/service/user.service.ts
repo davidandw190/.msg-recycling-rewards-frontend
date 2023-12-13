@@ -43,6 +43,15 @@ export class UserService {
         catchError(this.handleError)
       );
 
+  profile$ = () => <Observable<CustomHttpResponse<Profile>>>
+    this.http.get<CustomHttpResponse<Profile>>
+    (`${this.server}/user/profile`)
+      .pipe(
+        tap(console.log),
+
+        catchError(this.handleError)
+      );
+
   refreshToken$ = () => <Observable<CustomHttpResponse<Profile>>>
     this.http.get<CustomHttpResponse<Profile>>
     (`${this.server}/user/refresh/token`, { headers: { Authorization: `Bearer ${localStorage.getItem(Key.REFRESH_TOKEN)}` } })
