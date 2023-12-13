@@ -3,6 +3,7 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {catchError, Observable, tap, throwError} from "rxjs";
 import {CustomHttpResponse} from "../interface/custom-http-response";
 import {Profile} from "../interface/profile";
+import {Key} from "../enum/key.enum";
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,21 @@ export class UserService {
     (`${this.server}/user/verify/code/${email}/${code}`)
       .pipe(
         tap(console.log),
+
+        catchError(this.handleError)
+      );
+
+  refreshToken$ = () => <Observable<CustomHttpResponse<Profile>>>
+    this.http.get<CustomHttpResponse<Profile>>
+    (`${this.server}/user/refresh/token`, { headers: { Authorization: `Bearer ${localStorage.getItem(Key.REFRESH_TOKEN)}` } })
+      .pipe(
+        tap(response => {
+          console.log(response);
+          localStorage.removeItem(Key.TOKEN);
+          localStorage.removeItem(Key.REFRESH_TOKEN);
+          localStorage.setItem(Key.TOKEN, response.data.access_token);
+          localStorage.setItem(Key.REFRESH_TOKEN, response.data.refresh_token);
+        }),
 
         catchError(this.handleError)
       );
