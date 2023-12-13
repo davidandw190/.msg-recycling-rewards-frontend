@@ -4,6 +4,7 @@ import {catchError, Observable, tap, throwError} from "rxjs";
 import {CustomHttpResponse} from "../interface/custom-http-response";
 import {Profile} from "../interface/profile";
 import {Key} from "../enum/key.enum";
+import {User} from "../interface/user";
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +50,24 @@ export class UserService {
       .pipe(
         tap(console.log),
 
+        catchError(this.handleError)
+      );
+
+  updateUser$ = (user: User) => <Observable<CustomHttpResponse<Profile>>>
+    this.http.patch<CustomHttpResponse<Profile>>
+    (`${this.server}/user/update`, user)
+      .pipe(
+
+        tap(console.log),
+
+        catchError(this.handleError)
+      );
+
+  updateUserPassword$ = (form: { currentPassword: string, newPassword: string, confirmNewPassword: string }) => <Observable<CustomHttpResponse<Profile>>>
+    this.http.patch<CustomHttpResponse<Profile>>
+    (`${this.server}/user/update/password`, form)
+      .pipe(
+        tap(console.log),
         catchError(this.handleError)
       );
 
