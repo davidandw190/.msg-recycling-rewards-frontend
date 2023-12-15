@@ -1,7 +1,6 @@
 <ng-container>
   <ng-container>
     <app-navbar></app-navbar>
-    <!-- <div>{{ state | json }} </div> -->
     <section>
       <div class="container">
         <nav aria-label="breadcrumb" style="margin-top: 8px;">
@@ -13,18 +12,17 @@
             <li class="breadcrumb-item active" aria-current="page"></li>
           </ol>
         </nav>
-        <div class="bg-white shadow rounded-lg d-block d-sm-flex" style="border-radius: 8px;">
+        <div class="profile-container bg-white rounded-lg d-block d-sm-flex">
           <div class="profile-tab-nav border-right">
             <div class="p-4">
-              <div class="img-circle text-center mb-3" >
-                         <span style="position: relative">
-<!--                            <img src="" alt="John" class="shadow" />-->
-                            <img src="https://img.freepik.com/free-icon/user_318-159711.jpg" alt="John" class="shadow" />
-                         <i (click)="fileInput.click()" class="bi bi-camera-fill right-position"></i>
-                         </span>
+              <div class="profile-image text-center mb-3">
+                <span style="position: relative">
+                  <img src="https://img.freepik.com/free-icon/user_318-159711.jpg" alt="John" class="profile-img" />
+                  <i (click)="fileInput.click()" class="bi bi-camera-fill right-position"></i>
+                </span>
               </div>
-              <h4 class="text-center"></h4>
-              <span class="">Since </span>
+              <h4 class="text-center">John Doe</h4>
+              <span class="text-muted">Member since 2020</span>
             </div>
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
               <a class="nav-link active" id="profile" data-bs-toggle="pill" data-bs-target="#profile-tab" aria-selected="true" aria-controls="profile" role="tab">

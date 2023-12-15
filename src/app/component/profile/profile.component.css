@@ -78,20 +78,16 @@ a#notification.nav-link.active {
   background: #F5F5F5;
 }
 
-
-/* General Styles */
 .bg-transparent {
   background-color: transparent !important;
 }
 
-/* Profile Container Styles */
 .profile-container {
   display: flex;
   border-radius: 8px;
   overflow: hidden;
 }
 
-/* Profile Sidebar Styles */
 .profile-sidebar {
   min-width: 250px;
 }
@@ -147,7 +143,6 @@ a#notification.nav-link.active {
   color: white;
 }
 
-/* Adjustments for image and camera icon */
 .img-circle img {
   height: 100px;
   width: 100px;
@@ -164,8 +159,105 @@ a#notification.nav-link.active {
   cursor: pointer;
 }
 
-/* Updated styling for buttons */
 .btn-primary {
   background-color: #A01540;
   color: white;
+}
+
+
+.profile-container {
+  border-radius: 8px;
+}
+
+.profile-image img {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+}
+
+.profile-tab-nav {
+  min-width: 250px;
+}
+
+.tab-content {
+  flex: 1;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.nav-pills a.nav-link {
+  padding: 15px 20px;
+  border-bottom: 1px solid #ddd;
+  border-radius: 0;
+  color: #333;
+  background-color: #fff; /* Background color for inactive tabs */
+}
+
+.nav-pills a.nav-link i {
+  width: 20px;
+}
+
+.nav-pills a.nav-link.active {
+  color: #fff;
+  background-color: #A01540; /* Active tab background color */
+}
+
+.profile-container {
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.profile-image img {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+}
+
+.profile-tab-nav {
+  min-width: 250px;
+}
+
+.tab-content {
+  flex: 1;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.nav-pills a.nav-link {
+  padding: 15px 20px;
+  border-bottom: 1px solid #ddd;
+  border-radius: 12px;
+  color: #333;
+  background-color: #fff;
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+.nav-pills a.nav-link i {
+  width: 20px;
+}
+
+.nav-pills a.nav-link.active {
+  color: #fff;
+  background-color: #60ad5e; /* Active tab background color with recycling theme */
+}
+
+.btn-primary {
+  background-color: #60ad5e; /* Green color for primary buttons */
+  border-color: #60ad5e; /* Matching border color */
+}
+
+.btn-primary:hover {
+  background-color: #4e964f; /* Darker green on hover */
+  border-color: #4e964f;
+}
+
+.btn-primary:focus,
+.btn-primary.focus {
+  box-shadow: 0 0 0 0.2rem rgba(96, 173, 94, 0.5); /* Override Bootstrap blue shadow */
 }
