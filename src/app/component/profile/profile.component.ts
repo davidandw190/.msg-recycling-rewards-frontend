@@ -5,6 +5,7 @@ import {CustomHttpResponse} from "../../interface/custom-http-response";
 import {AppState} from "../../interface/app-state";
 import {BehaviorSubject, catchError, map, Observable, of, startWith} from "rxjs";
 import {UserService} from "../../service/user.service";
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-profile',
@@ -32,24 +33,33 @@ export class ProfileComponent implements OnInit {
         map(response => {
           console.log(response)
           this.dataSubject.next(response);
-          return {
-            dataState: DataState.LOADED,
-            appData: response
-          }
+          return { dataState: DataState.LOADED, appData: response }
         }),
 
-        startWith({
-          dataState: DataState.LOADING,
-          isUsingMfa: false
-        }),
+        startWith({ dataState: DataState.LOADING, isUsingMfa: false}),
 
         catchError((error: string) => {
-          return of({
-            dataState: DataState.ERROR,
-            isUsingMfa: false,
-            loginSuccess: false,
-            error: error
-          })
+          return of({ dataState: DataState.ERROR, isUsingMfa: false, loginSuccess: false, error: error})
+        })
+      )
+  }
+
+  updateProfile(profileForm: NgForm): void {
+    this.isLoadingSubject.next(true);
+    this.profileState$ = this.userService.updateUser$(profileForm.value)
+      .pipe(
+        map(response => {
+          console.log(response);
+          this.dataSubject.next({ ...response, data: response.data });
+          this.isLoadingSubject.next(false);
+          return { dataState: DataState.LOADED, appData: this.dataSubject.value };
+        }),
+
+        startWith({ dataState: DataState.LOADED, appData: this.dataSubject.value }),
+
+        catchError((error: string) => {
+          this.isLoadingSubject.next(false);
+          return of({ dataState: DataState.LOADED, appData: this.dataSubject.value, error: error })
         })
       )
   }
