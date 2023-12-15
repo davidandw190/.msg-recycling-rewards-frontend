@@ -29,16 +29,20 @@
                 <i class="bi bi-person-circle" style="margin-right: 12px;"></i> Profile
               </a>
               <a class="nav-link" id="password" data-bs-toggle="pill" data-bs-target="#password-tab" aria-selected="true" aria-controls="password" role="tab">
-                <i class="bi bi-key-fill" style="margin-right: 12px;"></i> Password
+                <i class="bi bi-key-fill" style="margin-right: 12px;"></i> Password Settings
               </a>
               <a class="nav-link" id="security" data-bs-toggle="pill" data-bs-target="#security-tab" aria-selected="true" aria-controls="security" role="tab">
                 <i class="bi bi-shield-shaded" style="margin-right: 12px;"></i> Authorization
               </a>
-              <a class="nav-link" id="application" data-bs-toggle="pill" data-bs-target="#application-tab" aria-selected="true" aria-controls="application" role="tab">
-                <i class="bi bi-gear" style="margin-right: 12px;"></i> Account
+              <a class="nav-link" id="account" data-bs-toggle="pill" data-bs-target="#account-settings-tab" aria-selected="true" aria-controls="application" role="tab">
+                <i class="bi bi-gear" style="margin-right: 12px;"></i> Account Settings
               </a>
               <a class="nav-link" id="notification" data-bs-toggle="pill" data-bs-target="#notification-tab" aria-selected="true" aria-controls="notification" role="tab">
                 <i class="bi bi-lock-fill" style="margin-right: 12px;"></i> Authentication
+              </a>
+
+              <a class="nav-link" id="notification-settings" data-bs-toggle="pill" data-bs-target="#notification-settings-tab" aria-selected="true" aria-controls="notification-settings" role="tab">
+                <i class="bi bi-bell" style="margin-right: 12px;"></i> Notification Settings
               </a>
             </div>
           </div>
@@ -162,7 +166,7 @@
                 </div>
               </form>
             </div>
-            <div class="tab-pane fade" id="application-tab" role="tabpanel" aria-labelledby="application" style="min-height: 510px;">
+            <div class="tab-pane fade" id="account-settings-tab" role="tabpanel" aria-labelledby="application" style="min-height: 510px;">
               <h3 class="mb-4">Account Settings</h3>
               <form #settingsForm="ngForm">
                 <input type="hidden" name="userId">
@@ -193,6 +197,7 @@
                 </div>
               </form>
             </div>
+
             <div class="tab-pane fade" id="notification-tab" role="tabpanel" aria-labelledby="notification" style="min-height: 510px;">
               <h3 class="mb-4">Authentication Settings</h3>
               <p>These settings help keep your account more secure.</p>
@@ -223,6 +228,28 @@
                       <div class="custom-control custom-switch">
                         <input type="checkbox" class="custom-control-input" id="activityLog">
                         <span class="custom-control-label"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="notification-settings-tab" role="tabpanel" aria-labelledby="notification-settings" style="min-height: 510px;">
+              <h3 class="mb-4">Notification Settings</h3>
+              <p>Manage your notification preferences within the application.</p>
+
+              <div class="list-group mb-5 shadow">
+                <!-- Email Notifications -->
+                <div class="list-group-item">
+                  <div class="row align-items-center">
+                    <div class="col">
+                      <strong class="mb-2">Email Notifications</strong>
+                      <p class="text-muted mb-0">Receive email notifications for important updates</p>
+                    </div>
+                    <div class="col-auto">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="emailNotifications">
+                        <label class="custom-control-label" for="emailNotifications"></label>
                       </div>
                     </div>
                   </div>
@@ -265,6 +292,7 @@
             </div>
           </div>
         </div>
+
       </div>
     </section>
   </ng-container>
