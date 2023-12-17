@@ -267,13 +267,15 @@
                   <div class="row align-items-center">
                     <div class="col">
                       <strong class="mb-2">Email Notifications</strong>
+                      <span *ngIf="state?.appData?.data?.user?.notificationsEnabled" class="badge bg-success mx-3">Enabled</span>
+                      <span *ngIf="!state?.appData?.data?.user?.notificationsEnabled" class="badge bg-warning mx-3">Disabled</span>
                       <p class="text-muted mb-0">Receive email notifications for important updates</p>
                     </div>
                     <div class="col-auto">
-                      <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="emailNotifications">
-                        <label class="custom-control-label" for="emailNotifications"></label>
-                      </div>
+                      <button (click)="toggleEmailNotifications()" [disabled]="(isLoading$ | async)" class="btn btn-primary btn-sm">
+                        {{ state?.appData?.data?.user?.notificationsEnabled ? 'Disable' : 'Enable' }}
+                        <span *ngIf=" (isLoading$ | async)" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
+                      </button>
                     </div>
                   </div>
                 </div>
