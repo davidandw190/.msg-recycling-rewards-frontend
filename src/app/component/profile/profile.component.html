@@ -106,12 +106,12 @@
             </div>
             <div class="tab-pane fade" id="password-tab" role="tabpanel" aria-labelledby="password" style="min-height: 510px;">
               <h3 class="mb-4">Password Settings</h3>
-              <form #passwordForm="ngForm">
+              <form #updatePasswordForm="ngForm" (ngSubmit)="updatePassword(updatePasswordForm)">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Current password</label>
-                      <input type="password" name="currentPassword" ngModel class="form-control" required>
+                      <input type="password" name="currentPassword" ngModel [disabled]="(isLoading$ | async)" class="form-control" required>
                     </div>
                   </div>
                 </div>
@@ -119,21 +119,21 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>New password</label>
-                      <input type="password" name="newPassword" ngModel class="form-control" minlength="5" required>
+                      <input type="password" name="newPassword" ngModel [disabled]="(isLoading$ | async)" class="form-control" minlength="5" required>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Confirm new password</label>
-                      <input type="password" name="confirmNewPassword" ngModel class="form-control" minlength="5" required>
+                      <input type="password" name="confirmPassword" ngModel [disabled]="(isLoading$ | async)" class="form-control" minlength="5" required>
                     </div>
                   </div>
                 </div>
                 <div>
-                  <button type="submit" class="btn btn-primary">
-                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
-                    <span>Loading...</span>
-                    <span>Update</span>
+                  <button [disabled]="updatePasswordForm.invalid || (isLoading$ | async)" type="submit" class="btn btn-primary">
+                    <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
+                    <span *ngIf="isLoading$ | async">Loading...</span>
+                    <span *ngIf="!(isLoading$ | async)">Update</span>
                   </button>
                 </div>
               </form>
