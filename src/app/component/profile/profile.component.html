@@ -46,6 +46,9 @@
               </a>
             </div>
           </div>
+
+
+
           <div class="tab-content p-4 p-md-5" id="v-pills-tabContent" style="border-left: 1px solid #d4d0d0;">
             <div class="tab-pane fade show active" id="profile-tab" role="tabpanel" aria-labelledby="profile" style="min-height: 510px;">
               <h3 class="mb-4">Profile Settings</h3>
@@ -104,6 +107,9 @@
                 </div>
               </form>
             </div>
+
+
+
             <div class="tab-pane fade" id="password-tab" role="tabpanel" aria-labelledby="password" style="min-height: 510px;">
               <h3 class="mb-4">Password Settings</h3>
               <form #updatePasswordForm="ngForm" (ngSubmit)="updatePassword(updatePasswordForm)">
@@ -138,30 +144,49 @@
                 </div>
               </form>
             </div>
+
+
+
             <div class="tab-pane fade" id="security-tab" role="tabpanel" aria-labelledby="security" style="min-height: 510px;">
               <h3 class="mb-4">Authorization Settings</h3>
-              <form #roleForm="ngForm">
+              <form #updateRolesForm="ngForm" (ngSubmit)="updateRole(updateRolesForm)">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
                       <label style="margin-bottom: 5px;">Role Name</label>
-                      <select name="roleName" class="form-control select-cl" required>
-                        <option class="select-cl"></option>
+                      <select name="roleName" class="form-control select-cl" [ngModel]="state?.appData?.data?.user?.roleName" [disabled]="(isLoading$ | async)" required>
+                        <!--                      <select name="roleName" class="form-control select-cl" [ngModel]="state?.appData?.data?.user?.roleName" [disabled]="!(state?.appData?.data?.user?.roleName === 'ROLE_SYSADMIN' || state?.appData?.data?.user?.roleName === 'ROLE_ADMIN') || (isLoading$ | async)" required>-->
+                        <!--                        <option *ngFor="let role of state?.appData?.data?.roles"-->
+                        <!--                                [selected]="state?.appData?.data?.user?.roleName === role.name"-->
+                        <!--                                [disabled]="!(state?.appData?.data?.user?.roleName === 'ROLE_SYSADMIN' || state?.appData?.data?.user?.roleName === 'ROLE_ADMIN') || (isLoading$ | async)"-->
+                        <!--                                [ngValue]="role.name"-->
+                        <!--                                class="select-cl">{{ role.name }}</option>-->
+                        <option *ngFor="let role of state?.appData?.data?.roles"
+                                [selected]="state?.appData?.data?.user?.roleName === role.name"
+                                [disabled]="(isLoading$ | async)"
+                                [ngValue]="role.name"
+                                class="select-cl">{{ role.name }}</option>
                       </select>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label style="margin-bottom: 5px;">Role Permissions</label>
-                      <input type="text" class="form-control" style="margin-bottom: 5px;">
+                      <input type="text" *ngFor="let permission of state?.appData?.data?.user?.permissions.split(',')" [value]="permission" [disabled]="true" class="form-control" style="margin-bottom: 5px;">
                     </div>
                   </div>
                 </div>
                 <div>
-                  <button type="submit" class="btn btn-primary">
-                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
-                    <span >Loading...</span>
-                    <span >Update</span>
+                  <!--                  <button [disabled]="!(state?.appData?.data?.user?.roleName === 'ROLE_SYSADMIN' || state?.appData?.data?.user?.roleName === 'ROLE_ADMIN') || (isLoading$ | async)" type="submit" class="btn btn-primary">-->
+                  <!--                    <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>-->
+                  <!--                    <span *ngIf="isLoading$ | async">Loading...</span>-->
+                  <!--                    <span *ngIf="!(isLoading$ | async)">Update</span>-->
+                  <!--                  </button>-->
+
+                  <button [disabled]="(isLoading$ | async)" type="submit" class="btn btn-primary">
+                    <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
+                    <span *ngIf="isLoading$ | async">Loading...</span>
+                    <span *ngIf="!(isLoading$ | async)">Update</span>
                   </button>
                 </div>
               </form>
