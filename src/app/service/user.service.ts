@@ -25,7 +25,6 @@ export class UserService {
     (`${this.server}/user/login`, { email: email, password: password })
       .pipe(
         tap(console.log),
-
         catchError(this.handleError)
       );
 
@@ -40,7 +39,6 @@ export class UserService {
     (`${this.server}/user/verify/code/${email}/${code}`)
       .pipe(
         tap(console.log),
-
         catchError(this.handleError)
       );
 
@@ -49,7 +47,6 @@ export class UserService {
     (`${this.server}/user/profile`)
       .pipe(
         tap(console.log),
-
         catchError(this.handleError)
       );
 
@@ -57,15 +54,21 @@ export class UserService {
     this.http.patch<CustomHttpResponse<Profile>>
     (`${this.server}/user/update`, user)
       .pipe(
-
         tap(console.log),
-
         catchError(this.handleError)
       );
 
   updateUserPassword$ = (form: { currentPassword: string, newPassword: string, confirmNewPassword: string }) => <Observable<CustomHttpResponse<Profile>>>
     this.http.patch<CustomHttpResponse<Profile>>
     (`${this.server}/user/update/password`, form)
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
+
+  updateUserRoles$ = (roleName: string) => <Observable<CustomHttpResponse<Profile>>>
+    this.http.patch<CustomHttpResponse<Profile>>
+    (`${this.server}/user/update/role/${roleName}`, {})
       .pipe(
         tap(console.log),
         catchError(this.handleError)
