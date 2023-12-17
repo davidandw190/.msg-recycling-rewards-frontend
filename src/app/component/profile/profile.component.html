@@ -237,34 +237,26 @@
                   <div class="row align-items-center">
                     <div class="col">
                       <strong class="mb-2">Multi-Factor Authentication</strong>
-                      <span class="badge bg-success mx-3">Enabled</span>
-                      <span class="badge bg-warning mx-3">Disabled</span>
+                      <span *ngIf="state?.appData?.data?.user?.usingMfa" class="badge bg-success mx-3">Enabled</span>
+                      <span *ngIf="!state?.appData?.data?.user?.usingMfa" class="badge bg-warning mx-3">Disabled</span>
                       <p class="text-muted mb-0">Set up Multi-factor Authentication (MFA) help keep your account more secure</p>
                     </div>
                     <div class="col-auto">
-                      <button class="btn btn-primary btn-sm">
-                        Enabled
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
+                      <button (click)="toggleMfa()" [disabled]="(isLoading$ | async)" class="btn btn-primary btn-sm">
+                        {{ state?.appData?.data?.user?.usingMfa ? 'Disable' : 'Enable' }}
+                        <span *ngIf=" (isLoading$ | async)" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
                       </button>
-                    </div>
-                  </div>
-                </div>
-                <div class="list-group-item">
-                  <div class="row align-items-center">
-                    <div class="col">
-                      <strong class="mb-2">Activity Logs</strong>
-                      <p class="text-muted mb-0">Show the latst activites on your account</p>
-                    </div>
-                    <div class="col-auto">
-                      <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="activityLog">
-                        <span class="custom-control-label"></span>
-                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+
+
+
+
+
+
             <div class="tab-pane fade" id="notification-settings-tab" role="tabpanel" aria-labelledby="notification-settings" style="min-height: 510px;">
               <h3 class="mb-4">Notification Settings</h3>
               <p>Manage your notification preferences within the application.</p>
@@ -289,36 +281,14 @@
             </div>
           </div>
         </div>
+
+
         <div class="row">
           <div class="col-xl-12 mt-4">
             <div class="card" style="border-radius: 8px;">
               <div class="card-body">
-                <h5 class="card-title">Account Activity Log</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Latest activities on your account.                        </h6>
-                <table class="table table-hover">
-                  <thead>
-                  <tr>
-                    <th scope="col">Device</th>
-                    <th scope="col">IP Address</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td>device</td>
-                    <td>ip address</td>
-                    <td>created at</td>
-                    <td><span class="badge pill"></span></td>
-                    <td>decription</td>
-                    <td>
-                      <button type="button" class="btn btn-sm" style="background-color: #fd5d0d; font-weight: 450;">Report</button>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
+                <h5 class="card-title">My Greenness Stats</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Put here stats regarding the user reward points, etc.                        </h6>
               </div>
             </div>
           </div>
