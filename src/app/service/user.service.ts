@@ -74,6 +74,14 @@ export class UserService {
         catchError(this.handleError)
       );
 
+  updateUserAccountSettings$ = (settings: { enabled: boolean, notLocked: boolean }) => <Observable<CustomHttpResponse<Profile>>>
+    this.http.patch<CustomHttpResponse<Profile>>
+    (`${this.server}/user/update/settings`, settings)
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
+
   refreshToken$ = () => <Observable<CustomHttpResponse<Profile>>>
     this.http.get<CustomHttpResponse<Profile>>
     (`${this.server}/user/refresh/token`, { headers: { Authorization: `Bearer ${localStorage.getItem(Key.REFRESH_TOKEN)}` } })
