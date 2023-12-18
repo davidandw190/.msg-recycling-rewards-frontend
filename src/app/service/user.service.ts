@@ -113,6 +113,14 @@ export class UserService {
         catchError(this.handleError)
       );
 
+  updateUserProfilePicture$ = (picture: FormData) => <Observable<CustomHttpResponse<Profile>>>
+    this.http.patch<CustomHttpResponse<Profile>>
+    (`${this.server}/user/update/profile-pic`, picture)
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
+
   /**
    * Handles HTTP errors and logs them. Converts the error into an observable with an error message.
    * @param {HttpErrorResponse} error - HTTP error response.

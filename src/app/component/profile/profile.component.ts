@@ -171,7 +171,38 @@ export class ProfileComponent implements OnInit {
       )
   }
 
+  onFileSelected(event: any): void {
+    const fileInput = event.target;
+    const file = fileInput.files[0];
+    this.updateProfilePicture(file);
+  }
+
+  updateProfilePicture(image: File): void {
+    if (image) {
+      this.isLoadingSubject.next(true);
+      this.profileState$ = this.userService.updateUserProfilePicture$(this.getFormData(image))
+        .pipe(
+          map(response => {
+            console.log(response);
+            this.dataSubject.next({ ...response,
+              data: { ...response.data,
+                user: { ...response.data.user, imageUrl: `${response.data.user.imageUrl}?time=${new Date().getTime()}`}} }); // Im a fucking genius sometimes
+            this.isLoadingSubject.next(false);
+            return { dataState: DataState.LOADED, appData: this.dataSubject.value };
+          }),
+          startWith({ dataState: DataState.LOADED, appData: this.dataSubject.value }),
+          catchError((error: string) => {
+            this.isLoadingSubject.next(false);
+            return of({ dataState: DataState.LOADED, appData: this.dataSubject.value, error })
+          })
+        )
+    }
+  }
 
 
-
+  private getFormData(image: File): FormData {
+    const formData = new FormData();
+    formData.append('image', image);
+    return formData;
+  }
 }
