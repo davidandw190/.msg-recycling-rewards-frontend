@@ -5,12 +5,14 @@ import {CustomHttpResponse} from "../interface/custom-http-response";
 import {Profile} from "../interface/profile";
 import {Key} from "../enum/key.enum";
 import {User} from "../interface/user";
+import {JwtHelperService} from "@auth0/angular-jwt";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   private readonly server: string = 'http://localhost:8080';
+  private jwtHelper = new JwtHelperService();
 
   constructor(private http: HttpClient) { }
 
@@ -142,4 +144,6 @@ export class UserService {
     }
     return throwError(() => errorMessage);
   }
+
+  isAuthenticated = (): boolean => (this.jwtHelper.decodeToken<string>(localStorage.getItem(Key.TOKEN)) && !this.jwtHelper.isTokenExpired(localStorage.getItem(Key.TOKEN)));
 }
