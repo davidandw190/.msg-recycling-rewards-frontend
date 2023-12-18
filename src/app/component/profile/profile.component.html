@@ -302,7 +302,6 @@
 </ng-container>
 
 <!-- profile image change form -->
-<form enctype="multipart/form-data" style="display:none;">
-  <input type="file" #fileInput name="image" id="image"
-         placeholder="file" ngModel accept="image/*" />
+<form enctype="multipart/form-data" (change)="onFileSelected($event)" #fileForm style="display:none;">
+  <input type="file" #fileInput name="image" id="image" placeholder="file" accept="image/*" />
 </form>
