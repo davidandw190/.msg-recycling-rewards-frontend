@@ -39,7 +39,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item" [routerLink]="['/profile']"><i class="bi bi-person-circle"></i>{{ user?.firstName }} {{ user?.lastName }}</a></li>
-            <li style="cursor: pointer;"><a class="dropdown-item"><i class="bi bi-box-arrow-in-right"></i> Logout</a></li>
+            <li style="cursor: pointer;"><a class="dropdown-item" (click)="logOut()"><i style="padding-right: 8px;" class="bi bi-box-arrow-in-right"></i>Logout</a></li>
           </ul>
         </li>
       </ul>

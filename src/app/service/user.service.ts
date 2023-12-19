@@ -16,6 +16,16 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
+  isAuthenticated = (): boolean => (
+    this.jwtHelper.decodeToken<string>(localStorage.getItem(Key.TOKEN)) &&
+    !this.jwtHelper.isTokenExpired(localStorage.getItem(Key.TOKEN))
+  );
+
+  logOut() {
+    localStorage.removeItem(Key.TOKEN);
+    localStorage.removeItem(Key.REFRESH_TOKEN);
+  }
+
   /**
    * Logs in a user by sending a POST request to the server with provided email and password.
    * @param {string} email - User's email address.
@@ -144,6 +154,4 @@ export class UserService {
     }
     return throwError(() => errorMessage);
   }
-
-  isAuthenticated = (): boolean => (this.jwtHelper.decodeToken<string>(localStorage.getItem(Key.TOKEN)) && !this.jwtHelper.isTokenExpired(localStorage.getItem(Key.TOKEN)));
 }
