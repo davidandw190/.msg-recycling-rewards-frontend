@@ -44,4 +44,7 @@ export class HomeComponent {
       );
   }
 
+  goToPage(pageNumber: number): void {
+    this.currentPageSubject.next(pageNumber);
+  }
 }
