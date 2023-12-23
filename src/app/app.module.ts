@@ -18,6 +18,7 @@ import {NgOptimizedImage} from "@angular/common";
 import { CentersComponent } from './component/centers/centers.component';
 import { CenterDetailsComponent } from './component/center-details/center-details.component';
 import { CenterNewComponent } from './component/center-new/center-new.component';
+import { StatsComponent } from './component/stats/stats.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { CenterNewComponent } from './component/center-new/center-new.component'
     CentersComponent,
     CenterDetailsComponent,
     CenterNewComponent,
+    StatsComponent,
   ],
   imports: [
     BrowserModule,
