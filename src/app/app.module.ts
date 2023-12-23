@@ -19,6 +19,7 @@ import { CentersComponent } from './component/centers/centers.component';
 import { CenterDetailsComponent } from './component/center-details/center-details.component';
 import { CenterNewComponent } from './component/center-new/center-new.component';
 import { StatsComponent } from './component/stats/stats.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { StatsComponent } from './component/stats/stats.component';
     FormsModule,
     BrowserAnimationsModule,
     NgOptimizedImage,
+    NgbModule,
   ],
   providers: [
     {
