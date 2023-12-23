@@ -16,11 +16,19 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
+  /**
+   * Checks if the user is authenticated based on the presence and validity of the JWT token.
+   * @returns {boolean} True if the user is authenticated; otherwise, false.
+   */
   isAuthenticated = (): boolean => (
     this.jwtHelper.decodeToken<string>(localStorage.getItem(Key.TOKEN)) &&
     !this.jwtHelper.isTokenExpired(localStorage.getItem(Key.TOKEN))
   );
 
+  /**
+   * Logs out the user by removing the authentication tokens from the local storage.
+   * @method
+   */
   logOut() {
     localStorage.removeItem(Key.TOKEN);
     localStorage.removeItem(Key.REFRESH_TOKEN);
@@ -53,6 +61,7 @@ export class UserService {
         tap(console.log),
         catchError(this.handleError)
       );
+
 
   profile$ = () => <Observable<CustomHttpResponse<Profile>>>
     this.http.get<CustomHttpResponse<Profile>>

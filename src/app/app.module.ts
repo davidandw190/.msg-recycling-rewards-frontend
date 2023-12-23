@@ -15,6 +15,9 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {TokenInterceptor} from "./interceptor/token.interceptor";
 import {NgOptimizedImage} from "@angular/common";
+import { CentersComponent } from './component/centers/centers.component';
+import { CenterDetailsComponent } from './component/center-details/center-details.component';
+import { CenterNewComponent } from './component/center-new/center-new.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,10 @@ import {NgOptimizedImage} from "@angular/common";
     ResetPassComponent,
     ProfileComponent,
     HomeComponent,
-    NavbarComponent
+    NavbarComponent,
+    CentersComponent,
+    CenterDetailsComponent,
+    CenterNewComponent,
   ],
   imports: [
     BrowserModule,
