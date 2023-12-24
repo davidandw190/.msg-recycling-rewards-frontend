@@ -15,11 +15,11 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {TokenInterceptor} from "./interceptor/token.interceptor";
 import {NgOptimizedImage} from "@angular/common";
-import { CentersComponent } from './component/centers/centers.component';
 import { CenterDetailsComponent } from './component/center-details/center-details.component';
 import { CenterNewComponent } from './component/center-new/center-new.component';
 import { StatsComponent } from './component/stats/stats.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CenterAllComponent } from './component/center-all/center-all.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +31,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ProfileComponent,
     HomeComponent,
     NavbarComponent,
-    CentersComponent,
+    CenterAllComponent,
     CenterDetailsComponent,
     CenterNewComponent,
     StatsComponent,

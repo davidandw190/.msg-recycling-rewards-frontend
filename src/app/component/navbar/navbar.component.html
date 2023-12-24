@@ -12,6 +12,16 @@
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Centers
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" [routerLink]="['/centers/all']"><i  style="padding-right: 8px;" class="bi bi-person-plus-fill"></i> All Centers</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/centers/all']"><i style="padding-right: 8px;"  class="bi bi-people-fill"></i> Favourite Centers</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Leaderboard
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
