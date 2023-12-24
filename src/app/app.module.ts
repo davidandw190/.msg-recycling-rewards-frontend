@@ -10,7 +10,7 @@ import { ProfileComponent } from './component/profile/profile.component';
 import { HomeComponent } from './component/home/home.component';
 import { NavbarComponent } from './component/navbar/navbar.component';
 import {AppRoutingModule} from "./app-routing.module";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {TokenInterceptor} from "./interceptor/token.interceptor";
@@ -44,6 +44,7 @@ import { CenterAllComponent } from './component/center-all/center-all.component'
     BrowserAnimationsModule,
     NgOptimizedImage,
     NgbModule,
+    ReactiveFormsModule,
   ],
   providers: [
     {
