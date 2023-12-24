@@ -3,6 +3,7 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {HomePageResponse} from "../interface/home-page-response";
 import {CustomHttpResponse} from "../interface/custom-http-response";
 import {catchError, Observable, tap, throwError} from "rxjs";
+import {CentersPageResponse} from "../interface/centers-page-response";
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,14 @@ export class CenterService {
   centers$ = (page: number = 0): Observable<CustomHttpResponse<HomePageResponse>> =>
     this.http.get<CustomHttpResponse<HomePageResponse>>
     (`${this.server}/centers/list-all?page=${page}`)
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
+
+  searchCenters$ = (name: string = '', page: number = 0) => <Observable<CustomHttpResponse<CentersPageResponse>>>
+    this.http.get<CustomHttpResponse<CentersPageResponse>>
+    (`${this.server}/centers/search?name=${name}&page=${page}`)
       .pipe(
         tap(console.log),
         catchError(this.handleError)
