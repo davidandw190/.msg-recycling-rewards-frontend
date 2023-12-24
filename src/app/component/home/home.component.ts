@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {HomePageResponse} from "../../interface/home-page-response";
 import {CustomHttpResponse} from "../../interface/custom-http-response";
 import {DataState} from 'src/app/enum/data-state.enum';
@@ -6,26 +6,33 @@ import {AppState} from "../../interface/app-state";
 import {BehaviorSubject, catchError, map, Observable, of, startWith, switchMap, tap} from "rxjs";
 import {Router} from "@angular/router";
 import {CenterService} from "../../service/center.service";
+import {NgbPaginationConfig} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   homeState$: Observable<AppState<CustomHttpResponse<HomePageResponse>>>;
   private dataSubject = new BehaviorSubject<CustomHttpResponse<HomePageResponse>>(null);
   private isLoadingSubject = new BehaviorSubject<boolean>(false);
   isLoading$ = this.isLoadingSubject.asObservable();
   private currentPageSubject = new BehaviorSubject<number>(0);
   currentPage$ = this.currentPageSubject.asObservable();
+  currentPage: number = 0
 
   readonly DataState = DataState;
 
   constructor(
     private router: Router,
-    private centerService: CenterService
-  ) {}
+    private centerService: CenterService,
+    private paginationConfig: NgbPaginationConfig
+  ) {
+    paginationConfig.size = 'sm';
+    paginationConfig.boundaryLinks = true;
+  }
 
   ngOnInit(): void {
     this.homeState$ = this.currentPage$
@@ -45,6 +52,6 @@ export class HomeComponent {
   }
 
   goToPage(pageNumber: number): void {
-    this.currentPageSubject.next(pageNumber);
+    this.currentPageSubject.next(pageNumber - 1);
   }
 }

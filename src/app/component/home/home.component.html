@@ -10,12 +10,35 @@
           <h4 class="fw-bold text-start">Recycling Centers</h4>
         </div>
         <div class="col text-end">
-  <!--        <h4 class="fw-bold"><i class="bi bi-file-earmark-excel" style="cursor: pointer; color: green; font-size: 30px;"></i></h4>-->
+          <!--        <h4 class="fw-bold"><i class="bi bi-file-earmark-excel" style="cursor: pointer; color: green; font-size: 30px;"></i></h4>-->
         </div>
       </div>
 
-      <!-- Table and Pagination Content -->
+      <!-- No Centers message Content -->
       <div class="table-responsive mt-3">
+
+<!--        <ng-container *ngIf="state?.appData?.data?.page?.content?.length <= 0">-->
+<!--          <table class="table table-hover">-->
+<!--            &lt;!&ndash; Table Header &ndash;&gt;-->
+<!--            <thead class="bg-gradient text-white">-->
+<!--            <tr>-->
+<!--              <th scope="col">Photo</th>-->
+<!--              <th scope="col">Name</th>-->
+<!--              <th scope="col">Contact</th>-->
+<!--              <th scope="col">Location</th>-->
+<!--              <th scope="col">Materials</th>-->
+<!--              <th scope="col">Working Intervals</th>-->
+<!--              <th scope="col">Status</th>-->
+<!--              <th scope="col">Action</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--          </table>-->
+<!--          <div class="alert alert-info mt-3" role="alert">-->
+<!--            No recycling centers available at the moment. Check back later.-->
+<!--          </div>-->
+<!--        </ng-container>-->
+
+
         <table class="table table-hover">
           <!-- Table Header -->
           <thead class="bg-gradient text-white">
@@ -31,39 +54,39 @@
           </tr>
           </thead>
           <!-- Table Body -->
-          <ng-container *ngIf="state?.appData?.data?.page?.content?.length; else noCenters">
-            <tbody *ngFor="let center of state?.appData?.data?.page?.content"  class="table-body">
-            <tr class="cell-1">
-              <td><img src="https://robohash.org/recyclingcenter" width="42" height="42" class="rounded-circle"></td>
-              <td> {{ center.name }} </td>
-              <td> {{ center.county }} </td>
-              <td> {{ center.city }} </td>
-              <td> PAPER </td>
-              <td>
-                <ng-container *ngIf="center.alwaysOpen; else hourInterval">
-                  Open Always
-                </ng-container>
-                <ng-template #hourInterval>
-                  {{ center.openingHour | slice: 0:5 }} - {{ center.closingHour | slice: 0:5 }}
-                </ng-template>
-              </td>
-              <td>
-                <span class="badge bg-success">OPEN</span>
-              </td>
-              <td>
-                <button type="button" [routerLink]="['/centers']" class="btn btn-info">View</button>
-              </td>
-            </tr>
-            </tbody>
-          </ng-container>
+          <tbody *ngFor="let center of state?.appData?.data?.page?.content"  class="table-body">
+          <tr class="cell-1">
+            <td><img src="https://robohash.org/recyclingcenter" width="42" height="42" class="rounded-circle"></td>
+            <td> {{ center.name }} </td>
+            <td> {{ center.county }} </td>
+            <td> {{ center.city }} </td>
+            <td> PAPER </td>
+            <td>
+              <ng-container *ngIf="center.alwaysOpen; else hourInterval">
+                Open Always
+              </ng-container>
+              <ng-template #hourInterval>
+                {{ center.openingHour | slice: 0:5 }} - {{ center.closingHour | slice: 0:5 }}
+              </ng-template>
+            </td>
+            <td>
+              <span class="badge bg-success">OPEN</span>
+            </td>
+            <td>
+              <button type="button" [routerLink]="['/centers']" class="btn btn-info">View</button>
+            </td>
+          </tr>
+          </tbody>
         </table>
       </div>
+
+<!--      <p>Total Elements: {{ state?.appData?.data?.page?.totalElements }}</p>-->
 
       <!-- Pagination -->
       <nav *ngIf="state?.appData?.data?.page.totalPages > 0">
         <ngb-pagination
-          [page]="currentPage$ | async"
-          [collectionSize]="state?.appData?.data?.page.totalElements - 10"
+          [(page)]="currentPage"
+          [collectionSize]="state?.appData?.data?.page?.totalElements"
           [maxSize]="3"
           [rotate]="true"
           [boundaryLinks]="false"
@@ -77,11 +100,11 @@
         </ngb-pagination>
       </nav>
 
-      <ng-template #noCenters>
-        <div class="alert alert-info mt-3" role="alert">
-          No recycling centers available at the moment. Check back later.
-        </div>
-      </ng-template>
+<!--      <ng-template #noCenters>-->
+<!--        <div class="alert alert-info mt-3" role="alert">-->
+<!--          No recycling centers available at the moment. Check back later.-->
+<!--        </div>-->
+<!--      </ng-template>-->
 
     </div>
   </section>
