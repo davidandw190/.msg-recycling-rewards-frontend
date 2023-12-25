@@ -26,29 +26,46 @@
                   <label class="visually-hidden"></label>
                   <input type="text" formControlName="name" class="form-control" placeholder="Center Name" />
                 </div>
+                <!-- Replace the county input field with the ngx-bootstrap typeahead -->
                 <div class="col-auto">
-                  <!-- Replace text input with dropdown for county -->
-                  <label class="visually-hidden"></label>
-                  <select formControlName="county" class="form-control">
-                    <option value="">Select County</option>
-                    <option *ngFor="let county of counties" [value]="county">{{ county }}</option>
-                  </select>
+                  <label class="visually-hidden">County</label>
+                  <input
+                    formControlName="county"
+                    [typeahead]="counties"
+                    [minLength]="0"
+                    [typeaheadWaitMs]="300"
+                    placeholder="Select County"
+                    class="form-control"
+                    (typeaheadOnSelect)="onSelectCounty($event)"
+                  />
                 </div>
+
+                <!-- City Selector -->
                 <div class="col-auto">
-                  <!-- Replace text input with dropdown for city -->
-                  <label class="visually-hidden"></label>
-                  <select formControlName="city" class="form-control">
-                    <option value="">Select City</option>
-                    <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
-                  </select>
+                  <label class="visually-hidden">City</label>
+                  <input
+                    formControlName="city"
+                    [typeahead]="cities"
+                    [minLength]="0"
+                    [typeaheadWaitMs]="300"
+                    placeholder="Select City"
+                    class="form-control"
+                    (typeaheadOnSelect)="onSelectCity($event)"
+                  />
                 </div>
+
+
                 <div class="col-auto">
                   <label class="visually-hidden"></label>
                   <input type="text" formControlName="materials" class="form-control" placeholder="Accepted Materials" />
                 </div>
+
                 <div class="col-auto">
-                  <button type="submit" class="btn btn-primary mb-3">Search Centers</button>
+                  <button type="button" class="btn btn-secondary mb-3" (click)="resetFilters()">Delete Filters</button>
                 </div>
+<!--                <div class="col-auto">-->
+<!--                  <button type="submit" class="btn btn-primary mb-3">Search Centers</button>-->
+<!--                </div>-->
               </div>
             </form>
 
