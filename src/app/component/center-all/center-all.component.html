@@ -19,17 +19,39 @@
             <h4 class="fw-bold text-end"><i style="cursor: pointer;color: green;font-size: 30px;" class="bi bi-file-earmark-excel"></i></h4>
           </div>
           <div class="col-xm-12">
+            <!-- Add dropdowns for county and city -->
             <form [formGroup]="searchForm" (ngSubmit)="searchCenters()">
               <div class="row g-3 float-end">
                 <div class="col-auto">
                   <label class="visually-hidden"></label>
-                  <input type="text" formControlName="name" class="form-control" placeholder="Customer Name" />
+                  <input type="text" formControlName="name" class="form-control" placeholder="Center Name" />
+                </div>
+                <div class="col-auto">
+                  <!-- Replace text input with dropdown for county -->
+                  <label class="visually-hidden"></label>
+                  <select formControlName="county" class="form-control">
+                    <option value="">Select County</option>
+                    <option *ngFor="let county of counties" [value]="county">{{ county }}</option>
+                  </select>
+                </div>
+                <div class="col-auto">
+                  <!-- Replace text input with dropdown for city -->
+                  <label class="visually-hidden"></label>
+                  <select formControlName="city" class="form-control">
+                    <option value="">Select City</option>
+                    <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+                  </select>
+                </div>
+                <div class="col-auto">
+                  <label class="visually-hidden"></label>
+                  <input type="text" formControlName="materials" class="form-control" placeholder="Accepted Materials" />
                 </div>
                 <div class="col-auto">
                   <button type="submit" class="btn btn-primary mb-3">Search Centers</button>
                 </div>
               </div>
             </form>
+
           </div>
           <div class="col-xm-12"><!-- Table and Pagination Content -->
             <div class="table-responsive mt-3">
@@ -56,7 +78,7 @@
                     <td> {{ center.name }} </td>
                     <td> {{ center.county }} </td>
                     <td> {{ center.city }} </td>
-                    <td> PAPER </td>
+                    <td> {{ center.acceptedMaterials }} </td>
                     <td>
                       <ng-container *ngIf="center.alwaysOpen; else hourInterval">
                         Open Always

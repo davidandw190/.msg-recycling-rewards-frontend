@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {HomePageResponse} from "../interface/home-page-response";
 import {CustomHttpResponse} from "../interface/custom-http-response";
 import {catchError, Observable, tap, throwError} from "rxjs";
@@ -21,13 +21,20 @@ export class CenterService {
         catchError(this.handleError)
       );
 
-  searchCenters$ = (name: string = '', page: number = 0) => <Observable<CustomHttpResponse<CentersPageResponse>>>
-    this.http.get<CustomHttpResponse<CentersPageResponse>>
-    (`${this.server}/centers/search?name=${name}&page=${page}`)
+  searchCenters$(name: string = '', county: string = '', city: string = '', materials: string = '', page: number = 0): Observable<CustomHttpResponse<CentersPageResponse>> {
+    const params = new HttpParams()
+      .set('name', name)
+      .set('county', county)
+      .set('city', city)
+      .set('materials', materials)
+      .set('page', page.toString());
+
+    return this.http.get<CustomHttpResponse<CentersPageResponse>>(`${this.server}/centers/search`, { params })
       .pipe(
         tap(console.log),
         catchError(this.handleError)
       );
+  }
 
 
   private handleError(error: HttpErrorResponse): Observable<never> {
