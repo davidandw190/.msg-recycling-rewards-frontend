@@ -21,6 +21,7 @@ import { StatsComponent } from './component/stats/stats.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CenterAllComponent } from './component/center-all/center-all.component';
 import {HighlightSearchPipe} from "./pipes/highlight-search.pipe";
+import {TypeaheadModule} from "ngx-bootstrap/typeahead";
 
 @NgModule({
   declarations: [
@@ -36,7 +37,7 @@ import {HighlightSearchPipe} from "./pipes/highlight-search.pipe";
     CenterDetailsComponent,
     CenterNewComponent,
     StatsComponent,
-    HighlightSearchPipe
+    HighlightSearchPipe,
   ],
   imports: [
     BrowserModule,
@@ -47,6 +48,7 @@ import {HighlightSearchPipe} from "./pipes/highlight-search.pipe";
     NgOptimizedImage,
     NgbModule,
     ReactiveFormsModule,
+    TypeaheadModule
   ],
   providers: [
     {
