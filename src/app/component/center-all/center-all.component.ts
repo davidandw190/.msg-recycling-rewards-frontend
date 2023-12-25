@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {
   BehaviorSubject,
   catchError,
@@ -11,13 +11,13 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { AppState } from '../../interface/app-state';
-import { DataState } from '../../enum/data-state.enum';
-import { CustomHttpResponse } from '../../interface/custom-http-response';
-import { CentersPageResponse } from '../../interface/centers-page-response';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { CenterService } from '../../service/center.service';
-import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
+import {AppState} from '../../interface/app-state';
+import {DataState} from '../../enum/data-state.enum';
+import {CustomHttpResponse} from '../../interface/custom-http-response';
+import {CentersPageResponse} from '../../interface/centers-page-response';
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
+import {CenterService} from '../../service/center.service';
+import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-center-all',

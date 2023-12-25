@@ -20,6 +20,7 @@ import { CenterNewComponent } from './component/center-new/center-new.component'
 import { StatsComponent } from './component/stats/stats.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CenterAllComponent } from './component/center-all/center-all.component';
+import {HighlightSearchPipe} from "./pipes/highlight-search.pipe";
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { CenterAllComponent } from './component/center-all/center-all.component'
     CenterDetailsComponent,
     CenterNewComponent,
     StatsComponent,
+    HighlightSearchPipe
   ],
   imports: [
     BrowserModule,
@@ -53,6 +55,7 @@ import { CenterAllComponent } from './component/center-all/center-all.component'
       multi: true
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [HighlightSearchPipe]
 })
 export class AppModule { }
