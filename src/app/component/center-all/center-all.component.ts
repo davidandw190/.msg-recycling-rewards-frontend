@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import {
   BehaviorSubject,
   catchError,
@@ -8,15 +8,16 @@ import {
   Observable,
   of,
   startWith,
-  switchMap, tap
-} from "rxjs";
-import {AppState} from "../../interface/app-state";
-import {DataState} from "../../enum/data-state.enum";
-import {CustomHttpResponse} from "../../interface/custom-http-response";
-import {CentersPageResponse} from "../../interface/centers-page-response";
-import {ActivatedRoute, ParamMap, Router} from "@angular/router";
-import {CenterService} from "../../service/center.service";
-import {FormBuilder, FormGroup, NgForm} from "@angular/forms";
+  switchMap,
+  tap,
+} from 'rxjs';
+import { AppState } from '../../interface/app-state';
+import { DataState } from '../../enum/data-state.enum';
+import { CustomHttpResponse } from '../../interface/custom-http-response';
+import { CentersPageResponse } from '../../interface/centers-page-response';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { CenterService } from '../../service/center.service';
+import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-center-all',
@@ -24,7 +25,7 @@ import {FormBuilder, FormGroup, NgForm} from "@angular/forms";
   styleUrls: ['./center-all.component.css'],
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class CenterAllComponent implements OnInit{
+export class CenterAllComponent implements OnInit {
   centersState$: Observable<AppState<CustomHttpResponse<CentersPageResponse>>>;
   private dataSubject = new BehaviorSubject<CustomHttpResponse<CentersPageResponse>>(null);
   private isLoadingSubject = new BehaviorSubject<boolean>(false);
@@ -62,41 +63,29 @@ export class CenterAllComponent implements OnInit{
       .pipe(
         debounceTime(300),
         distinctUntilChanged(),
-        tap(() => this.isLoadingSubject.next(false)),
+        tap(() => this.isLoadingSubject.next(true)),
         switchMap(() => this.centerService.searchCenters$(this.searchForm.get('name').value)),
         catchError((error: string) => {
-          // Handle error appropriately, e.g., show a user-friendly message
           console.error(error);
           return of({ dataState: DataState.ERROR, error });
         }),
-        tap(() => this.isLoadingSubject.next(false))
+        tap((response) => this.handleSearch(response))
       )
-      .subscribe(response => {
-        console.log(response);
-        // @ts-ignore
-        this.dataSubject.next(response);
-      });
+      .subscribe();
   }
 
-  private handleSearch(searchObservable: Observable<any>): void {
-    searchObservable.pipe(
-      map(response => {
-        console.log(response);
-        this.dataSubject.next(response);
-        return { dataState: DataState.LOADED, appData: response };
-      }),
-      startWith({ dataState: DataState.LOADING }),
-      catchError((error: string) => of({ dataState: DataState.ERROR, error })),
-      tap(() => this.isLoadingSubject.next(false))
-    ).subscribe(response => {
-      this.centersState$ = of(response);
+  private handleSearch(response: any): void {
+    this.dataSubject.next(response);
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { name: this.searchForm.get('name').value },
+      queryParamsHandling: 'merge',
     });
   }
 
-
   private initializeSearch(): void {
     this.centersState$ = this.dataSubject.pipe(
-      map(response => ({ dataState: DataState.LOADED, appData: response })),
+      map((response) => ({ dataState: DataState.LOADED, appData: response })),
       startWith({ dataState: DataState.LOADING }),
       catchError((error: string) => of({ dataState: DataState.ERROR, error }))
     );
@@ -105,24 +94,12 @@ export class CenterAllComponent implements OnInit{
   searchCenters(): void {
     const name = this.searchForm.get('name').value;
 
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { name: name || null },
-      queryParamsHandling: 'merge',
-    });
-
     this.isLoadingSubject.next(true);
 
-    this.centersState$ = this.centerService.searchCenters$(name).pipe(
-      map(response => {
-        console.log(response);
-        this.dataSubject.next(response);
-        return { dataState: DataState.LOADED, appData: response };
-      }),
-      startWith({dataState: DataState.LOADED}),
-      catchError((error: string) => of({ dataState: DataState.ERROR, error })),
-      tap(() => this.isLoadingSubject.next(false))
-    );
+    this.centerService.searchCenters$(name).pipe(
+      tap((response) => this.handleSearch(response)),
+      catchError((error: string) => of({ dataState: DataState.ERROR, error }))
+    ).subscribe();
   }
 
   goToPage(pageNumber?: number): void {
@@ -130,16 +107,12 @@ export class CenterAllComponent implements OnInit{
 
     this.isLoadingSubject.next(true);
 
-    this.centersState$ = this.centerService.searchCenters$(name, pageNumber - 1).pipe(
-      map(response => {
-        console.log(response);
+    this.centerService.searchCenters$(name, pageNumber - 1).pipe(
+      tap((response) => {
         this.dataSubject.next(response);
         this.currentPageSubject.next(pageNumber - 1);
-        return { dataState: DataState.LOADED, appData: response };
       }),
-      startWith({dataState: DataState.LOADED}),
-      catchError((error: string) => of({ dataState: DataState.ERROR, error })),
-      tap(() => this.isLoadingSubject.next(false))
-    );
+      catchError((error: string) => of({ dataState: DataState.ERROR, error }))
+    ).subscribe();
   }
 }
