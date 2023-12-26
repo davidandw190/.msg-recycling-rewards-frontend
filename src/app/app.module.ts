@@ -25,6 +25,7 @@ import {TypeaheadModule} from "ngx-bootstrap/typeahead";
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
+import {AcceptedMaterialsPipe} from "./pipes/accepted-materials.pipe";
 
 @NgModule({
   declarations: [
@@ -40,7 +41,7 @@ import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
     CenterDetailsComponent,
     CenterNewComponent,
     StatsComponent,
-    HighlightSearchPipe,
+    HighlightSearchPipe
   ],
   imports: [
     BrowserModule,
@@ -55,6 +56,7 @@ import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
     MatInputModule,
     MatSelectModule,
     NgMultiSelectDropDownModule,
+    AcceptedMaterialsPipe
   ],
   providers: [
     {
