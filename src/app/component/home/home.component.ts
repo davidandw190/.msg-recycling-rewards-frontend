@@ -7,6 +7,7 @@ import {BehaviorSubject, catchError, map, Observable, of, startWith, switchMap, 
 import {Router} from "@angular/router";
 import {CenterService} from "../../service/center.service";
 import {NgbPaginationConfig} from "@ng-bootstrap/ng-bootstrap";
+import {RecyclingCenter} from "../../interface/recycling-center";
 
 @Component({
   selector: 'app-home',
@@ -53,5 +54,22 @@ export class HomeComponent implements OnInit {
 
   goToPage(pageNumber: number): void {
     this.currentPageSubject.next(pageNumber - 1);
+  }
+
+  getMaterialsTooltip(center: RecyclingCenter): string {
+    if (center && center.acceptedMaterials && center.acceptedMaterials.length > 0) {
+      const materialsList = center.acceptedMaterials.map((material) => material.name).join(', ');
+      return `Accepted Materials: ${materialsList}`;
+    } else {
+      return 'No accepted materials available';
+    }
+  }
+
+  navigateToCreateCenter() {
+    this.router.navigate(['/centers/new'])
+  }
+
+  navigateToCentersView() {
+    this.router.navigate(['/centers/all'])
   }
 }

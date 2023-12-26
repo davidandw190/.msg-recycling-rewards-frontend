@@ -3,3 +3,28 @@
   background-color: yellow;
   font-weight: bold;
 }
+
+.badge-soft-danger {
+  color: #f56e6e !important;
+  background-color: rgba(245,110,110,.1);
+}
+.badge-soft-success {
+  color: #63ad6f !important;
+  background-color: rgba(99,173,111,.1);
+}
+
+.badge-soft-primary {
+  color: #3b76e1 !important;
+  background-color: rgba(59,118,225,.1);
+}
+
+.badge-soft-info {
+  color: #57c9eb !important;
+  background-color: rgba(87,201,235,.1);
+}
+
+
+.bg-soft-primary {
+  background-color: rgba(59,118,225,.25)!important;
+}
+
