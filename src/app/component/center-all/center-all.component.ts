@@ -40,6 +40,16 @@ export class CenterAllComponent implements OnInit {
 
   searchForm: FormGroup;
 
+  isFiltersCollapsed = true;
+
+  toggleFilters() {
+    this.isFiltersCollapsed = !this.isFiltersCollapsed;
+  }
+
+  availableMaterials: string[] = ['GLASS', 'PLASTIC', 'PAPER', 'ALUMINIUM', 'METALS'];
+
+  selectedMaterials: string[] = []
+
   counties: string[] = ['TIMIS', 'CLUJ-NAPOCA', 'ARAD'];
   countyCitiesMap: { [county: string]: string[] } = {
     'TIMIS': ['TIMISOARA', 'City1B', 'City1C'],
@@ -94,6 +104,14 @@ export class CenterAllComponent implements OnInit {
         filter(() => false) // Prevent reactive changes
       )
       .subscribe();
+
+    this.searchForm.get('materials').valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        tap((material) => this.onSelectMaterials(material)),
+        filter(() => false) // Prevent reactive changes
+      )
 
     this.searchCenters();
 
@@ -176,18 +194,21 @@ export class CenterAllComponent implements OnInit {
     const name = this.searchForm.get('name').value;
     const county = this.searchForm.get('county').value;
     const city = this.searchForm.get('city').value;
-    const materials = this.searchForm.get('materials').value;
 
     this.isLoadingSubject.next(true);
 
     this.centerService
-      .searchCenters$(name, county, city, materials, 0)
+      .searchCenters$(name, county, city, this.selectedMaterials.join(','), 0)
       .pipe(
-        tap((response) => this.handleSearch(response)),
+        tap((response) => {
+          this.dataSubject.next(response);
+          this.currentPageSubject.next(0); // Reset page to 0 when searching
+        }),
         catchError((error: string) => of({ dataState: DataState.ERROR, error }))
       )
       .subscribe();
   }
+
 
   private getCitiesForCounty(county: string): string[] {
     return this.countyCitiesMap[county] || [];
@@ -198,6 +219,7 @@ export class CenterAllComponent implements OnInit {
     const county = this.searchForm.get('county').value;
     const city = this.searchForm.get('city').value;
     const materials = this.searchForm.get('materials').value;
+    console.log(materials)
 
     this.isLoadingSubject.next(true);
 
@@ -228,20 +250,6 @@ export class CenterAllComponent implements OnInit {
     return this.counties.includes(county);
   }
 
-  private isValidCity(city: string, selectedCounty: string): boolean {
-    const citiesForCounty = this.getCitiesForCounty(selectedCounty);
-    return citiesForCounty.includes(city);
-  }
-
-  searchCities = (text$: Observable<string>) =>
-    text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      map((term) =>
-        term.length < 2 ? [] : this.cities.filter((c) => this.isValidCity(c, this.searchForm.get('county').value))
-      )
-    );
-
   resetFilters(): void {
     this.searchForm.get('city').disable()
 
@@ -249,7 +257,28 @@ export class CenterAllComponent implements OnInit {
     this.searchCenters();
     this.searchForm.reset()
     this.cities = [];
+    this.selectedMaterials = [];
 
+  }
 
+  onSelectMaterials(event: TypeaheadMatch): void {
+    const selectedMaterial = event.item;
+
+    // Check if the material is not already in the list
+    if (!this.selectedMaterials.includes(selectedMaterial)) {
+      this.selectedMaterials.push(selectedMaterial);
+      this.updateSearch(); // Update search when a new material is added
+    }
+  }
+
+  onRemoveMaterial(material: string): void {
+    this.selectedMaterials = this.selectedMaterials.filter((m) => m !== material);
+    this.updateSearch(); // Update search when a material is removed
+  }
+
+  // Add this method to update the search based on the selected materials
+  private updateSearch(): void {
+    this.isLoadingSubject.next(true);
+    this.searchCenters();
   }
 }
