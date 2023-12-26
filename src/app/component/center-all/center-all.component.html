@@ -25,14 +25,15 @@
 
         <div class="row mt-3">
           <div class="col-12">
-            <div class="d-flex justify-content-end align-items-center">
-              <button
-                type="button"
-                class="btn btn-outline-primary"
-                (click)="toggleFilters()"
-                [attr.aria-expanded]="!isFiltersCollapsed"
-              >
-                Toggle Filters
+            <div class="d-flex justify-content-end align-items-center mt-3">
+              <button class="btn btn-danger me-2" (click)="redirectNewCenter()">
+                <i class="bi bi-file-earmark-excel"></i> Export Report
+              </button>
+              <button class="btn btn-success me-2" (click)="redirectNewCenter()">
+                <i class="bi bi-plus"></i> New Center
+              </button>
+              <button type="button" class="btn btn-outline-primary" (click)="toggleFilters()" [attr.aria-expanded]="!isFiltersCollapsed">
+                <i class="bi bi-funnel"></i> Filters
               </button>
             </div>
 
