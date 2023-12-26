@@ -8,3 +8,33 @@
   font-weight: bold;
 }
 
+/* Add these styles to your component's CSS file */
+.selected-materials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.selected-materials .badge {
+  background-color: #28a745; /* Green color */
+  color: #fff; /* White text */
+  border-radius: 4px;
+  padding: 6px 12px;
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.selected-materials .badge .btn-close {
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+/* Optional: Adjust the position of the selected materials container */
+.selected-materials-container {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+

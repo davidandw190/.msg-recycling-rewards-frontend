@@ -22,6 +22,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CenterAllComponent } from './component/center-all/center-all.component';
 import {HighlightSearchPipe} from "./pipes/highlight-search.pipe";
 import {TypeaheadModule} from "ngx-bootstrap/typeahead";
+import {MatInputModule} from "@angular/material/input";
+import {MatSelectModule} from "@angular/material/select";
+import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
 
 @NgModule({
   declarations: [
@@ -48,7 +51,10 @@ import {TypeaheadModule} from "ngx-bootstrap/typeahead";
     NgOptimizedImage,
     NgbModule,
     ReactiveFormsModule,
-    TypeaheadModule
+    TypeaheadModule,
+    MatInputModule,
+    MatSelectModule,
+    NgMultiSelectDropDownModule,
   ],
   providers: [
     {

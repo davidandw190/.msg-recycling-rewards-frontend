@@ -2,8 +2,8 @@
   <ng-container *ngSwitchCase="DataState.LOADED">
     <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
     <section>
-      <div class="container">
-        <nav aria-label="breadcrumb" style="margin-top: 8px;">
+      <div class="container mt-4">
+        <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li class="breadcrumb-item">
               <a [routerLink]="['/']">Home</a>
@@ -11,71 +11,109 @@
             <li class="breadcrumb-item active"> All Centers </li>
           </ol>
         </nav>
+
         <div class="row mt-3">
           <div class="col">
-            <h4 class="fw-bold text-start">Available Recycling Centers</h4>
+            <h4 class="fw-bold">Available Recycling Centers</h4>
           </div>
-          <div class="col">
-            <h4 class="fw-bold text-end"><i style="cursor: pointer;color: green;font-size: 30px;" class="bi bi-file-earmark-excel"></i></h4>
+          <div class="col text-end">
+            <h4 class="fw-bold">
+              <i style="cursor: pointer; color: green; font-size: 30px;" class="bi bi-file-earmark-excel"></i>
+            </h4>
           </div>
-          <div class="col-xm-12">
-            <!-- Add dropdowns for county and city -->
-            <form [formGroup]="searchForm" (ngSubmit)="searchCenters()">
-              <div class="row g-3 float-end">
-                <div class="col-auto">
-                  <label class="visually-hidden"></label>
-                  <input type="text" formControlName="name" class="form-control" placeholder="Center Name" />
-                </div>
-                <!-- Replace the county input field with the ngx-bootstrap typeahead -->
-                <div class="col-auto">
-                  <label class="visually-hidden">County</label>
-                  <input
-                    formControlName="county"
-                    [typeahead]="counties"
-                    [minLength]="0"
-                    [typeaheadWaitMs]="300"
-                    placeholder="Select County"
-                    class="form-control"
-                    (typeaheadOnSelect)="onSelectCounty($event)"
-                  />
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-12">
+            <div class="d-flex justify-content-end align-items-center">
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                (click)="toggleFilters()"
+                [attr.aria-expanded]="!isFiltersCollapsed"
+              >
+                Toggle Filters
+              </button>
+            </div>
+
+            <div #filtersCollapse="ngbCollapse" [(ngbCollapse)]="isFiltersCollapsed" class="mt-3">
+              <form [formGroup]="searchForm" (ngSubmit)="searchCenters()">
+                <div class="row g-3">
+                  <!-- filter inputs go here -->
+
+                  <div class="col-md-4">
+                    <label class="visually-hidden">Center Name</label>
+                    <input type="text" formControlName="name" class="form-control" placeholder="Center Name" />
+                  </div>
+
+                  <div class="col-md-4">
+                    <label class="visually-hidden">County</label>
+                    <input
+                      formControlName="county"
+                      [typeahead]="counties"
+                      [minLength]="0"
+                      [typeaheadWaitMs]="300"
+                      placeholder="Select County"
+                      class="form-control"
+                      (typeaheadOnSelect)="onSelectCounty($event)"
+                    />
+                  </div>
+
+                  <div class="col-md-4">
+                    <label class="visually-hidden">City</label>
+                    <input
+                      formControlName="city"
+                      [typeahead]="cities"
+                      [minLength]="0"
+                      [typeaheadWaitMs]="300"
+                      placeholder="Select City"
+                      class="form-control"
+                      (typeaheadOnSelect)="onSelectCity($event)"
+                    />
+                  </div>
+
+                  <!-- Available Materials -->
+                  <div class="col-md-4">
+                    <label class="visually-hidden">Accepted Materials</label>
+                    <input
+                      formControlName="materials"
+                      [typeahead]="availableMaterials"
+                      [minLength]="0"
+                      [typeaheadWaitMs]="100"
+                      placeholder="Accepted Materials"
+                      class="form-control"
+                      (typeaheadOnSelect)="onSelectMaterials($event)"
+                    />
+                  </div>
+
+                  <div class="col-md-4">
+                    <button type="button" class="btn btn-secondary mb-3" (click)="resetFilters()">Reset Filters</button>
+                  </div>
+
+                  <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary mb-3">Search Centers</button>
+                  </div>
                 </div>
 
-                <!-- City Selector -->
-                <div class="col-auto">
-                  <label class="visually-hidden">City</label>
-                  <input
-                    formControlName="city"
-                    [typeahead]="cities"
-                    [minLength]="0"
-                    [typeaheadWaitMs]="300"
-                    placeholder="Select City"
-                    class="form-control"
-                    (typeaheadOnSelect)="onSelectCity($event)"
-                  />
+                <!-- Selected Materials Badges -->
+                <div class="selected-materials">
+                  <div *ngFor="let material of selectedMaterials" class="badge bg-success">
+                    {{ material }}
+                    <button type="button" class="btn-close" aria-label="Remove" (click)="onRemoveMaterial(material)"></button>
+                  </div>
                 </div>
-
-
-                <div class="col-auto">
-                  <label class="visually-hidden"></label>
-                  <input type="text" formControlName="materials" class="form-control" placeholder="Accepted Materials" />
-                </div>
-
-                <div class="col-auto">
-                  <button type="button" class="btn btn-secondary mb-3" (click)="resetFilters()">Delete Filters</button>
-                </div>
-<!--                <div class="col-auto">-->
-<!--                  <button type="submit" class="btn btn-primary mb-3">Search Centers</button>-->
-<!--                </div>-->
-              </div>
-            </form>
-
+              </form>
+            </div>
           </div>
-          <div class="col-xm-12"><!-- Table and Pagination Content -->
-            <div class="table-responsive mt-3">
+        </div>
 
+        <!-- Table and Pagination Content -->
+        <div class="row mt-3">
+          <div class="col-12">
+            <div class="table-responsive">
               <table class="table table-hover">
                 <!-- Table Header -->
-                <thead class="bg-gradient text-white">
+                <thead class="bg-primary text-white">
                 <tr>
                   <th scope="col">Photo</th>
                   <th scope="col">Name</th>
@@ -87,32 +125,29 @@
                   <th scope="col">Action</th>
                 </tr>
                 </thead>
+
                 <!-- Table Body -->
-                <ng-container *ngIf="state?.appData?.data?.page?.content?.length; else noCenters">
-                  <tbody *ngFor="let center of state?.appData?.data?.page?.content"  class="table-body">
-                  <tr class="cell-1">
-                    <td><img src="https://robohash.org/recyclingcenter" width="42" height="42" class="rounded-circle"></td>
-                    <td> {{ center.name }} </td>
-                    <td> {{ center.county }} </td>
-                    <td> {{ center.city }} </td>
-                    <td> {{ center.acceptedMaterials }} </td>
-                    <td>
-                      <ng-container *ngIf="center.alwaysOpen; else hourInterval">
-                        Open Always
-                      </ng-container>
-                      <ng-template #hourInterval>
-                        {{ center.openingHour | slice: 0:5 }} - {{ center.closingHour | slice: 0:5 }}
-                      </ng-template>
-                    </td>
-                    <td>
-                      <span class="badge bg-success">OPEN</span>
-                    </td>
-                    <td>
-                      <button type="button" [routerLink]="['/centers']" class="btn btn-info">View</button>
-                    </td>
-                  </tr>
-                  </tbody>
-                </ng-container>
+                <tbody *ngFor="let center of state?.appData?.data?.page?.content" class="table-body">
+                <tr class="cell-1">
+                  <td><img src="https://robohash.org/recyclingcenter" width="42" height="42" class="rounded-circle"></td>
+                  <td>{{ center.name }}</td>
+                  <td>{{ center.county }}</td>
+                  <td>{{ center.city }}</td>
+                  <td>{{ center.acceptedMaterials?.at(0).name }}</td>
+                  <td>
+                    <ng-container *ngIf="center.alwaysOpen; else hourInterval">
+                      Open Always
+                    </ng-container>
+                    <ng-template #hourInterval>
+                      {{ center.openingHour | slice: 0:5 }} - {{ center.closingHour | slice: 0:5 }}
+                    </ng-template>
+                  </td>
+                  <td><span class="badge bg-success">OPEN</span></td>
+                  <td>
+                    <button type="button" [routerLink]="['/centers']" class="btn btn-info">View</button>
+                  </td>
+                </tr>
+                </tbody>
               </table>
             </div>
 
@@ -128,17 +163,15 @@
                 (pageChange)="goToPage($event)"
                 class="pagination justify-content-end"
               >
-
-                <ng-template ngbPaginationPrevious><< Prev</ng-template>
-                <ng-template ngbPaginationNext>Next >></ng-template>
+                <ng-template ngbPaginationPrevious>&laquo; Prev</ng-template>
+                <ng-template ngbPaginationNext>Next &raquo;</ng-template>
               </ngb-pagination>
             </nav>
 
-            <ng-template #noCenters>
-              <div class="alert alert-info mt-3" role="alert">
-                No recycling centers available at the moment. Check back later.
-              </div>
-            </ng-template>
+            <!-- No Centers Message -->
+            <div *ngIf="!state?.appData?.data?.page?.content?.length" class="alert alert-info mt-3" role="alert">
+              No recycling centers available at the moment. Check back later.
+            </div>
           </div>
         </div>
       </div>
@@ -149,3 +182,4 @@
     <div>{{ state.error }}</div>
   </ng-container>
 </ng-container>
+
