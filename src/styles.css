@@ -67,3 +67,84 @@ thead {
   background-color: #A01540; /* Adjust the background color as needed */
   color: #fff; /* Adjust the text color as needed */
 }
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.card {
+  box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+}
+
+.avatar.sm {
+  width: 2.25rem;
+  height: 2.25rem;
+  font-size: 0.818125rem;
+}
+
+.table-nowrap .table td,
+.table-nowrap .table th {
+  white-space: nowrap;
+}
+
+.table > :not(caption) > * {
+  padding: 0.75rem 1.25rem;
+  border-bottom-width: 1px;
+}
+
+
+.highlight {
+  background-color: yellow;
+  font-weight: bold;
+}
+/* Add these styles to your component's CSS file */
+
+.badge-soft-ewaste {
+  color: #fff !important;
+  background-color: #f3ad1a;
+  font-size: 12px;
+}
+
+.badge-soft-aluminium {
+  color: #fff !important;
+  background-color: #948b8b;
+  font-size: 12px;
+}
+
+.badge-soft-plastic {
+  color: #fff !important;
+  background-color: #f56e6e;
+  font-size: 12px;
+}
+
+.badge-soft-paper {
+  color: #fff !important;
+  background-color: #63ad6f;
+  font-size: 12px;
+}
+
+.badge-soft-glass {
+  color: #fff !important;
+  background-color: #3b76e1;
+  font-size: 12px;
+}
+
+.badge-soft-metals {
+  color: #fff !important;
+  background-color: rgba(183, 61, 61, 0.89);
+  font-size: 12px;
+}
+
+.badge-soft-plastic {
+  color: #fff !important;
+  background-color: #f56e6e;
+  font-size: 12px;
+}
+
+.accepted-materials {
+  display: flex;
+  gap: 5px; /* Adjust the spacing between badges as needed */
+}
+
+

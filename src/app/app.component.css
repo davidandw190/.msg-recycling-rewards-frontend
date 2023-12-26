@@ -1,30 +1,86 @@
 
+.disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+body {
+  margin-top: 20px;
+  background: #eee;
+}
+
+.card {
+  box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+}
+
+.avatar.sm {
+  width: 2.25rem;
+  height: 2.25rem;
+  font-size: 0.818125rem;
+}
+
+.table-nowrap .table td,
+.table-nowrap .table th {
+  white-space: nowrap;
+}
+
+.table > :not(caption) > * {
+  padding: 0.75rem 1.25rem;
+  border-bottom-width: 1px;
+}
+
+
 .highlight {
   background-color: yellow;
   font-weight: bold;
 }
+/* Add these styles to your component's CSS file */
 
-.badge-soft-danger {
-  color: #f56e6e !important;
-  background-color: rgba(245,110,110,.1);
-}
-.badge-soft-success {
-  color: #63ad6f !important;
-  background-color: rgba(99,173,111,.1);
+.badge-soft-ewaste {
+  color: #fff !important;
+  background-color: #f3ad1a;
+  font-size: 12px;
 }
 
-.badge-soft-primary {
-  color: #3b76e1 !important;
-  background-color: rgba(59,118,225,.1);
+.badge-soft-aluminium {
+  color: #fff !important;
+  background-color: #948b8b;
+  font-size: 12px;
 }
 
-.badge-soft-info {
-  color: #57c9eb !important;
-  background-color: rgba(87,201,235,.1);
+.badge-soft-plastic {
+  color: #fff !important;
+  background-color: #f56e6e;
+  font-size: 12px;
 }
 
-
-.bg-soft-primary {
-  background-color: rgba(59,118,225,.25)!important;
+.badge-soft-paper {
+  color: #fff !important;
+  background-color: #63ad6f;
+  font-size: 12px;
 }
+
+.badge-soft-glass {
+  color: #fff !important;
+  background-color: #3b76e1;
+  font-size: 12px;
+}
+
+.badge-soft-metals {
+  color: #fff !important;
+  background-color: rgba(183, 61, 61, 0.89);
+  font-size: 12px;
+}
+
+.badge-soft-plastic {
+  color: #fff !important;
+  background-color: #f56e6e;
+  font-size: 12px;
+}
+
+.accepted-materials {
+  display: flex;
+  gap: 5px; /* Adjust the spacing between badges as needed */
+}
+
 

@@ -13,24 +13,15 @@
         </nav>
 
         <div class="row mt-3">
-          <div class="col">
-            <h4 class="fw-bold">Available Recycling Centers</h4>
-          </div>
-          <div class="col text-end">
-            <h4 class="fw-bold">
-              <i style="cursor: pointer; color: green; font-size: 30px;" class="bi bi-file-earmark-excel"></i>
-            </h4>
-          </div>
-        </div>
-
-        <div class="row mt-3">
           <div class="col-12">
+            <h4 class="fw-bold">Available Recycling Centers ({{state?.appData?.data?.page?.totalElements}})</h4>
+
             <div class="d-flex justify-content-end align-items-center mt-3">
               <button class="btn btn-danger me-2" (click)="redirectNewCenter()">
                 <i class="bi bi-file-earmark-excel"></i> Export Report
               </button>
               <button class="btn btn-success me-2" (click)="redirectNewCenter()">
-                <i class="bi bi-plus"></i> New Center
+                <i class="fa-regular fa-square-plus"></i> New Center
               </button>
               <button type="button" class="btn btn-outline-primary" (click)="toggleFilters()" [attr.aria-expanded]="!isFiltersCollapsed">
                 <i class="bi bi-funnel"></i> Filters
@@ -109,48 +100,54 @@
         </div>
 
         <!-- Table and Pagination Content -->
-        <div class="row mt-3">
-          <div class="col-12">
-            <div class="table-responsive">
-              <table class="table table-hover">
-                <!-- Table Header -->
-                <thead class="bg-primary text-white">
-                <tr>
-                  <th scope="col">Photo</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Contact</th>
-                  <th scope="col">Location</th>
-                  <th scope="col">Materials</th>
-                  <th scope="col">Working Intervals</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Action</th>
-                </tr>
-                </thead>
-
-                <!-- Table Body -->
-                <tbody *ngFor="let center of state?.appData?.data?.page?.content" class="table-body">
-                <tr class="cell-1">
-                  <td><img src="https://robohash.org/recyclingcenter" width="42" height="42" class="rounded-circle"></td>
-                  <td>{{ center.name }}</td>
-                  <td>{{ center.county }}</td>
-                  <td>{{ center.city }}</td>
-                  <td>{{ center.acceptedMaterials?.at(0).name }}</td>
-                  <td>
-                    <ng-container *ngIf="center.alwaysOpen; else hourInterval">
-                      Open Always
-                    </ng-container>
-                    <ng-template #hourInterval>
-                      {{ center.openingHour | slice: 0:5 }} - {{ center.closingHour | slice: 0:5 }}
-                    </ng-template>
-                  </td>
-                  <td><span class="badge bg-success">OPEN</span></td>
-                  <td>
-                    <button type="button" [routerLink]="['/centers']" class="btn btn-info">View</button>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
+        <!-- Table Section -->
+        <div class="table-responsive mt-3">
+          <table class="table table-hover">
+            <!-- Table Header -->
+            <thead class="bg-gradient text-white">
+            <tr>
+              <th scope="col">Photo</th>
+              <th scope="col">Name</th>
+              <th scope="col">Contact</th>
+              <th scope="col">Location</th>
+              <th scope="col">Materials</th>
+              <th scope="col">Working Intervals</th>
+              <th scope="col">Status</th>
+              <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <!-- Table Body -->
+            <tbody *ngFor="let center of state?.appData?.data?.page?.content" class="table-body">
+            <tr class="cell-1">
+              <td><img src="https://robohash.org/recyclingcenter" width="42" height="42" class="rounded-circle"></td>
+              <td>{{ center.name }}</td>
+              <td>{{ center.county }}</td>
+              <td>{{ center.city }}</td>
+              <td>
+                <div class="accepted-materials">
+                  <ng-container *ngFor="let material of center | acceptedMaterials">
+                    <span class="badge mb-0" [ngClass]="material.badgeClass">{{ material.name }}</span>
+                  </ng-container>
+                </div>
+              </td>
+              <td>
+                <ng-container *ngIf="center.alwaysOpen; else hourInterval">
+                  Open Always
+                </ng-container>
+                <ng-template #hourInterval>
+                  {{ center.openingHour | slice: 0:5 }} - {{ center.closingHour | slice: 0:5 }}
+                </ng-template>
+              </td>
+              <td>
+                <span class="badge bg-success">OPEN</span>
+              </td>
+              <td>
+                <button type="button" [routerLink]="['/centers']" class="btn" style="background-color: #63ad6f; color: #fff;">  <i class="fa-solid fa-recycle"></i>  </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
 
             <!-- Pagination -->
             <nav *ngIf="state?.appData?.data?.page.totalPages > 0">
@@ -174,8 +171,6 @@
               No recycling centers available at the moment. Check back later.
             </div>
           </div>
-        </div>
-      </div>
     </section>
   </ng-container>
 

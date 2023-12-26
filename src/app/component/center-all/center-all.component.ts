@@ -281,4 +281,8 @@ export class CenterAllComponent implements OnInit {
     this.isLoadingSubject.next(true);
     this.searchCenters();
   }
+
+  redirectNewCenter() {
+    this.router.navigate(["/centers/new"])
+  }
 }
