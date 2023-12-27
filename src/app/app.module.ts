@@ -18,7 +18,7 @@ import {NgOptimizedImage} from "@angular/common";
 import { CenterDetailsComponent } from './component/center-details/center-details.component';
 import { CenterNewComponent } from './component/center-new/center-new.component';
 import { StatsComponent } from './component/stats/stats.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {NgbModule, NgbTimepickerModule} from '@ng-bootstrap/ng-bootstrap';
 import { CenterAllComponent } from './component/center-all/center-all.component';
 import {HighlightSearchPipe} from "./pipes/highlight-search.pipe";
 import {TypeaheadModule} from "ngx-bootstrap/typeahead";
@@ -56,7 +56,8 @@ import {AcceptedMaterialsPipe} from "./pipes/accepted-materials.pipe";
     MatInputModule,
     MatSelectModule,
     NgMultiSelectDropDownModule,
-    AcceptedMaterialsPipe
+    AcceptedMaterialsPipe,
+    NgbTimepickerModule,
   ],
   providers: [
     {

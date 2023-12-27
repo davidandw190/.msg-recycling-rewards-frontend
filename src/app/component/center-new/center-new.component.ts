@@ -9,6 +9,7 @@ import { CentersPageResponse } from '../../interface/centers-page-response';
 import { DataState } from '../../enum/data-state.enum';
 import { CenterService } from '../../service/center.service';
 import { LocationService } from '../../service/location.service';
+import {NgbTimeStruct} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-center-new',
@@ -33,6 +34,8 @@ export class CenterNewComponent implements OnInit {
 
   availableMaterials: string[] = ['GLASS', 'PLASTIC', 'PAPER', 'ALUMINIUM', 'METALS'];
   selectedMaterials: string[] = []
+  openingTime: NgbTimeStruct;
+  closingTime: NgbTimeStruct;
 
   constructor(
     private router: Router,
@@ -40,6 +43,9 @@ export class CenterNewComponent implements OnInit {
     private locationService: LocationService,
     private formBuilder: FormBuilder
   ) {
+    this.openingTime = { hour: 8, minute: 0, second: 0 };
+    this.closingTime = { hour: 20, minute: 0, second: 0 };
+
     this.countySelectForm = this.formBuilder.group({
       county: ['', Validators.required], // Add Validators.required
     });

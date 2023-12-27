@@ -2,109 +2,97 @@
   <ng-container *ngSwitchCase="DataState.LOADED">
     <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
     <section>
-      <div class="container">
-        <nav aria-label="breadcrumb" style="margin-top: 8px;">
+      <div class="container mt-4">
+        <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-              <a [routerLink]="['/']">Home</a>
-            </li>
-            <li class="breadcrumb-item"> <a [routerLink]="['/customers']">Centers</a> </li>
+            <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
+            <li class="breadcrumb-item"><a [routerLink]="['/customers']">Centers</a></li>
             <li class="breadcrumb-item active" aria-current="page">New</li>
           </ol>
         </nav>
+
         <div class="row justify-content-center">
-          <div class="col-md-12">
+          <div class="col-md-8">
             <div class="card">
               <div class="card-body">
-                <div class="text-center">
-                  <h2><i style="margin-right: 5px;" class="bi bi-person-plus-fill"></i> New Recycling Center
-                  </h2>
-                </div>
-                <div *ngIf="state.error"
-                     class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show"
-                     role="alert">
-                  {{ state.error }}
-                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"
-                          aria-label="Close"></button>
+                <div class="text-center mb-4">
+                  <h2><i class="fa-solid fa-recycle" style="margin-right: 5px;"></i> New Recycling Center</h2>
                 </div>
 
-                <form #newCenterForm="ngForm" (ngSubmit)="createCenter()">
+                <div *ngIf="state.error" class="alert alert-danger mt-3" role="alert">
+                  {{ state.error }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <form #newCenterForm="ngForm" (ngSubmit)="createCenter()" class="mb-4">
                   <div class="row">
-                    <div class="col-md-6" style="margin-bottom: 15px;">
+                    <div class="col-md-6 mb-3">
                       <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" ngModel name="name" class="form-control" required>
+                        <label for="name">Name</label>
+                        <input type="text" ngModel name="name" class="form-control" id="name" placeholder="Ex. MyCenter" required>
                       </div>
                     </div>
-                    <div class="col-md-6" style="margin-bottom: 15px;">
+                    <div class="col-md-6 mb-3">
                       <div class="form-group">
-                        <label>Contact</label>
-                        <input type="text" ngModel name="email" class="form-control" required>
+                        <label for="contact">Contact</label>
+                        <input type="text" ngModel name="email" class="form-control" id="contact" placeholder="Ex. 0787767443" required>
                       </div>
                     </div>
-                    <div class="col-md-6" style="margin-bottom: 15px;">
+                    <div class="col-md-6 mb-3">
                       <div [formGroup]="countySelectForm" class="form-group">
                         <label>County</label>
-                        <input
-                          type="text"
-                          formControlName="county"
-                          class="form-control"
-                          [typeahead]="counties"
-                          [minLength]="0"
-                          [typeaheadWaitMs]="10"
-                          placeholder="Select County"
-                          (typeaheadOnSelect)="onSelectCounty($event)"
-                        />
+                        <input type="text" formControlName="county" class="form-control" [typeahead]="counties"
+                               [minLength]="0" [typeaheadWaitMs]="10" placeholder="Select County"
+                               (typeaheadOnSelect)="onSelectCounty($event)" />
                       </div>
                     </div>
-
-                    <div class="col-md-6" style="margin-bottom: 15px;">
+                    <div class="col-md-6 mb-3">
                       <div [formGroup]="citySelectForm" class="form-group">
                         <label>City</label>
-                        <input
-                          type="text"
-                          formControlName="city"
-                          class="form-control"
-                          [typeahead]="cities"
-                          [minLength]="0"
-                          [typeaheadWaitMs]="10"
-                          placeholder="Select City"
-                          (typeaheadOnSelect)="onSelectCity($event)"
-                        />
+                        <input type="text" formControlName="city" class="form-control" [typeahead]="cities"
+                               [minLength]="0" [typeaheadWaitMs]="10" placeholder="Select City"
+                               (typeaheadOnSelect)="onSelectCity($event)" />
                       </div>
                     </div>
-                    <div class="col-md-6" style="margin-bottom: 15px;">
-                      <label>Address</label>
-                      <input type="text" ngModel name="address" class="form-control" required>
+                    <div class="col-md-6 mb-3">
+                      <label for="address">Address</label>
+                      <input type="text" ngModel name="address" class="form-control" id="address" placeholder="Ex. Eco 123" required>
+                    </div>
 
-                    </div>
-                    <div [formGroup]="materialsSelectForm" class="col-md-6" style="margin-bottom: 15px;">
+                    <div [formGroup]="materialsSelectForm" class="col-md-6 mb-3">
                       <label>Accepted Materials</label>
-                      <input
-                        formControlName="materials"
-                        [typeahead]="availableMaterials"
-                        [minLength]="0"
-                        [typeaheadWaitMs]="10"
-                        placeholder="Accepted Materials"
-                        class="form-control"
-                        (typeaheadOnSelect)="onSelectMaterials($event)"
-                      />
+                      <input formControlName="materials" [typeahead]="availableMaterials" [minLength]="0"
+                             [typeaheadWaitMs]="10" placeholder="Accepted Materials" class="form-control"
+                             (typeaheadOnSelect)="onSelectMaterials($event)" />
                     </div>
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label>Image URL</label>
-                        <input type="text" ngModel name="imageUrl" class="form-control" required>
-                      </div>
+
+                    <div class="col-md-6 mb-3">
+                      <label>Opening Time</label>
+                      <ngb-timepicker [(ngModel)]="openingTime" [seconds]="false" [spinners]="false"></ngb-timepicker>
                     </div>
+
+                    <div class="col-md-6 mb-3">
+                      <label>Closing Time</label>
+                      <ngb-timepicker [(ngModel)]="closingTime" [seconds]="false" [spinners]="false"></ngb-timepicker>
+                    </div>
+
+<!--                    <div class="col-md-12 mb-3">-->
+<!--                      <div class="form-group">-->
+<!--                        <label for="imageUrl">Image URL</label>-->
+<!--                        <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl">-->
+<!--                      </div>-->
+<!--                    </div>-->
                   </div>
-                  <div>
-                    <button [disabled]="state.dataState === DataState.LOADING || newCenterForm.invalid || newCenterForm.pristine|| (isLoading$ | async)"
-                            type="submit" class="btn btn-primary mt-5">
-                                            <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm"
-                                                  role="status" aria-hidden="true" style="margin-right: 5px;"></span>
+                  <div class="mt-4">
+                    <button [disabled]="state.dataState === DataState.LOADING || newCenterForm.invalid || newCenterForm.pristine || (isLoading$ | async)"
+                            type="submit" class="btn btn-success me-2">
+                      <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status"
+                            aria-hidden="true" style="margin-right: 5px;"></span>
                       <span *ngIf="isLoading$ | async">Saving...</span>
                       <span *ngIf="!(isLoading$ | async)">Create Center</span>
                     </button>
+
+                    <button type="button" class="btn btn-secondary" [routerLink]="['/customers']">Cancel</button>
                   </div>
                 </form>
               </div>
