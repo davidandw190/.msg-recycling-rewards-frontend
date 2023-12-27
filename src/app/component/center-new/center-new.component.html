@@ -28,7 +28,7 @@
                           aria-label="Close"></button>
                 </div>
 
-                <form #newCenterForm="ngForm" (ngSubmit)="createCenter(newCenterForm)">
+                <form #newCenterForm="ngForm" (ngSubmit)="createCenter()">
                   <div class="row">
                     <div class="col-md-6" style="margin-bottom: 15px;">
                       <div class="form-group">
@@ -43,15 +43,34 @@
                       </div>
                     </div>
                     <div class="col-md-6" style="margin-bottom: 15px;">
-                      <div class="form-group">
+                      <div [formGroup]="countySelectForm" class="form-group">
                         <label>County</label>
-                        <input type="text" ngModel name="county" class="form-control" required>
+                        <input
+                          type="text"
+                          formControlName="county"
+                          class="form-control"
+                          [typeahead]="counties"
+                          [minLength]="0"
+                          [typeaheadWaitMs]="300"
+                          placeholder="Select County"
+                          (typeaheadOnSelect)="onSelectCounty($event)"
+                        />
                       </div>
                     </div>
+
                     <div class="col-md-6" style="margin-bottom: 15px;">
-                      <div class="form-group">
+                      <div [formGroup]="citySelectForm" class="form-group">
                         <label>City</label>
-                        <input type="text" ngModel name="city" class="form-control" required>
+                        <input
+                          type="text"
+                          formControlName="city"
+                          class="form-control"
+                          [typeahead]="cities"
+                          [minLength]="0"
+                          [typeaheadWaitMs]="300"
+                          placeholder="Select City"
+                          (typeaheadOnSelect)="onSelectCity($event)"
+                        />
                       </div>
                     </div>
                     <div class="col-md-6" style="margin-bottom: 15px;">
