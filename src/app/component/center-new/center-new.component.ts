@@ -26,9 +26,13 @@ export class CenterNewComponent implements OnInit {
 
   countySelectForm: FormGroup;
   citySelectForm: FormGroup;
+  materialsSelectForm: FormGroup;
 
   counties: string[] = this.locationService.getAllCounties();
   cities: string[] = [];
+
+  availableMaterials: string[] = ['GLASS', 'PLASTIC', 'PAPER', 'ALUMINIUM', 'METALS'];
+  selectedMaterials: string[] = []
 
   constructor(
     private router: Router,
@@ -43,6 +47,10 @@ export class CenterNewComponent implements OnInit {
     this.citySelectForm = this.formBuilder.group({
       city: { value: '', disabled: true },
     });
+
+    this.materialsSelectForm = this.formBuilder.group({
+      materials: ['', Validators.required],
+  });
 
   }
 
@@ -79,7 +87,18 @@ export class CenterNewComponent implements OnInit {
       filter(() => false)
     )
       .subscribe();
+
+    this.materialsSelectForm
+      .get('materials').valueChanges
+      .pipe(
+        debounceTime(100),
+        distinctUntilChanged(),
+        tap((material) => this.onSelectMaterials(material)),
+        filter(() => false)
+      )
   }
+
+
 
   createCenter(): void {
     this.isLoadingSubject.next(true);
@@ -140,6 +159,22 @@ export class CenterNewComponent implements OnInit {
   }
 
   onSelectCity(event: TypeaheadMatch): void {
-    // Handle city selection if needed
+  }
+
+  onSelectMaterials(event: TypeaheadMatch): void {
+    const selectedMaterial = event.item;
+
+    // Check if the material is not already in the list
+    if (!this.selectedMaterials.includes(selectedMaterial)) {
+      this.selectedMaterials.push(selectedMaterial);
+    }
+
+    this.materialsSelectForm.reset()
+
+    console.log(this.selectedMaterials.length);
+  }
+
+  onRemoveMaterial(material: string): void {
+    this.selectedMaterials = this.selectedMaterials.filter((m) => m !== material);
   }
 }

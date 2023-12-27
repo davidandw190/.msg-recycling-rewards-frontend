@@ -51,7 +51,7 @@
                           class="form-control"
                           [typeahead]="counties"
                           [minLength]="0"
-                          [typeaheadWaitMs]="300"
+                          [typeaheadWaitMs]="10"
                           placeholder="Select County"
                           (typeaheadOnSelect)="onSelectCounty($event)"
                         />
@@ -67,27 +67,28 @@
                           class="form-control"
                           [typeahead]="cities"
                           [minLength]="0"
-                          [typeaheadWaitMs]="300"
+                          [typeaheadWaitMs]="10"
                           placeholder="Select City"
                           (typeaheadOnSelect)="onSelectCity($event)"
                         />
                       </div>
                     </div>
                     <div class="col-md-6" style="margin-bottom: 15px;">
-                      <label>address</label>
-                      <select name="address" ngModel="ACTIVE" class="form-control" required>
-                        <option [selected]="true" value="ACTIVE">ACTIVE</option>
-                        <option value="BANNED"></option>
-                        <option value="PENDING">PENDING</option>
-                        <option value="INACTIVE">INACTIVE</option>
-                      </select>
+                      <label>Address</label>
+                      <input type="text" ngModel name="address" class="form-control" required>
+
                     </div>
-                    <div class="col-md-6" style="margin-bottom: 15px;">
+                    <div [formGroup]="materialsSelectForm" class="col-md-6" style="margin-bottom: 15px;">
                       <label>Accepted Materials</label>
-                      <select name="acceptedMaterials" ngModel="INDIVIDUAL" class="form-control" required>
-                        <option value="INDIVIDUAL">INDIVIDUAL</option>
-                        <option [selected]="true">INSTITUTION</option>
-                      </select>
+                      <input
+                        formControlName="materials"
+                        [typeahead]="availableMaterials"
+                        [minLength]="0"
+                        [typeaheadWaitMs]="10"
+                        placeholder="Accepted Materials"
+                        class="form-control"
+                        (typeaheadOnSelect)="onSelectMaterials($event)"
+                      />
                     </div>
                     <div class="col-md-12">
                       <div class="form-group">
