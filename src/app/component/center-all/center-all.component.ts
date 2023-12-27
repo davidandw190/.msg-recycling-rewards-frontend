@@ -19,6 +19,7 @@ import { CentersPageResponse } from '../../interface/centers-page-response';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { CenterService } from '../../service/center.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import {LocationService} from "../../service/location.service";
 
 @Component({
   selector: 'app-center-all',
@@ -50,12 +51,7 @@ export class CenterAllComponent implements OnInit {
 
   selectedMaterials: string[] = []
 
-  counties: string[] = ['TIMIS', 'CLUJ-NAPOCA', 'ARAD'];
-  countyCitiesMap: { [county: string]: string[] } = {
-    'TIMIS': ['TIMISOARA', 'City1B', 'City1C'],
-    'CLUJ-NAPOCA': ['CLUJ', 'City2B', 'City2C'],
-    'ARAD': ['ARAD', 'City3B', 'City3C'],
-  };
+  counties: string[] = this.locationService.getAllCounties();
 
   cities: string[] = [];
 
@@ -63,7 +59,8 @@ export class CenterAllComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private centerService: CenterService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private locationService: LocationService // Add LocationService
   ) {
     this.searchForm = this.formBuilder.group({
       name: [''],
@@ -87,7 +84,7 @@ export class CenterAllComponent implements OnInit {
 
     this.searchForm.get('county').valueChanges
       .pipe(
-        debounceTime(300),
+        debounceTime(100),
         distinctUntilChanged(),
         tap(() => this.searchForm.get('city').setValue('')), // Clear city on county change
         tap((county) => this.handleCountyChange(county)),
@@ -97,7 +94,7 @@ export class CenterAllComponent implements OnInit {
 
     this.searchForm.get('city').valueChanges
       .pipe(
-        debounceTime(300),
+        debounceTime(100),
         distinctUntilChanged(),
         switchMap((value) => this.filterCities(value)),
         tap((cities) => (this.cities = cities)),
@@ -107,7 +104,7 @@ export class CenterAllComponent implements OnInit {
 
     this.searchForm.get('materials').valueChanges
       .pipe(
-        debounceTime(300),
+        debounceTime(100),
         distinctUntilChanged(),
         tap((material) => this.onSelectMaterials(material)),
         filter(() => false) // Prevent reactive changes
@@ -150,14 +147,7 @@ export class CenterAllComponent implements OnInit {
         filter(() => this.searchForm.valid)
       )
       .subscribe(() => this.searchCenters());
-  }
 
-
-  private filterCities(value: string): Observable<string[]> {
-    const filterValue = value.toLowerCase();
-    const selectedCounty = this.searchForm.get('county').value;
-    const citiesForCounty = this.getCitiesForCounty(selectedCounty);
-    return of(citiesForCounty.filter((city) => city.toLowerCase().includes(filterValue)));
   }
 
   onSelectCounty(event: TypeaheadMatch): void {
@@ -211,7 +201,7 @@ export class CenterAllComponent implements OnInit {
 
 
   private getCitiesForCounty(county: string): string[] {
-    return this.countyCitiesMap[county] || [];
+    return this.locationService.getCitiesForCounty(county);
   }
 
   goToPage(pageNumber?: number): void {
@@ -237,17 +227,13 @@ export class CenterAllComponent implements OnInit {
 
   private handleCountyChange(county: string): void {
     const cityControl = this.searchForm.get('city');
-    if (this.isValidCounty(county)) {
-      cityControl.enable(); // Enable city when a valid county is selected
-      this.cities = this.getCitiesForCounty(county);
+    if (this.locationService.isValidCounty(county)) {
+      cityControl.enable();
+      this.locationService.getCitiesForCounty(county);
     } else {
-      cityControl.disable(); // Disable city when an invalid county is selected
-      cityControl.setValue(''); // Clear city value if the county is invalid
+      cityControl.disable();
+      cityControl.setValue('');
     }
-  }
-
-  private isValidCounty(county: string): boolean {
-    return this.counties.includes(county);
   }
 
   resetFilters(): void {
@@ -284,5 +270,18 @@ export class CenterAllComponent implements OnInit {
 
   redirectNewCenter() {
     this.router.navigate(["/centers/new"])
+  }
+
+  private filterCities(value: string): Observable<string[]> {
+    const filterValue = value.toLowerCase();
+    const selectedCounty = this.searchForm.get('county').value;
+    const citiesForCounty = this.getCitiesForCounty(selectedCounty);
+
+    // Return all cities when the filter value is empty
+    if (!filterValue) {
+      return of(citiesForCounty);
+    }
+
+    return of(citiesForCounty.filter((city) => city.toLowerCase().includes(filterValue)));
   }
 }
