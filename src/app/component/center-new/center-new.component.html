@@ -76,18 +76,35 @@
                       <ngb-timepicker [(ngModel)]="closingTime" [seconds]="false" [spinners]="false"></ngb-timepicker>
                     </div>
 
+
+                    <ng-container *ngIf="selectedMaterials.length > 0">
+                      <div class="selected-materials">
+                        <label class="mb-3 mt-3">Materials accepted by your center:</label>
+                        <br>
+                        <div *ngFor="let material of selectedMaterials" class="badge bg-success">
+                          {{ material }}
+                          <button type="button" class="btn-close" aria-label="Remove" (click)="onRemoveMaterial(material)"></button>
+                        </div>
+                      </div>
+
+                    </ng-container>
+
+
+
 <!--                    <div class="col-md-12 mb-3">-->
 <!--                      <div class="form-group">-->
 <!--                        <label for="imageUrl">Image URL</label>-->
 <!--                        <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl">-->
 <!--                      </div>-->
 <!--                    </div>-->
+
                   </div>
-                  <div class="mt-4">
+
+
+                  <div class="mt-4 d-flex justify-content-end">
                     <button [disabled]="state.dataState === DataState.LOADING || newCenterForm.invalid || newCenterForm.pristine || (isLoading$ | async)"
                             type="submit" class="btn btn-success me-2">
-                      <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status"
-                            aria-hidden="true" style="margin-right: 5px;"></span>
+                      <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                       <span *ngIf="isLoading$ | async">Saving...</span>
                       <span *ngIf="!(isLoading$ | async)">Create Center</span>
                     </button>
