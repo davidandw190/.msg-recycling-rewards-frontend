@@ -1,1 +1,97 @@
-<p>center-new works!</p>
+<ng-container *ngIf="(newCenterState$ | async) as state" [ngSwitch]="state.dataState">
+  <ng-container *ngSwitchCase="DataState.LOADED">
+    <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
+    <section>
+      <div class="container">
+        <nav aria-label="breadcrumb" style="margin-top: 8px;">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a [routerLink]="['/']">Home</a>
+            </li>
+            <li class="breadcrumb-item"> <a [routerLink]="['/customers']">Centers</a> </li>
+            <li class="breadcrumb-item active" aria-current="page">New</li>
+          </ol>
+        </nav>
+        <div class="row justify-content-center">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="text-center">
+                  <h2><i style="margin-right: 5px;" class="bi bi-person-plus-fill"></i> New Recycling Center
+                  </h2>
+                </div>
+                <div *ngIf="state.error"
+                     class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show"
+                     role="alert">
+                  {{ state.error }}
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"
+                          aria-label="Close"></button>
+                </div>
+
+                <form #newCenterForm="ngForm" (ngSubmit)="createCenter(newCenterForm)">
+                  <div class="row">
+                    <div class="col-md-6" style="margin-bottom: 15px;">
+                      <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" ngModel name="name" class="form-control" required>
+                      </div>
+                    </div>
+                    <div class="col-md-6" style="margin-bottom: 15px;">
+                      <div class="form-group">
+                        <label>Contact</label>
+                        <input type="text" ngModel name="email" class="form-control" required>
+                      </div>
+                    </div>
+                    <div class="col-md-6" style="margin-bottom: 15px;">
+                      <div class="form-group">
+                        <label>County</label>
+                        <input type="text" ngModel name="county" class="form-control" required>
+                      </div>
+                    </div>
+                    <div class="col-md-6" style="margin-bottom: 15px;">
+                      <div class="form-group">
+                        <label>City</label>
+                        <input type="text" ngModel name="city" class="form-control" required>
+                      </div>
+                    </div>
+                    <div class="col-md-6" style="margin-bottom: 15px;">
+                      <label>address</label>
+                      <select name="address" ngModel="ACTIVE" class="form-control" required>
+                        <option [selected]="true" value="ACTIVE">ACTIVE</option>
+                        <option value="BANNED"></option>
+                        <option value="PENDING">PENDING</option>
+                        <option value="INACTIVE">INACTIVE</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6" style="margin-bottom: 15px;">
+                      <label>Accepted Materials</label>
+                      <select name="acceptedMaterials" ngModel="INDIVIDUAL" class="form-control" required>
+                        <option value="INDIVIDUAL">INDIVIDUAL</option>
+                        <option [selected]="true">INSTITUTION</option>
+                      </select>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label>Image URL</label>
+                        <input type="text" ngModel name="imageUrl" class="form-control" required>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <button [disabled]="state.dataState === DataState.LOADING || newCenterForm.invalid || newCenterForm.pristine|| (isLoading$ | async)"
+                            type="submit" class="btn btn-primary mt-5">
+                                            <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm"
+                                                  role="status" aria-hidden="true" style="margin-right: 5px;"></span>
+                      <span *ngIf="isLoading$ | async">Saving...</span>
+                      <span *ngIf="!(isLoading$ | async)">Create Center</span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </ng-container>
+</ng-container>
