@@ -6,6 +6,7 @@ import {CentersPageResponse} from "../../interface/centers-page-response";
 import {CenterNewResponse} from "../../interface/center-new-response";
 import {DataState} from 'src/app/enum/data-state.enum';
 import {CenterService} from "../../service/center.service";
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-center-new',
@@ -35,6 +36,26 @@ export class CenterNewComponent implements OnInit {
 
         catchError((error: string) => {
           return of({ dataState: DataState.ERROR, error: error })
+        })
+      )
+  }
+
+  createCenter(newCustomerForm: NgForm) {
+    this.isLoadingSubject.next(true);
+    this.newCenterState$ = this.centerService.create$(newCustomerForm.value)
+      .pipe(
+        map(response => {
+          console.log(response);
+          newCustomerForm.reset({ type: 'INDIVIDUAL', status: 'ACTIVE' });
+          this.isLoadingSubject.next(false);
+          return { dataState: DataState.LOADED, appData: this.dataSubject.value };
+        }),
+
+        startWith({ dataState: DataState.LOADED, appData: this.dataSubject.value }),
+
+        catchError((error: string) => {
+          this.isLoadingSubject.next(false);
+          return of({ dataState: DataState.LOADED, error: error })
         })
       )
   }

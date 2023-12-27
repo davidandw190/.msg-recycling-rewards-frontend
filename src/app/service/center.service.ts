@@ -4,6 +4,8 @@ import {HomePageResponse} from "../interface/home-page-response";
 import {CustomHttpResponse} from "../interface/custom-http-response";
 import {catchError, Observable, tap, throwError} from "rxjs";
 import {CentersPageResponse} from "../interface/centers-page-response";
+import {RecyclingCenter} from "../interface/recycling-center";
+import {CenterNewResponse} from "../interface/center-new-response";
 
 @Injectable({
   providedIn: 'root'
@@ -29,12 +31,21 @@ export class CenterService {
       .set('materials', materials)
       .set('page', page.toString());
 
-    return this.http.get<CustomHttpResponse<CentersPageResponse>>(`${this.server}/centers/search`, { params })
+    return this.http.get<CustomHttpResponse<CentersPageResponse>>
+    (`${this.server}/centers/search`, { params })
       .pipe(
         tap(console.log),
         catchError(this.handleError)
       );
   }
+
+  create$ = (center: RecyclingCenter) => <Observable<CustomHttpResponse<CenterNewResponse>>>
+    this.http.post<CustomHttpResponse<CenterNewResponse>>
+    (`${this.server}/centers/create`, center)
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
 
 
   private handleError(error: HttpErrorResponse): Observable<never> {
