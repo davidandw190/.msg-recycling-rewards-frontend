@@ -1,1 +1,174 @@
-<p>center-details works!</p>
+<ng-container *ngIf="(centerDetailsState$ | async) as state" [ngSwitch]="state.dataState">
+  <ng-container *ngSwitchCase="DataState.LOADED">
+    <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
+    <section>
+      <div class="container">
+        <nav aria-label="breadcrumb" style="margin-top: 20px;">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
+            <li class="breadcrumb-item"><a [routerLink]="['/customers']">Centers</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ state?.appData?.data?.center.name }}</li>
+          </ol>
+        </nav>
+        <div class="row">
+          <div class="col-xl-4">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex align-items-start">
+                  <img [src]="state?.appData?.data?.center?.imageUrl" style="position: relative" class="rounded-circle avatar-lg img-thumbnail" alt="profile-image">
+                  <div class="w-100 ms-4">
+                    <h4 class="my-0">{{ state?.appData?.data?.center?.name }}</h4>
+                    <p class="" style="font-size: 13px;">Contact Here</p>
+<!--                    <span class="badge" style="position: absolute;bottom:60px;left: 113px; top: 70px;font-size: 11px; height: 18px;"-->
+<!--                          [ngClass]="[-->
+<!--                                    // state?.appData?.data?.center.alwaysOpen === 'ACTIVE' ? ' bg-success' : '',-->
+<!--                                    state?.appData?.data?.customer.status === 'PENDING' ? ' bg-primary' : '',-->
+<!--                                    state?.appData?.data?.customer.status === 'BANNED' ? ' bg-danger' : '',-->
+<!--                                    state?.appData?.data?.customer.status === 'INACTIVE' ? ' bg-info' : ''-->
+<!--                                    ]" >-->
+<!--                                 {{ state?.appData?.data?.customer.status }}-->
+<!--                         </span>-->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">My Current Reward Points</h5>
+                <h6 class="card-subtitle mb-2 text-muted">My reward points obtained up until now</h6>
+                <ul class="list-group">
+                  <li class="list-group-item d-flex justify-content-between align-items-center" style="font-size: 20px;">
+                    <span class="" style="font-size: 20px;">
+<!--                             {{ state?.appData?.data?.user?.rewardPoints }}-->
+                            2.500
+                            </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title"> My Sustainability Index for May</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Your contribution in making the planet greener</h6>
+                <ul class="list-group">
+                  <li class="list-group-item d-flex justify-content-between align-items-center" style="font-size: 20px;">
+                    22.0%
+<!--                    <span class="badge bg-success" style="font-size: 20px;">-->
+<!--                               $ {{ state?.appData?.data?.customer.invoices | extractValue: "invoices" }}-->
+<!--                            </span>-->
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-8">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Profile Details</h5>
+                <form #updateCenterForm="ngForm">
+                  <input type="hidden" [ngModel]="state?.appData?.data?.center?.centerId" name="id" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)">
+                  <input type="hidden" [ngModel]="state?.appData?.data?.center?.createdAt" name="createdAt" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)">
+                  <div class="row mb-3">
+                    <label class="col-sm-3 col-form-label">Center Name</label>
+                    <div class="col-sm-9">
+                      <input type="text" [ngModel]="state?.appData?.data?.center?.name" name="name" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label class="col-sm-3 col-form-label">Contact</label>
+                    <div class="col-sm-9">
+                      <input type="text" [ngModel]="state?.appData?.data?.center?.city" name="contact" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label class="col-sm-3 col-form-label">County</label>
+                    <div class="col-sm-9">
+                      <input type="text" [ngModel]="state?.appData?.data?.center?.county" name="county" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label class="col-sm-3 col-form-label">City</label>
+                    <div class="col-sm-9">
+                      <input type="text" [ngModel]="state?.appData?.data?.center?.city" name="phone" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label class="col-sm-3 col-form-label">Address</label>
+                    <div class="col-sm-9">
+                      <input type="text" [ngModel]="state?.appData?.data?.center?.address" name="address" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label class="col-sm-3 col-form-label">Opening Hour</label>
+                    <div class="col-sm-9">
+                      <input type="text" [ngModel]="state?.appData?.data?.center?.openingHour" name="county" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label class="col-sm-3 col-form-label">Closing Hour</label>
+                    <div class="col-sm-9">
+                      <input type="text" [ngModel]="state?.appData?.data?.center?.closingHour" name="county" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label class="col-sm-3 col-form-label">Image URL</label>
+                    <div class="col-sm-9">
+                      <input type="text" [ngModel]="state?.appData?.data?.center?.imageUrl" name="imageUrl" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
+                    </div>
+                  </div>
+
+                  <button [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" type="submit" class="btn btn-primary float-end">
+                    <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
+                    <span *ngIf="isLoading$ | async">Loading...</span>
+                    <span *ngIf="!(isLoading$ | async)">Update</span>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">My Activities At {{ state?.appData?.data?.center?.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted"></h6>
+                <table class="table table-hover">
+                  <thead class="table-dark">
+                  <tr>
+                    <th scope="col">Activity ID</th>
+                    <th scope="col"> Recycled Material</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Date</th>
+<!--                    <th scope="col">Action</th>-->
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let activity of state?.appData?.data?.activities">
+                    <td>{{ activity.activityId }}</td>
+                    <td>{{ activity.recycledMaterial }}</td>
+                    <td>${{ activity.amount }}</td>
+                    <td>
+                      RECIEVED
+                    </td>
+                    <td>{{ activity.createdAt | date: 'mediumDate' }}</td>
+
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </ng-container>
+</ng-container>
