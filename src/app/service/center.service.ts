@@ -6,6 +6,7 @@ import {catchError, Observable, tap, throwError} from "rxjs";
 import {CentersPageResponse} from "../interface/centers-page-response";
 import {RecyclingCenter} from "../interface/recycling-center";
 import {CenterNewResponse} from "../interface/center-new-response";
+import {CenterDetailsResponse} from "../interface/center-details-response";
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,14 @@ export class CenterService {
   private readonly server: string = 'http://localhost:8080';
 
   constructor(private http: HttpClient) { }
+
+  centerDetails$ = (centerId: number) => <Observable<CustomHttpResponse<CenterDetailsResponse>>>
+    this.http.get<CustomHttpResponse<CenterDetailsResponse>>
+    (`${this.server}/centers/get/${centerId}`)
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
 
   centers$ = (page: number = 0): Observable<CustomHttpResponse<HomePageResponse>> =>
     this.http.get<CustomHttpResponse<HomePageResponse>>
