@@ -12,6 +12,7 @@ export interface User {
   title?: string;
   bio?: string;
   imageUrl?: string;
+  rewardPoints?: number;
   notificationsEnabled: string;
   enabled: boolean;
   notLocked: boolean;

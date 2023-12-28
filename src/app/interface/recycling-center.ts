@@ -3,6 +3,7 @@ import {RecyclableMaterial} from "./recyclable-material";
 export interface RecyclingCenter {
   centerId: number;
   name: string;
+  contact: string;
   county: string;
   city: string;
   address?: string;
