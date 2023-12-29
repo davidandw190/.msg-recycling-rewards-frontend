@@ -1,5 +1,6 @@
+
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from "@angular/common/http";
 import {HomePageResponse} from "../interface/home-page-response";
 import {CustomHttpResponse} from "../interface/custom-http-response";
 import {catchError, Observable, tap, throwError} from "rxjs";
@@ -7,11 +8,18 @@ import {CentersPageResponse} from "../interface/centers-page-response";
 import {RecyclingCenter} from "../interface/recycling-center";
 import {CenterNewResponse} from "../interface/center-new-response";
 import {CenterDetailsResponse} from "../interface/center-details-response";
+import {NgForm} from "@angular/forms";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CenterService {
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    }),
+  };
+
   private readonly server: string = 'http://localhost:8080';
 
   constructor(private http: HttpClient) { }
@@ -48,7 +56,7 @@ export class CenterService {
       );
   }
 
-  create$ = (center: RecyclingCenter) => <Observable<CustomHttpResponse<CenterNewResponse>>>
+  create$ = (center: NgForm) => <Observable<CustomHttpResponse<CenterNewResponse>>>
     this.http.post<CustomHttpResponse<CenterNewResponse>>
     (`${this.server}/centers/create`, center)
       .pipe(

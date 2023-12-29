@@ -1,3 +1,4 @@
+
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, filter, map, Observable, of, startWith, switchMap, tap } from 'rxjs';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
@@ -25,12 +26,10 @@ export class CenterNewComponent implements OnInit {
 
   readonly DataState = DataState;
 
-  countySelectForm: FormGroup;
-  citySelectForm: FormGroup;
-  materialsSelectForm: FormGroup;
-
   counties: string[] = this.locationService.getAllCounties();
   cities: string[] = [];
+
+  newCenterForm: FormGroup;
 
   availableMaterials: string[] = ['GLASS', 'PLASTIC', 'PAPER', 'ALUMINIUM', 'METALS'];
   selectedMaterials: string[] = []
@@ -46,17 +45,16 @@ export class CenterNewComponent implements OnInit {
     this.openingTime = { hour: 8, minute: 0, second: 0 };
     this.closingTime = { hour: 20, minute: 0, second: 0 };
 
-    this.countySelectForm = this.formBuilder.group({
-      county: ['', Validators.required], // Add Validators.required
+    this.newCenterForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      county: ['', Validators.required],
+      city: ['', Validators.required],
+      address: ['', Validators.required],
+      materials: [''],
+      openingTime: [''],
+      closingTime: [''],
+      alwaysOpen: [false],
     });
-
-    this.citySelectForm = this.formBuilder.group({
-      city: { value: '', disabled: true },
-    });
-
-    this.materialsSelectForm = this.formBuilder.group({
-      materials: ['', Validators.required],
-  });
 
   }
 
@@ -71,19 +69,19 @@ export class CenterNewComponent implements OnInit {
       catchError((error: string) => of({ dataState: DataState.ERROR, error }))
     );
 
-    this.countySelectForm
+    this.newCenterForm
       .get('county')
       .valueChanges.pipe(
       debounceTime(100),
       distinctUntilChanged(),
-      tap(() => this.citySelectForm.get('city').setValue('')),
+      tap(() => this.newCenterForm.get('city').setValue('')),
       tap((county) => this.handleCountyChange(county)),
       switchMap((value) => this.filterCounties(value)),
       tap((counties) => (this.counties = counties))
     )
       .subscribe();
 
-    this.citySelectForm
+    this.newCenterForm
       .get('city')
       .valueChanges.pipe(
       debounceTime(100),
@@ -94,7 +92,7 @@ export class CenterNewComponent implements OnInit {
     )
       .subscribe();
 
-    this.materialsSelectForm
+    this.newCenterForm
       .get('materials').valueChanges
       .pipe(
         debounceTime(100),
@@ -108,10 +106,26 @@ export class CenterNewComponent implements OnInit {
 
   createCenter(): void {
     this.isLoadingSubject.next(true);
-    this.centerService.create$(this.countySelectForm.value).pipe(
+
+    if (this.newCenterForm.get('alwaysOpen').value) {
+      this.newCenterForm.get('openingTime').setValue(null);
+      this.newCenterForm.get('closingTime').setValue(null);
+    } else {
+      const openingTime = this.formatTime(this.newCenterForm.get('openingTime').value);
+      const closingTime = this.formatTime(this.newCenterForm.get('closingTime').value);
+
+      this.newCenterForm.get('openingTime').setValue(openingTime);
+      this.newCenterForm.get('closingTime').setValue(closingTime);
+    }
+
+    const formData = { ...this.newCenterForm.value, materials: this.selectedMaterials };
+
+    console.log(formData)
+
+    this.centerService.create$(formData).pipe(
       map((response) => {
         console.log(response);
-        this.countySelectForm.reset({ county: '', city: '' });
+        this.newCenterForm.reset({ county: '', city: '' });
         this.isLoadingSubject.next(false);
         return { dataState: DataState.LOADED, appData: this.dataSubject.value };
       }),
@@ -137,12 +151,12 @@ export class CenterNewComponent implements OnInit {
 
   private loadCitiesForCounty(county: string): void {
     this.cities = this.locationService.getCitiesForCounty(county);
-    this.citySelectForm.get('city').enable();
+    this.newCenterForm.get('city').enable();
   }
 
   filterCities(value: string): Observable<string[]> {
     const filterValue = value.toLowerCase();
-    const selectedCounty = this.countySelectForm.get('county').value;
+    const selectedCounty = this.newCenterForm.get('county').value;
     const citiesForCounty = this.locationService.getCitiesForCounty(selectedCounty);
 
     if (!filterValue) {
@@ -153,7 +167,7 @@ export class CenterNewComponent implements OnInit {
   }
 
   private handleCountyChange(county: string): void {
-    const cityControl = this.citySelectForm.get('city');
+    const cityControl = this.newCenterForm.get('city');
 
     if (this.locationService.isValidCounty(county)) {
       cityControl.enable();
@@ -170,12 +184,11 @@ export class CenterNewComponent implements OnInit {
   onSelectMaterials(event: TypeaheadMatch): void {
     const selectedMaterial = event.item;
 
-    // Check if the material is not already in the list
     if (!this.selectedMaterials.includes(selectedMaterial)) {
       this.selectedMaterials.push(selectedMaterial);
     }
 
-    this.materialsSelectForm.reset()
+    this.newCenterForm.get("materials").reset()
 
     console.log(this.selectedMaterials.length);
   }
@@ -183,4 +196,9 @@ export class CenterNewComponent implements OnInit {
   onRemoveMaterial(material: string): void {
     this.selectedMaterials = this.selectedMaterials.filter((m) => m !== material);
   }
+
+  private formatTime(time: NgbTimeStruct): string {
+    return `${time.hour}:${time.minute}`;
+  }
 }
+
