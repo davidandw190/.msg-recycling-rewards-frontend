@@ -1,10 +1,12 @@
-import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {TypeaheadMatch} from 'ngx-bootstrap/typeahead';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {
   BehaviorSubject,
   catchError,
   debounceTime,
-  distinctUntilChanged, filter, fromEvent,
+  distinctUntilChanged,
+  filter,
+  fromEvent,
   map,
   Observable,
   of,
@@ -12,13 +14,13 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { AppState } from '../../interface/app-state';
-import { DataState } from '../../enum/data-state.enum';
-import { CustomHttpResponse } from '../../interface/custom-http-response';
-import { CentersPageResponse } from '../../interface/centers-page-response';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { CenterService } from '../../service/center.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {AppState} from '../../interface/app-state';
+import {DataState} from '../../enum/data-state.enum';
+import {CustomHttpResponse} from '../../interface/custom-http-response';
+import {CentersPageResponse} from '../../interface/centers-page-response';
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
+import {CenterService} from '../../service/center.service';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import {LocationService} from "../../service/location.service";
 
 @Component({
@@ -34,6 +36,7 @@ export class CenterAllComponent implements OnInit {
   isLoading$ = this.isLoadingSubject.asObservable();
   private currentPageSubject = new BehaviorSubject<number>(0);
   currentPage$ = this.currentPageSubject.asObservable();
+
   currentPage: number = 0;
   searchQuery: string;
 
@@ -47,7 +50,7 @@ export class CenterAllComponent implements OnInit {
     this.isFiltersCollapsed = !this.isFiltersCollapsed;
   }
 
-  availableMaterials: string[] = ['GLASS', 'PLASTIC', 'PAPER', 'ALUMINIUM', 'METALS'];
+  availableMaterials: string[] = ['PAPER', 'GLASS', 'PLASTIC', 'ALUMINUM', 'METALS', 'E-WASTE'];
 
   selectedMaterials: string[] = []
 
@@ -60,7 +63,7 @@ export class CenterAllComponent implements OnInit {
     private route: ActivatedRoute,
     private centerService: CenterService,
     private formBuilder: FormBuilder,
-    private locationService: LocationService // Add LocationService
+    private locationService: LocationService
   ) {
     this.searchForm = this.formBuilder.group({
       name: [''],
@@ -140,6 +143,8 @@ export class CenterAllComponent implements OnInit {
         tap((response) => this.handleSearch(response))
       )
       .subscribe();
+
+    console.log(this.availableMaterials)
 
     fromEvent<KeyboardEvent>(document, 'keydown')
       .pipe(

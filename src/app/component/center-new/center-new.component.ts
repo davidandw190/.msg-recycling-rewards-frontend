@@ -1,15 +1,26 @@
-
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, filter, map, Observable, of, startWith, switchMap, tap } from 'rxjs';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'; // Import Validators
-import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
-import { CustomHttpResponse } from '../../interface/custom-http-response';
-import { AppState } from '../../interface/app-state';
-import { CentersPageResponse } from '../../interface/centers-page-response';
-import { DataState } from '../../enum/data-state.enum';
-import { CenterService } from '../../service/center.service';
-import { LocationService } from '../../service/location.service';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {
+  BehaviorSubject,
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  Observable,
+  of,
+  startWith,
+  switchMap,
+  tap
+} from 'rxjs';
+import {Router} from '@angular/router';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms'; // Import Validators
+import {TypeaheadMatch} from 'ngx-bootstrap/typeahead';
+import {CustomHttpResponse} from '../../interface/custom-http-response';
+import {AppState} from '../../interface/app-state';
+import {CentersPageResponse} from '../../interface/centers-page-response';
+import {DataState} from '../../enum/data-state.enum';
+import {CenterService} from '../../service/center.service';
+import {LocationService} from '../../service/location.service';
 import {NgbTimeStruct} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
@@ -31,7 +42,7 @@ export class CenterNewComponent implements OnInit {
 
   newCenterForm: FormGroup;
 
-  availableMaterials: string[] = ['GLASS', 'PLASTIC', 'PAPER', 'ALUMINIUM', 'METALS'];
+  availableMaterials: string[] = ['GLASS', 'PLASTIC', 'PAPER', 'ALUMINIUM', 'METALS', 'E-WASTE'];
   selectedMaterials: string[] = []
   openingTime: NgbTimeStruct;
   closingTime: NgbTimeStruct;
@@ -48,6 +59,7 @@ export class CenterNewComponent implements OnInit {
     this.newCenterForm = this.formBuilder.group({
       name: ['', Validators.required],
       county: ['', Validators.required],
+      contact: ['', Validators.required],
       city: ['', Validators.required],
       address: ['', Validators.required],
       materials: [''],
@@ -65,9 +77,13 @@ export class CenterNewComponent implements OnInit {
         this.dataSubject.next(response);
         return { dataState: DataState.LOADED, appData: response };
       }),
+
       startWith({ dataState: DataState.LOADING }),
-      catchError((error: string) => of({ dataState: DataState.ERROR, error }))
+
+      catchError((error: string) => of({ dataState: DataState.LOADED, error }))
     );
+
+    this.newCenterForm.get('city').disable()
 
     this.newCenterForm
       .get('county')
