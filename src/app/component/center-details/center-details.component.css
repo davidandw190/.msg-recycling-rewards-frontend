@@ -1,0 +1,32 @@
+/*!* Add a class for the fading effect *!*/
+/*.fade-bottom {*/
+/*  position: relative;*/
+/*}*/
+
+/*.fade-bottom::after {*/
+/*  content: "";*/
+/*  position: absolute;*/
+/*  bottom: 0;*/
+/*  left: 0;*/
+/*  right: 0;*/
+/*  height: 125px; !* Adjust the height of the fading effect as needed *!*/
+/*  background: linear-gradient(transparent, white); !* Use linear gradient for fading effect *!*/
+/*}*/
+
+/*!* Style the "View More" tab *!*/
+/*.view-more-tab {*/
+/*  position: absolute;*/
+/*  bottom: 10px;*/
+/*  right: 10px;*/
+/*  cursor: pointer;*/
+/*  color: #007bff; !* Adjust the color as needed *!*/
+/*}*/
+
+/*.view-more-tab:hover {*/
+/*  text-decoration: underline;*/
+/*}*/
+
+.accepted-materials {
+  display: flex;
+  gap: 5px; /* Adjust the spacing between badges as needed */
+}
