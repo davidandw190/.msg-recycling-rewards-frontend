@@ -12,58 +12,129 @@
         </nav>
         <div class="row">
           <div class="col-xl-4">
-            <div class="card">
+            <div class="card border rounded-3 mb-3">
               <div class="card-body">
                 <div class="d-flex align-items-start">
                   <img [src]="state?.appData?.data?.center?.imageUrl" style="position: relative" class="rounded-circle avatar-lg img-thumbnail" alt="profile-image">
-                  <div class="w-100 ms-4">
+                  <div class="w-25 ms-2">
                     <h4 class="my-0">{{ state?.appData?.data?.center?.name }}</h4>
-                    <p class="" style="font-size: 13px;">Contact Here</p>
-<!--                    <span class="badge" style="position: absolute;bottom:60px;left: 113px; top: 70px;font-size: 11px; height: 18px;"-->
-<!--                          [ngClass]="[-->
-<!--                                    // state?.appData?.data?.center.alwaysOpen === 'ACTIVE' ? ' bg-success' : '',-->
-<!--                                    state?.appData?.data?.customer.status === 'PENDING' ? ' bg-primary' : '',-->
-<!--                                    state?.appData?.data?.customer.status === 'BANNED' ? ' bg-danger' : '',-->
-<!--                                    state?.appData?.data?.customer.status === 'INACTIVE' ? ' bg-info' : ''-->
-<!--                                    ]" >-->
-<!--                                 {{ state?.appData?.data?.customer.status }}-->
-<!--                         </span>-->
+                    <p class="text-muted" style="font-size: 13px;"> {{ state?.appData?.data?.center?.contact }} Contact </p>
+                    <!--                    <span class="badge" style="position: absolute;bottom:60px;left: 113px; top: 70px;font-size: 11px; height: 18px;"-->
+                    <!--                          [ngClass]="[-->
+                    <!--                                    // state?.appData?.data?.center.alwaysOpen === 'ACTIVE' ? ' bg-success' : '',-->
+                    <!--                                    state?.appData?.data?.customer.status === 'PENDING' ? ' bg-primary' : '',-->
+                    <!--                                    state?.appData?.data?.customer.status === 'BANNED' ? ' bg-danger' : '',-->
+                    <!--                                    state?.appData?.data?.customer.status === 'INACTIVE' ? ' bg-info' : ''-->
+                    <!--                                    ]" >-->
+                    <!--                                 {{ state?.appData?.data?.customer.status }}-->
+                    <!--                         </span>-->
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="card">
+            <!-- Stats Card -->
+            <div class="card border rounded-3 mt-3">
               <div class="card-body">
-                <h5 class="card-title">My Current Reward Points</h5>
-                <h6 class="card-subtitle mb-2 text-muted">My reward points obtained up until now</h6>
-                <ul class="list-group">
-                  <li class="list-group-item d-flex justify-content-between align-items-center" style="font-size: 20px;">
-                    <span class="" style="font-size: 20px;">
-<!--                             {{ state?.appData?.data?.user?.rewardPoints }}-->
-                            2.500
-                            </span>
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <div>
+                    <h5 class="card-title mb-0">Center Stats</h5>
+                  </div>
+                  <div>
+                    <i class="bi bi-bar-chart h2 text-primary"></i>
+                  </div>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span class="me-2 h4">245</span>
+                    <span class="badge bg-secondary text-dark">Recyclers</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span class="me-2 h4">1,124</span>
+                    <span class="badge bg-secondary text-dark">Activities</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span class="me-2 h4">56,789 kg</span>
+                    <span class="badge bg-secondary text-dark">Plastic Recycled</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span class="me-2 h4">23,456 kg</span>
+                    <span class="badge bg-secondary text-dark">Glass Recycled</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span class="me-2 h4">12,345 kg</span>
+                    <span class="badge bg-secondary text-dark">Paper Recycled</span>
                   </li>
                 </ul>
               </div>
             </div>
-            <div class="card">
+
+            <!-- Reward Points Card -->
+            <div class="card border rounded-3 mt-3">
               <div class="card-body">
-                <h5 class="card-title"> My Sustainability Index for May</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Your contribution in making the planet greener</h6>
-                <ul class="list-group">
-                  <li class="list-group-item d-flex justify-content-between align-items-center" style="font-size: 20px;">
-                    22.0%
-<!--                    <span class="badge bg-success" style="font-size: 20px;">-->
-<!--                               $ {{ state?.appData?.data?.customer.invoices | extractValue: "invoices" }}-->
-<!--                            </span>-->
-                  </li>
-                </ul>
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <div>
+                    <h5 class="card-title mb-0">My Current Reward Points</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Points obtained up until now</h6>
+                  </div>
+                  <div>
+                    <i class="bi bi-award h2 text-primary"></i>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="me-2 h4">1500</span>
+<!--                        <span class="badge bg-warning text-dark">LEVEL 3</span>-->
+                      </li>
+                    </ul>
+                  </div>
+                  <div>
+                    <button class="btn btn-primary">
+                      <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      <span *ngIf="!(isLoading$ | async)">Redeem</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sustainability Index Card -->
+            <div class="card border rounded-3 mt-3">
+              <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <div>
+                    <h5 class="card-title mb-0">My Sustainability Index for May</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Your contribution to a greener planet</h6>
+                  </div>
+                  <div>
+                    <i class="bi bi-tree h2 text-success"></i>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="me-2 h4">+123%</span>
+                        <span class="badge bg-success">EXCELLENT</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div>
+                    <button class="btn btn-primary">
+                      <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      <span *ngIf="!(isLoading$ | async)">Learn More</span>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           <div class="col-xl-8">
-            <div class="card">
+
+
+            <div class="card border rounded-3 mb-3">
               <div class="card-body">
                 <h5 class="card-title">Profile Details</h5>
                 <form #updateCenterForm="ngForm">
@@ -78,7 +149,7 @@
                   <div class="row mb-3">
                     <label class="col-sm-3 col-form-label">Contact</label>
                     <div class="col-sm-9">
-                      <input type="text" [ngModel]="state?.appData?.data?.center?.city" name="contact" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
+                      <input type="text" [ngModel]="state?.appData?.data?.center?.contact" name="contact" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
                     </div>
                   </div>
 
@@ -117,6 +188,7 @@
                     </div>
                   </div>
 
+
                   <div class="row mb-3">
                     <label class="col-sm-3 col-form-label">Image URL</label>
                     <div class="col-sm-9">
@@ -132,11 +204,61 @@
                 </form>
               </div>
             </div>
+
+            <div class="card border rounded-3 mb-3">
+              <div class="card-body">
+                <h5 class="card-title">New Recycling Activity</h5>
+
+                <form [formGroup]="recyclingForm" (ngSubmit)="onSubmit()">
+                  <div class="row">
+                    <!-- Column 1: Recycled Material Type -->
+                    <div class="col-md-4 mb-3">
+                      <label class="form-label">Recycled Material Type</label>
+                      <select formControlName="recycledMaterialType" class="form-select">
+                        <option *ngFor="let material of acceptedMaterials" >{{ material.name }}</option>
+                      </select>
+                    </div>
+
+                    <!-- Column 2: Preferred Unit Measure -->
+                    <div class="col-md-4 mb-3">
+                      <label class="form-label">Preferred Unit Measure</label>
+                      <select formControlName="unitMeasure" class="form-select">
+                        <option *ngFor="let unit of unitMeasuresMap[recycledMaterialTypeValue]" [value]="unit.value">{{ unit.label }}</option>
+                      </select>
+                    </div>
+
+                    <!-- Column 3: Amount -->
+                    <div class="col-md-4 mb-3">
+                      <label class="form-label">Amount</label>
+                      <input type="number" formControlName="amount" class="form-control">
+                    </div>
+                  </div>
+
+                  <!-- Display Added Value -->
+                  <div *ngIf="addedValue !== null" class="mb-3">
+                    <div class="alert alert-success" role="alert">
+                      +{{ addedValue }} Reward Points and Sustainability Index for recycling {{ recyclingForm.value.amount }} of
+                    </div>
+                  </div>
+
+                  <!-- Button to Contribute-->
+                  <div class="row">
+                    <div class="col-md-12 d-flex justify-content-end">
+                      <button type="submit" class="btn btn-primary" [disabled]="recyclingForm.invalid">
+                        <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span *ngIf="!(isLoading$ | async)">Contribute</span>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
+
         <div class="row">
           <div class="col-xl-12">
-            <div class="card">
+            <div class="card border rounded-3 mt-3">
               <div class="card-body">
                 <h5 class="card-title">My Activities At {{ state?.appData?.data?.center?.name }}</h5>
                 <h6 class="card-subtitle mb-2 text-muted"></h6>
@@ -148,7 +270,7 @@
                     <th scope="col">Amount</th>
                     <th scope="col">Status</th>
                     <th scope="col">Date</th>
-<!--                    <th scope="col">Action</th>-->
+                    <!--                    <th scope="col">Action</th>-->
                   </tr>
                   </thead>
                   <tbody>
@@ -157,7 +279,7 @@
                     <td>{{ activity.recycledMaterial }}</td>
                     <td>${{ activity.amount }}</td>
                     <td>
-                      RECIEVED
+                      RECEIVED
                     </td>
                     <td>{{ activity.createdAt | date: 'mediumDate' }}</td>
 
