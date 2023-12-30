@@ -31,14 +31,14 @@ export class CenterDetailsComponent implements OnInit {
   acceptedMaterials: RecyclableMaterial[] = [];
 
   unitMeasuresMap: Map<string, UnitMeasure> = new Map([
-    ['G', { label: 'Gram (g)', value: 'g', ratio: 0.5 }],
-    ['KG', { label: 'Kilogram (kg)', value: 'kg', ratio: 5 }],
-    ['BOTTLE_0.5L', { label: 'Bottle (0.5L)', value: '0.5L', ratio: 2.5 }],
-    ['BOTTLE_1L', { label: 'Bottle (1L)', value: '1L', ratio: 5 }],
-    ['BOTTLE_1.5L', { label: 'Bottle (1.5L)', value: '1.5L', ratio: 7.5 }],
+    ['G', { label: 'Gram (g)', value: 'g', ratio: 0.005 }],
+    ['KG', { label: 'Kilogram (kg)', value: 'kg', ratio: 6 }],
+    ['BOTTLE_0.5L', { label: 'Bottle (0.5L)', value: '0.5L', ratio: 3}],
+    ['BOTTLE_1L', { label: 'Bottle (1L)', value: '1L', ratio: 6 }],
+    ['BOTTLE_1.5L', { label: 'Bottle (1.5L)', value: '1.5L', ratio: 8 }],
     ['BOTTLE_2L', { label: 'Bottle (2L)', value: '2L', ratio: 10 }],
-    ['CAN', { label: 'Can', value: 'can/(s)', ratio: 2.5 }],
-    ['PIECE', { label: 'Piece', value: 'piece/(s)', ratio: 2.5 }],
+    ['CAN', { label: 'Can', value: 'can/(s)', ratio: 3 }],
+    ['PIECE', { label: 'Piece', value: 'piece/(s)', ratio: 3 }],
   ]);
 
   materialUnitMeasures: Map<string, UnitMeasure[]> = new Map([
@@ -55,7 +55,7 @@ export class CenterDetailsComponent implements OnInit {
       this.unitMeasuresMap.get('BOTTLE_0.5L'),
       this.unitMeasuresMap.get('BOTTLE_1L'),
       this.unitMeasuresMap.get('BOTTLE_1.5L'),
-      this.unitMeasuresMap.get('BOTTLE_2.0L'),
+      this.unitMeasuresMap.get('BOTTLE_2L'),
     ]],
 
     ['METALS', [
@@ -117,15 +117,22 @@ export class CenterDetailsComponent implements OnInit {
   }
 
   initializeForm() {
+    const defaultMaterialType = this.acceptedMaterials.length > 0 ? this.acceptedMaterials[0].name : '';
+    const defaultUnitMeasure = this.materialUnitMeasures.get(defaultMaterialType)?.[0]?.value || '';
+
     this.recyclingForm = this.formBuilder.group({
-      recycledMaterialType: ['', Validators.required],
-      unitMeasure: ['', Validators.required],
-      amount: ['', [Validators.required, Validators.min(0)]],
+      recycledMaterialType: [defaultMaterialType, Validators.required],
+      unitMeasure: [defaultUnitMeasure, Validators.required],
+      amount: [null, [Validators.required, Validators.min(1)]],
     });
+
+    const unitMeasures = this.materialUnitMeasures.get(defaultMaterialType) || [];
+    this.recyclingForm.get('unitMeasure').setValue(unitMeasures.length > 0 ? unitMeasures[0].value : '');
+    this.unitMeasuresMap[defaultMaterialType] = unitMeasures;
 
     this.recyclingForm.get('recycledMaterialType').valueChanges.subscribe((materialType) => {
       const unitMeasures = this.materialUnitMeasures.get(materialType) || [];
-      this.recyclingForm.get('unitMeasure').setValue('');
+      this.recyclingForm.get('unitMeasure').setValue(unitMeasures.length > 0 ? unitMeasures[0].value : '');
       this.unitMeasuresMap[materialType] = unitMeasures;
     });
 
@@ -145,7 +152,12 @@ export class CenterDetailsComponent implements OnInit {
       if (selectedMaterial) {
         const rewardPointsPerUnit = selectedMaterial.reward_points || 1;
         const unitRatio = this.materialUnitMeasures.get(materialType)?.find(unit => unit.value === unitMeasure)?.ratio || 1;
-        this.addedValue = amount * rewardPointsPerUnit * unitRatio;
+        // this.addedValue = amount * rewardPointsPerUnit * unitRatio;
+        if (unitRatio !== null) {
+          this.addedValue = amount * rewardPointsPerUnit * unitRatio;
+        } else {
+          this.addedValue = null;
+        }
       } else {
         console.error('Selected material not found in acceptedMaterials array');
         this.addedValue = null;
@@ -162,7 +174,6 @@ export class CenterDetailsComponent implements OnInit {
 
   onSubmit() {
     // Handle form submission logic here
-    // This is where you can send the form data to your server or perform other actions.
   }
 
   get recycledMaterialTypeValue(): string {
