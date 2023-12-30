@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, inject, OnInit, TemplateRef} from '@angular/core';
 import { BehaviorSubject, catchError, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { AppState } from '../../interface/app-state';
 import { CustomHttpResponse } from '../../interface/custom-http-response';
@@ -6,9 +6,10 @@ import { DataState } from '../../enum/data-state.enum';
 import { CenterDetailsResponse } from '../../interface/center-details-response';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { CenterService } from '../../service/center.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
 import { RecyclableMaterial } from '../../interface/recyclable-material';
 import { UnitMeasure } from '../../interface/unit-measure';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-center-details',
@@ -25,20 +26,29 @@ export class CenterDetailsComponent implements OnInit {
 
   private readonly CENTER_ID: string = 'id';
 
+  private modalService = inject(NgbModal);
+
   recyclingForm: FormGroup;
-  addedValue: number | null = null;
+  earnedRewardPoints: number | null = null;
+  earnedSustainabilityIndex: number | null = null;
+
+  materialUnits: number = null;
+
+  centerId: number;
+
+  userId: number;
 
   acceptedMaterials: RecyclableMaterial[] = [];
 
   unitMeasuresMap: Map<string, UnitMeasure> = new Map([
-    ['G', { label: 'Gram (g)', value: 'g', ratio: 0.005 }],
-    ['KG', { label: 'Kilogram (kg)', value: 'kg', ratio: 6 }],
-    ['BOTTLE_0.5L', { label: 'Bottle (0.5L)', value: '0.5L', ratio: 3}],
-    ['BOTTLE_1L', { label: 'Bottle (1L)', value: '1L', ratio: 6 }],
-    ['BOTTLE_1.5L', { label: 'Bottle (1.5L)', value: '1.5L', ratio: 8 }],
-    ['BOTTLE_2L', { label: 'Bottle (2L)', value: '2L', ratio: 10 }],
-    ['CAN', { label: 'Can', value: 'can/(s)', ratio: 3 }],
-    ['PIECE', { label: 'Piece', value: 'piece/(s)', ratio: 3 }],
+    ['G', { label: 'Grams (g)', value: 'g', ratio: 0.005 }],
+    ['KG', { label: 'Kilograms (kg)', value: 'kg', ratio: 6 }],
+    ['BOTTLE_0.5L', { label: 'Bottles (0.5L)', value: '0.5L', ratio: 3}],
+    ['BOTTLE_1L', { label: 'Bottles (1L)', value: '1L', ratio: 6 }],
+    ['BOTTLE_1.5L', { label: 'Bottles (1.5L)', value: '1.5L', ratio: 8 }],
+    ['BOTTLE_2L', { label: 'Bottles (2L)', value: '2L', ratio: 10 }],
+    ['CAN', { label: 'Cans', value: 'can/(s)', ratio: 3 }],
+    ['PIECE', { label: 'Pieces', value: 'piece/(s)', ratio: 3 }],
   ]);
 
   materialUnitMeasures: Map<string, UnitMeasure[]> = new Map([
@@ -98,6 +108,8 @@ export class CenterDetailsComponent implements OnInit {
           map((response) => {
             console.log(response);
             this.dataSubject.next(response);
+            this.centerId = response.data.center.centerId;
+            this.userId = response.data.user.id
             this.acceptedMaterials = response.data.center.acceptedMaterials || [];
             return { dataState: DataState.LOADED, appData: response };
           }),
@@ -154,16 +166,20 @@ export class CenterDetailsComponent implements OnInit {
         const unitRatio = this.materialUnitMeasures.get(materialType)?.find(unit => unit.value === unitMeasure)?.ratio || 1;
         // this.addedValue = amount * rewardPointsPerUnit * unitRatio;
         if (unitRatio !== null) {
-          this.addedValue = amount * rewardPointsPerUnit * unitRatio;
+          this.materialUnits = amount * unitRatio;
+          this.earnedRewardPoints = this.materialUnits * rewardPointsPerUnit;
+          this.earnedSustainabilityIndex = 5/100 * this.earnedRewardPoints;
         } else {
-          this.addedValue = null;
+          this.earnedRewardPoints = null;
+          this.earnedSustainabilityIndex = null;
         }
       } else {
         console.error('Selected material not found in acceptedMaterials array');
-        this.addedValue = null;
+        this.earnedRewardPoints = null;
+        this.earnedSustainabilityIndex = null;
       }
     } else {
-      this.addedValue = null;
+      this.earnedRewardPoints = null;
     }
   }
 
@@ -172,11 +188,42 @@ export class CenterDetailsComponent implements OnInit {
     return material ? material.name : '';
   }
 
-  onSubmit() {
-    // Handle form submission logic here
+  getMaterialIdByName(materialName: string): number | null {
+    const material = this.acceptedMaterials.find((m) => m.name === materialName);
+    return material ? material.materialId : null;
+  }
+
+  contribute() {
+    this.isLoadingSubject.next(true);
+
+    const selectedMaterialId: number | null  = this.getMaterialIdByName(this.recyclingForm.get("recycledMaterialType").value)
+    let formData;
+
+    if ( selectedMaterialId != null && this.earnedRewardPoints != null  ) {
+      formData = {
+        ...this.recyclingForm.value,
+        materialId: selectedMaterialId,
+        centerId: this.centerId,
+        userId: this.userId,
+        amount: this.materialUnits,
+      }
+
+      this.centerService.contribute$(formData);
+    }
+
+    this.isLoadingSubject.next(false);
+
+    console.log(formData)
   }
 
   get recycledMaterialTypeValue(): string {
     return this.recyclingForm.get('recycledMaterialType').value;
+  }
+
+  openScrollableContent(longContent: TemplateRef<any>) {
+    this.modalService.open(longContent, {
+      scrollable: true,
+      size: "lg"
+    });
   }
 }

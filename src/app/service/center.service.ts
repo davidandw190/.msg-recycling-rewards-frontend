@@ -49,7 +49,7 @@ export class CenterService {
       .set('page', page.toString());
 
     return this.http.get<CustomHttpResponse<CentersPageResponse>>
-    (`${this.server}/centers/search`, { params })
+    (`${this.server}/centers/search`, {params})
       .pipe(
         tap(console.log),
         catchError(this.handleError)
@@ -59,6 +59,14 @@ export class CenterService {
   create$ = (center: NgForm) => <Observable<CustomHttpResponse<CenterNewResponse>>>
     this.http.post<CustomHttpResponse<CenterNewResponse>>
     (`${this.server}/centers/create`, center)
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
+
+  contribute$ = (form: NgForm) => <Observable<CustomHttpResponse<CenterDetailsResponse>>>
+    this.http.post<CustomHttpResponse<CenterNewResponse>>
+    (`${this.server}/centers/contribute`, form)
       .pipe(
         tap(console.log),
         catchError(this.handleError)
@@ -80,5 +88,6 @@ export class CenterService {
     }
     return throwError(() => errorMessage);
   }
+
 
 }
