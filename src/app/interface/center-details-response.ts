@@ -6,4 +6,5 @@ export interface CenterDetailsResponse {
   user: User;
   center: RecyclingCenter;
   activities: RecyclingActivity[];
+  rewardPoints: Number;
 }
