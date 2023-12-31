@@ -120,11 +120,11 @@
             <thead class="bg-gradient text-white">
             <tr>
               <th scope="col" >Photo</th>
-              <th scope="col" (click)="sort('name')" class="sortable" [class.sorted-asc]="isSorted('name', 'asc')" [class.sorted-desc]="isSorted('name', 'desc')">Name</th>
-              <th scope="col" (click)="sort('contact')">Contact</th>
-              <th scope="col" (click)="sort('county')">County</th>
-              <th scope="col" (click)="sort('city')">City</th>
-              <th scope="col" (click)="sort('materials')">Accepted Materials</th>
+              <th scope="col" (click)="sort('name')" class="sortable" [class.filtered]="isFiltered('name')" [class.sorted-asc]="isSorted('name', 'asc')" [class.sorted-desc]="isSorted('name', 'desc')" >Name</th>
+              <th scope="col" >Contact</th>
+              <th scope="col" (click)="sort('county')" class="sortable" [class.filtered]="isFiltered('county')" [class.sorted-asc]="isSorted('county', 'asc')" [class.sorted-desc]="isSorted('county', 'desc')">County</th>
+              <th scope="col" (click)="sort('city')" class="sortable" [class.filtered]="isFiltered('city')" [class.sorted-asc]="isSorted('city', 'asc')" [class.sorted-desc]="isSorted('city', 'desc')">City</th>
+              <th scope="col" (click)="sort('materials')" class="sortable" [class.filtered]="isFiltered('materials')" [class.sorted-asc]="isSorted('materials', 'asc')" [class.sorted-desc]="isSorted('materials', 'desc')">Accepted Materials</th>
               <th scope="col" (click)="sort('openingHour')">Working Intervals</th>
 <!--              <th scope="col">Status</th>-->
               <th scope="col">Action</th>

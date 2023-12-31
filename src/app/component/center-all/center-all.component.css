@@ -31,7 +31,6 @@
   cursor: pointer;
 }
 
-/* Optional: Adjust the position of the selected materials container */
 .selected-materials-container {
   margin-top: 16px;
   margin-bottom: 16px;
@@ -41,6 +40,7 @@ th.sortable {
   cursor: pointer;
 }
 
+
 th.sorted-asc::after {
   content: ' ↑';
 }
@@ -49,7 +49,6 @@ th.sorted-desc::after {
   content: ' ↓';
 }
 
-/*th.filtered::after {*/
-/*  content: ' •'; !* Add a visual cue for filtered headers *!*/
-/*}*/
-
+th.filtered::after {
+  content: ' •';
+}
