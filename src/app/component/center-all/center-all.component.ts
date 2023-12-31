@@ -257,7 +257,7 @@ export class CenterAllComponent implements OnInit {
     const name = this.searchForm.get('name').value;
     const county = this.searchForm.get('county').value;
     const city = this.searchForm.get('city').value;
-    const materials = this.searchForm.get('materials').value;
+    const materials = this.selectedMaterials.join(",");
     const sortBy  = this.searchForm.get('sortBy').value;
     const sortOrder  = this.searchForm.get('sortOrder').value;
     console.log(materials)
@@ -355,6 +355,7 @@ export class CenterAllComponent implements OnInit {
 
     const sortBy = this.searchForm.get('sortBy').value;
     const sortOrder = this.searchForm.get('sortOrder').value;
+
     // Check if the column is sorted
     if (sortBy === column && sortOrder === order) {
       return true;
@@ -373,7 +374,7 @@ export class CenterAllComponent implements OnInit {
     const name = this.searchForm.get('name').value;
     const county = this.searchForm.get('county').value;
     const city = this.searchForm.get('city').value;
-    const materials = this.searchForm.get('materials').value;
+    const materials = this.selectedMaterials.join(",");
     const sortBy = this.searchForm.get('sortBy').value;
     const sortOrder = this.searchForm.get('sortOrder').value;
 
