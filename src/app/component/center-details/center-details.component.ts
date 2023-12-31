@@ -1,20 +1,21 @@
-import {Component, inject, OnInit, TemplateRef} from '@angular/core';
-import { BehaviorSubject, catchError, map, Observable, of, startWith, switchMap } from 'rxjs';
-import { AppState } from '../../interface/app-state';
-import { CustomHttpResponse } from '../../interface/custom-http-response';
-import { DataState } from '../../enum/data-state.enum';
-import { CenterDetailsResponse } from '../../interface/center-details-response';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { CenterService } from '../../service/center.service';
-import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
-import { RecyclableMaterial } from '../../interface/recyclable-material';
-import { UnitMeasure } from '../../interface/unit-measure';
+import {ChangeDetectionStrategy, Component, inject, OnInit, TemplateRef} from '@angular/core';
+import {BehaviorSubject, catchError, finalize, map, Observable, of, startWith, switchMap} from 'rxjs';
+import {AppState} from '../../interface/app-state';
+import {CustomHttpResponse} from '../../interface/custom-http-response';
+import {DataState} from '../../enum/data-state.enum';
+import {CenterDetailsResponse} from '../../interface/center-details-response';
+import {ActivatedRoute, ParamMap} from '@angular/router';
+import {CenterService} from '../../service/center.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {RecyclableMaterial} from '../../interface/recyclable-material';
+import {UnitMeasure} from '../../interface/unit-measure';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-center-details',
   templateUrl: './center-details.component.html',
   styleUrls: ['./center-details.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CenterDetailsComponent implements OnInit {
   centerDetailsState$: Observable<AppState<CustomHttpResponse<CenterDetailsResponse>>>;
@@ -26,7 +27,7 @@ export class CenterDetailsComponent implements OnInit {
 
   private readonly CENTER_ID: string = 'id';
 
-  private modalService = inject(NgbModal);
+  private modalService: NgbModal = inject(NgbModal);
 
   recyclingForm: FormGroup;
   earnedRewardPoints: number | null = null;
@@ -110,7 +111,7 @@ export class CenterDetailsComponent implements OnInit {
             this.dataSubject.next(response);
             this.centerId = response.data.center.centerId;
             this.userId = response.data.user.id
-            this.acceptedMaterials = response.data.center.acceptedMaterials || [];
+            this.acceptedMaterials = [...response.data.center.acceptedMaterials] || [];
             return { dataState: DataState.LOADED, appData: response };
           }),
 
@@ -196,25 +197,52 @@ export class CenterDetailsComponent implements OnInit {
   contribute() {
     this.isLoadingSubject.next(true);
 
-    const selectedMaterialId: number | null  = this.getMaterialIdByName(this.recyclingForm.get("recycledMaterialType").value)
+    const selectedMaterialId: number | null = this.getMaterialIdByName(
+      this.recyclingForm.get('recycledMaterialType').value
+    );
     let formData;
 
-    if ( selectedMaterialId != null && this.earnedRewardPoints != null  ) {
+    if (selectedMaterialId !== null && this.earnedRewardPoints !== null) {
       formData = {
         ...this.recyclingForm.value,
         materialId: selectedMaterialId,
         centerId: this.centerId,
         userId: this.userId,
         amount: this.materialUnits,
-      }
+      };
 
-      this.centerService.contribute$(formData);
+      this.centerService
+        .contribute$(formData)
+        .pipe(
+          switchMap(() => {
+            return this.centerService.centerDetails$(this.centerId);
+          }),
+          map((response) => {
+            console.log(response);
+            this.dataSubject.next(response);
+            this.centerId = response.data.center.centerId;
+            this.userId = response.data.user.id;
+            this.acceptedMaterials = [...response.data.center.acceptedMaterials] || [];
+            this.initializeForm();
+            this.isLoadingSubject.next(false);
+            return { dataState: DataState.LOADED, appData: response };
+          }),
+          catchError((error: string) => {
+            this.isLoadingSubject.next(false);
+            return of({ dataState: DataState.ERROR, error });
+          })
+        )
+        .subscribe((result) => {
+          this.centerDetailsState$ = of(result);
+        });
+    } else {
+      this.isLoadingSubject.next(false);
     }
-
-    this.isLoadingSubject.next(false);
-
-    console.log(formData)
   }
+
+
+
+
 
   get recycledMaterialTypeValue(): string {
     return this.recyclingForm.get('recycledMaterialType').value;
