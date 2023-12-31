@@ -1,6 +1,6 @@
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from "@angular/common/http";
 import {Injectable} from "@angular/core";
-import {Observable, of} from "rxjs";
+import {Observable, of, tap} from "rxjs";
 import {HttpCacheService} from "../service/http.cache.service";
 
 @Injectable({
@@ -35,7 +35,15 @@ export class CacheInterceptor implements HttpInterceptor {
     return this.handleRequestCache(request, next);
   }
 
-  private handleRequestCache(request: HttpRequest<unknown>, next: HttpHandler) {
-    return undefined;
+  private handleRequestCache(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    return next.handle(request)
+      .pipe(
+        tap(response => {
+          if (response instanceof HttpResponse && request.method !== 'DELETE') {
+            console.log('Caching Response', response);
+            this.httpCache.put(request.url, response);
+          }
+        })
+      );
   }
 }
