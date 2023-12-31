@@ -40,12 +40,20 @@ export class CenterService {
         catchError(this.handleError)
       );
 
-  searchCenters$(name: string = '', county: string = '', city: string = '', materials: string = '', page: number = 0): Observable<CustomHttpResponse<CentersPageResponse>> {
+  searchCenters$(name: string = '',
+                 county: string = '',
+                 city: string = '',
+                 materials: string = '',
+                 sortBy: string = '',
+                 sortOrder: string = '',
+                 page: number = 0): Observable<CustomHttpResponse<CentersPageResponse>> {
     const params = new HttpParams()
       .set('name', name)
       .set('county', county)
       .set('city', city)
       .set('materials', materials)
+      .set('sortBy', sortBy)
+      .set('sortOrder', sortOrder)
       .set('page', page.toString());
 
     return this.http.get<CustomHttpResponse<CentersPageResponse>>

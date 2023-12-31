@@ -79,12 +79,25 @@
                   </div>
 
                   <div class="col-md-4">
-                    <button type="button" class="btn btn-secondary mb-3" (click)="resetFilters()">Reset Filters</button>
+                    <label class="visually-hidden">Sort By</label>
+                    <select formControlName="sortBy" class="form-control">
+                      <option value="createdAt">Created At</option>
+                      <!-- Add other sorting options as needed -->
+                    </select>
                   </div>
 
                   <div class="col-md-4">
-                    <button type="submit" class="btn btn-primary mb-3">Search Centers</button>
+                    <label class="visually-hidden">Sort Order</label>
+                    <select formControlName="sortOrder" class="form-control">
+                      <option value="asc">Ascending</option>
+                      <option value="desc">Descending</option>
+                    </select>
                   </div>
+
+                  <div class="col-md-4">
+                    <button type="button" class="btn btn-secondary mb-3" (click)="resetFilters()">Reset Filters</button>
+                  </div>
+
                 </div>
 
                 <!-- Selected Materials Badges -->
@@ -106,13 +119,14 @@
             <!-- Table Header -->
             <thead class="bg-gradient text-white">
             <tr>
-              <th scope="col">Photo</th>
-              <th scope="col">Name</th>
-              <th scope="col">Contact</th>
-              <th scope="col">Location</th>
-              <th scope="col">Materials</th>
-              <th scope="col">Working Intervals</th>
-              <th scope="col">Status</th>
+              <th scope="col" >Photo</th>
+              <th scope="col" (click)="sort('name')" class="sortable" [class.sorted-asc]="isSorted('name', 'asc')" [class.sorted-desc]="isSorted('name', 'desc')">Name</th>
+              <th scope="col" (click)="sort('contact')">Contact</th>
+              <th scope="col" (click)="sort('county')">County</th>
+              <th scope="col" (click)="sort('city')">City</th>
+              <th scope="col" (click)="sort('materials')">Accepted Materials</th>
+              <th scope="col" (click)="sort('openingHour')">Working Intervals</th>
+<!--              <th scope="col">Status</th>-->
               <th scope="col">Action</th>
             </tr>
             </thead>
@@ -120,9 +134,10 @@
             <tbody *ngFor="let center of state?.appData?.data?.page?.content" class="table-body">
             <tr class="cell-1">
               <td><img src="https://robohash.org/recyclingcenter" width="42" height="42" class="rounded-circle"></td>
-              <td>{{ center.name }}</td>
-              <td>{{ center.county }}</td>
-              <td>{{ center.city }}</td>
+              <td>  {{ center.name }} </td>
+              <td> {{ center.contact }} </td>
+              <td>  {{ center.county }} </td>
+              <td>  {{ center.city }} </td>
               <td>
                 <div class="accepted-materials">
                   <ng-container *ngFor="let material of center | acceptedMaterials">
@@ -138,9 +153,9 @@
                   {{ center.openingHour | slice: 0:5 }} - {{ center.closingHour | slice: 0:5 }}
                 </ng-template>
               </td>
-              <td>
-                <span class="badge bg-success">OPEN</span>
-              </td>
+<!--              <td>-->
+<!--                <span class="badge bg-success">OPEN</span>-->
+<!--              </td>-->
               <td>
                 <button type="button" [routerLink]="['/centers']" class="btn" style="background-color: #63ad6f; color: #fff;">  <i class="fa-solid fa-recycle"></i>  </button>
               </td>

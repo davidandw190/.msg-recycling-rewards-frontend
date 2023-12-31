@@ -54,6 +54,8 @@ export class CenterAllComponent implements OnInit {
 
   selectedMaterials: string[] = []
 
+  sortedColumn: string;
+
   counties: string[] = this.locationService.getAllCounties();
 
   cities: string[] = [];
@@ -70,10 +72,10 @@ export class CenterAllComponent implements OnInit {
       county: [''],
       city: [{ value: '', disabled: true }],
       materials: [''],
+      sortBy: ['createdAt'],
+      sortOrder: ['asc'],
     });
-  }
 
-  ngOnInit(): void {
     this.route.queryParamMap.subscribe((params: ParamMap) => {
       this.searchQuery = params.get('name') || '';
       this.searchForm.setValue({
@@ -81,13 +83,31 @@ export class CenterAllComponent implements OnInit {
         county: params.get('county') || '',
         city: params.get('city') || '',
         materials: params.get('materials') || '',
+        sortBy: params.get('sortBy') || 'createdAt',
+        sortOrder: params.get('sortOrder') || 'asc',
+      });
+      this.initializeSearch();
+    });
+  }
+
+  ngOnInit(): void {
+    this.route.queryParamMap.subscribe((params: ParamMap) => {
+
+      this.searchQuery = params.get('name') || '';
+      this.searchForm.setValue({
+        name: this.searchQuery,
+        county: params.get('county') || '',
+        city: params.get('city') || '',
+        materials: params.get('materials') || '',
+        sortBy: params.get('sortBy') || 'createdAt',
+        sortOrder: params.get('sortOrder') || 'asc',
       });
       this.initializeSearch();
     });
 
     this.searchForm.get('county').valueChanges
       .pipe(
-        debounceTime(100),
+        debounceTime(300),
         distinctUntilChanged(),
         tap(() => this.searchForm.get('city').setValue('')), // Clear city on county change
         tap((county) => this.handleCountyChange(county)),
@@ -97,7 +117,7 @@ export class CenterAllComponent implements OnInit {
 
     this.searchForm.get('city').valueChanges
       .pipe(
-        debounceTime(100),
+        debounceTime(300),
         distinctUntilChanged(),
         switchMap((value) => this.filterCities(value)),
         tap((cities) => (this.cities = cities)),
@@ -107,7 +127,7 @@ export class CenterAllComponent implements OnInit {
 
     this.searchForm.get('materials').valueChanges
       .pipe(
-        debounceTime(100),
+        debounceTime(300),
         distinctUntilChanged(),
         tap((material) => this.onSelectMaterials(material)),
         filter(() => false) // Prevent reactive changes
@@ -133,7 +153,9 @@ export class CenterAllComponent implements OnInit {
             this.searchForm.get('name').value,
             this.searchForm.get('county').value,
             this.searchForm.get('city').value,
-            this.searchForm.get('materials').value
+            this.searchForm.get('materials').value,
+            this.searchForm.get('sortBy').value,
+            this.searchForm.get('sortOrder').value
           )
         ),
         catchError((error: string) => {
@@ -141,6 +163,24 @@ export class CenterAllComponent implements OnInit {
           return of({ dataState: DataState.ERROR, error });
         }),
         tap((response) => this.handleSearch(response))
+      )
+      .subscribe();
+
+    this.searchForm.get('sortBy').valueChanges
+      .pipe(
+        debounceTime(100),
+        distinctUntilChanged(),
+        tap(() => this.searchCenters()), // Trigger search when the sorting changes
+        filter(() => false) // Prevent reactive changes
+      )
+      .subscribe();
+
+    this.searchForm.get('sortOrder').valueChanges
+      .pipe(
+        debounceTime(100),
+        distinctUntilChanged(),
+        tap(() => this.searchCenters()), // Trigger search when the sorting changes
+        filter(() => false) // Prevent reactive changes
       )
       .subscribe();
 
@@ -189,21 +229,25 @@ export class CenterAllComponent implements OnInit {
     const name = this.searchForm.get('name').value;
     const county = this.searchForm.get('county').value;
     const city = this.searchForm.get('city').value;
+    const materials = this.selectedMaterials.join(',');
+    const page = this.currentPageSubject.value;
+
+    const sortBy = this.searchForm.get('sortBy').value;
+    const sortOrder = this.searchForm.get('sortOrder').value;
 
     this.isLoadingSubject.next(true);
 
     this.centerService
-      .searchCenters$(name, county, city, this.selectedMaterials.join(','), 0)
+      .searchCenters$(name, county, city, materials, sortBy, sortOrder, page)
       .pipe(
         tap((response) => {
           this.dataSubject.next(response);
-          this.currentPageSubject.next(0); // Reset page to 0 when searching
+          this.updateUrlParameters();
         }),
         catchError((error: string) => of({ dataState: DataState.ERROR, error }))
       )
       .subscribe();
   }
-
 
   private getCitiesForCounty(county: string): string[] {
     return this.locationService.getCitiesForCounty(county);
@@ -214,15 +258,18 @@ export class CenterAllComponent implements OnInit {
     const county = this.searchForm.get('county').value;
     const city = this.searchForm.get('city').value;
     const materials = this.searchForm.get('materials').value;
+    const sortBy  = this.searchForm.get('sortBy').value;
+    const sortOrder  = this.searchForm.get('sortOrder').value;
     console.log(materials)
 
     this.isLoadingSubject.next(true);
 
     this.centerService
-      .searchCenters$(name, county, city, materials, pageNumber - 1)
+      .searchCenters$(name, county, city, materials, sortBy, sortOrder, pageNumber - 1)
       .pipe(
         tap((response) => {
           this.dataSubject.next(response);
+          this.updateUrlParameters();
           this.currentPageSubject.next(pageNumber - 1);
         }),
         catchError((error: string) => of({ dataState: DataState.ERROR, error }))
@@ -267,7 +314,6 @@ export class CenterAllComponent implements OnInit {
     this.updateSearch(); // Update search when a material is removed
   }
 
-  // Add this method to update the search based on the selected materials
   private updateSearch(): void {
     this.isLoadingSubject.next(true);
     this.searchCenters();
@@ -288,5 +334,60 @@ export class CenterAllComponent implements OnInit {
     }
 
     return of(citiesForCounty.filter((city) => city.toLowerCase().includes(filterValue)));
+  }
+
+  sort(column: string): void {
+    const currentSortBy = this.searchForm.get('sortBy').value;
+    const currentSortOrder = this.searchForm.get('sortOrder').value;
+
+    // Toggle the sorting order when the same column is clicked
+    const newSortOrder = currentSortBy === column ? (currentSortOrder === 'asc' ? 'desc' : 'asc') : 'asc';
+
+    this.searchForm.get('sortBy').setValue(column, { emitEvent: false });
+    this.searchForm.get('sortOrder').setValue(newSortOrder, { emitEvent: false });
+
+    // Trigger the search with updated sorting parameters
+    this.searchCenters();
+  }
+
+  isSorted(column: string, order: string): boolean {
+    // return this.searchForm.get('sortBy').value === column && this.searchForm.get('sortOrder').value === order;
+
+    const sortBy = this.searchForm.get('sortBy').value;
+    const sortOrder = this.searchForm.get('sortOrder').value;
+    // Check if the column is sorted
+    if (sortBy === column && sortOrder === order) {
+      return true;
+    }
+
+    // Check if the column is filtered
+    return this.isFiltered(column) && sortOrder === order;
+  }
+
+  isFiltered(column: string): boolean {
+    return this.searchForm.get(column).value !== '';
+  }
+
+
+  private updateUrlParameters(): void {
+    const name = this.searchForm.get('name').value;
+    const county = this.searchForm.get('county').value;
+    const city = this.searchForm.get('city').value;
+    const materials = this.searchForm.get('materials').value;
+    const sortBy = this.searchForm.get('sortBy').value;
+    const sortOrder = this.searchForm.get('sortOrder').value;
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        name,
+        county,
+        city,
+        materials,
+        sortBy,
+        sortOrder,
+      },
+      queryParamsHandling: 'merge',
+    });
   }
 }

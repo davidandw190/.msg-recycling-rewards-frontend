@@ -37,4 +37,19 @@
   margin-bottom: 16px;
 }
 
+th.sortable {
+  cursor: pointer;
+}
+
+th.sorted-asc::after {
+  content: ' ↑';
+}
+
+th.sorted-desc::after {
+  content: ' ↓';
+}
+
+/*th.filtered::after {*/
+/*  content: ' •'; !* Add a visual cue for filtered headers *!*/
+/*}*/
 

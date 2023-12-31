@@ -254,4 +254,5 @@ export class CenterDetailsComponent implements OnInit {
       size: "lg"
     });
   }
+
 }
