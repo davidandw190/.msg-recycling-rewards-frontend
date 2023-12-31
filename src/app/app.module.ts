@@ -26,6 +26,8 @@ import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
 import {AcceptedMaterialsPipe} from "./pipes/accepted-materials.pipe";
+import {HttpCacheService} from "./service/http.cache.service";
+import {CacheInterceptor} from "./interceptor/cache.interceptor";
 
 @NgModule({
   declarations: [
@@ -60,11 +62,8 @@ import {AcceptedMaterialsPipe} from "./pipes/accepted-materials.pipe";
     NgbTimepickerModule,
   ],
   providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true
-    }
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: HttpCacheService, useClass: CacheInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
   exports: [HighlightSearchPipe]
