@@ -59,11 +59,13 @@ import {CacheInterceptor} from "./interceptor/cache.interceptor";
     MatSelectModule,
     NgMultiSelectDropDownModule,
     AcceptedMaterialsPipe,
+
     NgbTimepickerModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-    { provide: HttpCacheService, useClass: CacheInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
+    HttpCacheService,
   ],
   bootstrap: [AppComponent],
   exports: [HighlightSearchPipe]
