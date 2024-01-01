@@ -36,48 +36,6 @@ body {
 }
 /* Add these styles to your component's CSS file */
 
-.badge-soft-ewaste {
-  color: #fff !important;
-  background-color: #f3ad1a;
-  font-size: 12px;
-}
-
-.badge-soft-aluminium {
-  color: #fff !important;
-  background-color: #948b8b;
-  font-size: 12px;
-}
-
-.badge-soft-plastic {
-  color: #fff !important;
-  background-color: #f56e6e;
-  font-size: 12px;
-}
-
-.badge-soft-paper {
-  color: #fff !important;
-  background-color: #63ad6f;
-  font-size: 12px;
-}
-
-.badge-soft-glass {
-  color: #fff !important;
-  background-color: #3b76e1;
-  font-size: 12px;
-}
-
-.badge-soft-metals {
-  color: #fff !important;
-  background-color: rgba(183, 61, 61, 0.89);
-  font-size: 12px;
-}
-
-.badge-soft-plastic {
-  color: #fff !important;
-  background-color: #f56e6e;
-  font-size: 12px;
-}
-
 .accepted-materials {
   display: flex;
   gap: 5px; /* Adjust the spacing between badges as needed */

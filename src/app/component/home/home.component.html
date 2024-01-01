@@ -2,36 +2,42 @@
   <!-- Main Content -->
   <section class="main-section">
     <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
+    <div style="margin-top: 100px"> </div>
     <app-stats></app-stats>
     <div class="container mt-3">
       <div class="row">
         <div class="col">
-          <h4 class="fw-bold text-start">Recycling Centers ({{ state?.appData?.data?.page?.totalElements }})</h4>
+          <h4 class="fw-bold text-start">Recycling Centers in <span style="color: #A01540FF">{{state?.appData?.data?.user?.county}}</span> ({{ state?.appData?.data?.page?.totalElements }})</h4>
         </div>
         <div class="col text-end">
-          <button class="btn btn-success me-2"  (click)="navigateToCreateCenter()">
+          <button mat-flat-button (click)="navigateToCreateCenter()" style="background-color: #28a745; color: white; margin-right: 10px" class="m-lg-2-2">
             <i class="fa-regular fa-square-plus"></i> New Center
           </button>
           <!-- Add a 'View More' button -->
-          <button class="btn btn-info me-2" (click)="navigateToCentersView()">
-            <i class="fa-solid fa-list-ul"></i> View More
-          </button>
+          <button mat-flat-button (click)="navigateToCentersView()" style="background-color: #A01540FF; color: cornsilk">
+            <i class="fa-solid fa-list-ul"></i> More</button>
+
+
+<!--          <button class="btn btn-info me-2" (click)="navigateToCentersView()">-->
+<!--             View More-->
+<!--          </button>-->
         </div>
       </div>
 
       <!-- Table Section -->
       <div class="table-responsive mt-3">
-        <table class="table table-hover">
+        <table matSort class="table table-hover">
           <!-- Table Header -->
           <thead class="bg-gradient text-white">
           <tr>
-            <th scope="col">Photo</th>
-            <th scope="col">Name</th>
-            <th scope="col">Contact</th>
-            <th scope="col">Location</th>
-            <th scope="col">Materials</th>
-            <th scope="col">Working Intervals</th>
-            <th scope="col">Status</th>
+            <th scope="col" >Photo</th>
+            <th scope="col"  mat-sort-header="name">Name</th>
+            <th scope="col" >Contact</th>
+            <th scope="col"  mat-sort-header="county" class="sortable">County</th>
+            <th scope="col"  mat-sort-header="city" class="sortable">City</th>
+            <th scope="col"  mat-sort-header="materials" class="sortable">Accepted Materials</th>
+            <th scope="col" >Working Intervals</th>
+            <!--              <th scope="col">Status</th>-->
             <th scope="col">Action</th>
           </tr>
           </thead>
@@ -39,9 +45,10 @@
           <tbody *ngFor="let center of state?.appData?.data?.page?.content" class="table-body">
           <tr class="cell-1">
             <td><img src="https://robohash.org/recyclingcenter" width="42" height="42" class="rounded-circle"></td>
-            <td>{{ center.name }}</td>
-            <td>{{ center.county }}</td>
-            <td>{{ center.city }}</td>
+            <td>  {{ center.name }} </td>
+            <td> {{ center.contact }} </td>
+            <td>  {{ center.county }} </td>
+            <td>  {{ center.city }} </td>
             <td>
               <div class="accepted-materials">
                 <ng-container *ngFor="let material of center | acceptedMaterials">
@@ -49,19 +56,20 @@
                 </ng-container>
               </div>
             </td>
-            <td>
+            <td [ngClass]="{ 'text-success': isCenterOpen(center), 'text-danger': !isCenterOpen(center) }">
               <ng-container *ngIf="center.alwaysOpen; else hourInterval">
-                Open Always
+                <strong>Open Always</strong>
               </ng-container>
               <ng-template #hourInterval>
-                {{ center.openingHour | slice: 0:5 }} - {{ center.closingHour | slice: 0:5 }}
+                <strong>{{ center.openingHour | slice: 0:5 }} - {{ center.closingHour | slice: 0:5 }}</strong>
               </ng-template>
             </td>
+
+            <!--              <td>-->
+            <!--                <span class="badge bg-success">OPEN</span>-->
+            <!--              </td>-->
             <td>
-              <span class="badge bg-success">OPEN</span>
-            </td>
-            <td>
-              <button type="button" [routerLink]="['/centers']" class="btn" style="background-color: #63ad6f; color: #fff;">  <i class="fa-solid fa-recycle"></i>  </button>
+              <button type="button" [routerLink]="['/centers', center.centerId]" class="btn" style="background-color: #28a745; color: #fff;">  <i class="fa-solid fa-recycle"></i>  </button>
             </td>
           </tr>
           </tbody>
@@ -80,8 +88,8 @@
           (pageChange)="goToPage($event)"
           class="pagination justify-content-end"
         >
-          <ng-template ngbPaginationPrevious><< Prev</ng-template>
-          <ng-template ngbPaginationNext>Next >></ng-template>
+          <ng-template ngbPaginationPrevious><i class="fa-solid fa-angle-left"></i> Prev</ng-template>
+          <ng-template ngbPaginationNext>Next <i class="fa-solid fa-angle-right"></i></ng-template>
         </ngb-pagination>
       </nav>
     </div>

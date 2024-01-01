@@ -1,6 +1,7 @@
 <ng-container *ngIf="(centersState$ | async) as state" [ngSwitch]="state.dataState">
   <ng-container *ngSwitchCase="DataState.LOADED">
     <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
+    <div style="margin-top: 90px"> </div>
     <section>
       <div class="container mt-4">
         <nav aria-label="breadcrumb">
@@ -15,19 +16,22 @@
         <div class="row mt-3">
           <div class="col-12">
             <h4 class="fw-bold">Available Recycling Centers ({{state?.appData?.data?.page?.totalElements}})</h4>
-
-            <div class="d-flex justify-content-end align-items-center mt-3">
+            <div class="d-flex justify-content-end align-items-center" style="margin-top: -10px">
               <mat-chip-grid #chipGrid aria-label="Enter keywords">
                 <div *ngFor="let material of selectedMaterials">
                   <mat-chip-row (removed)="onRemoveMaterial(material)">
                     {{ material }}
-                    <button type="button" class="btn-close" aria-label="Remove" (click)="onRemoveMaterial(material)"></button>
+                    <button matChipRemove aria-label="Remove" (click)="onRemoveMaterial(material)">
+                      <mat-icon>cancel</mat-icon>
+                    </button>
                   </mat-chip-row>
                 </div>
               </mat-chip-grid>
+
               <button class="btn btn-danger me-2" (click)="redirectNewCenter()" style="margin-left: 12px">
-                <i class="bi bi-file-earmark-excel"></i> Export Report
+                <i class="bi bi-file-earmark-excel"></i> Export
               </button>
+
               <button class="btn btn-success me-2" (click)="redirectNewCenter()">
                 <i class="fa-regular fa-square-plus"></i> New Center
               </button>
@@ -90,6 +94,10 @@
                     <label class="visually-hidden">Sort By</label>
                     <select formControlName="sortBy" class="form-control">
                       <option value="createdAt">Created At</option>
+                      <option value="name">Name</option>
+                      <option value="contact">Contact</option>
+                      <option value="County">County</option>
+                      <option value="City">City</option>
                       <!-- Add other sorting options as needed -->
                     </select>
                   </div>
@@ -164,7 +172,7 @@
 <!--                <span class="badge bg-success">OPEN</span>-->
 <!--              </td>-->
               <td>
-                <button type="button" [routerLink]="['/centers']" class="btn" style="background-color: #63ad6f; color: #fff;">  <i class="fa-solid fa-recycle"></i>  </button>
+                <button type="button" [routerLink]="['/centers', center.centerId]" class="btn" style="background-color: #28a745; color: #fff;">  <i class="fa-solid fa-recycle"></i>  </button>
               </td>
             </tr>
             </tbody>
@@ -183,8 +191,8 @@
                 (pageChange)="goToPage($event)"
                 class="pagination justify-content-end"
               >
-                <ng-template ngbPaginationPrevious>&laquo; Prev</ng-template>
-                <ng-template ngbPaginationNext>Next &raquo;</ng-template>
+                <ng-template ngbPaginationPrevious><i class="fa-solid fa-angle-left"></i> Prev</ng-template>
+                <ng-template ngbPaginationNext>Next <i class="fa-solid fa-angle-right"></i></ng-template>
               </ngb-pagination>
             </nav>
 

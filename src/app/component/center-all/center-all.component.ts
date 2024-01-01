@@ -392,4 +392,5 @@ export class CenterAllComponent implements OnInit {
       queryParamsHandling: 'merge',
     });
   }
+
 }

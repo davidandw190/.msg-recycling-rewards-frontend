@@ -42,7 +42,7 @@ export class CenterNewComponent implements OnInit {
 
   newCenterForm: FormGroup;
 
-  availableMaterials: string[] = ['GLASS', 'PLASTIC', 'PAPER', 'ALUMINIUM', 'METALS', 'E-WASTE'];
+  availableMaterials: string[] = ['GLASS', 'PLASTIC', 'PAPER', 'ALUMINIUM', 'METALS', 'ELECTRONICS'];
   selectedMaterials: string[] = []
   openingTime: NgbTimeStruct;
   closingTime: NgbTimeStruct;
