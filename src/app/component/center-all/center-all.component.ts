@@ -22,6 +22,7 @@ import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {CenterService} from '../../service/center.service';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {LocationService} from "../../service/location.service";
+import {Sort} from "@angular/material/sort";
 
 @Component({
   selector: 'app-center-all',
@@ -336,14 +337,14 @@ export class CenterAllComponent implements OnInit {
     return of(citiesForCounty.filter((city) => city.toLowerCase().includes(filterValue)));
   }
 
-  sort(column: string): void {
+  sort(event: Sort): void {
     const currentSortBy = this.searchForm.get('sortBy').value;
     const currentSortOrder = this.searchForm.get('sortOrder').value;
 
     // Toggle the sorting order when the same column is clicked
-    const newSortOrder = currentSortBy === column ? (currentSortOrder === 'asc' ? 'desc' : 'asc') : 'asc';
+    const newSortOrder = currentSortBy === event.active ? (currentSortOrder === 'asc' ? 'desc' : 'asc') : 'asc';
 
-    this.searchForm.get('sortBy').setValue(column, { emitEvent: false });
+    this.searchForm.get('sortBy').setValue(event.active, { emitEvent: false });
     this.searchForm.get('sortOrder').setValue(newSortOrder, { emitEvent: false });
 
     // Trigger the search with updated sorting parameters
