@@ -17,6 +17,14 @@
             <h4 class="fw-bold">Available Recycling Centers ({{state?.appData?.data?.page?.totalElements}})</h4>
 
             <div class="d-flex justify-content-end align-items-center mt-3">
+              <mat-chip-grid #chipGrid aria-label="Enter keywords">
+                <div *ngFor="let material of selectedMaterials">
+                  <mat-chip-row (removed)="onRemoveMaterial(material)">
+                    {{ material }}
+                    <button type="button" class="btn-close" aria-label="Remove" (click)="onRemoveMaterial(material)"></button>
+                  </mat-chip-row>
+                </div>
+              </mat-chip-grid>
               <button class="btn btn-danger me-2" (click)="redirectNewCenter()" style="margin-left: 12px">
                 <i class="bi bi-file-earmark-excel"></i> Export Report
               </button>
