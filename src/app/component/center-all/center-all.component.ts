@@ -1,5 +1,5 @@
 import {TypeaheadMatch} from 'ngx-bootstrap/typeahead';
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {
   BehaviorSubject,
   catchError,
@@ -10,8 +10,8 @@ import {
   map,
   Observable,
   of,
-  startWith,
-  switchMap,
+  startWith, Subject,
+  switchMap, takeUntil,
   tap,
 } from 'rxjs';
 import {AppState} from '../../interface/app-state';
@@ -31,7 +31,10 @@ import {RecyclingCenter} from "../../interface/recycling-center";
   styleUrls: ['./center-all.component.css'],
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class CenterAllComponent implements OnInit {
+export class CenterAllComponent implements OnInit, OnDestroy {
+
+  private destroy$: Subject<void> = new Subject<void>();
+
   centersState$: Observable<AppState<CustomHttpResponse<CentersPageResponse>>>;
   private dataSubject = new BehaviorSubject<CustomHttpResponse<CentersPageResponse>>(null);
   private isLoadingSubject = new BehaviorSubject<boolean>(false);
@@ -40,6 +43,7 @@ export class CenterAllComponent implements OnInit {
   currentPage$ = this.currentPageSubject.asObservable();
 
   currentPage: number = 0;
+
   searchQuery: string;
 
   readonly DataState = DataState;
@@ -47,10 +51,6 @@ export class CenterAllComponent implements OnInit {
   searchForm: FormGroup;
 
   isFiltersCollapsed = true;
-
-  toggleFilters() {
-    this.isFiltersCollapsed = !this.isFiltersCollapsed;
-  }
 
   availableMaterials: string[] = ['PAPER', 'GLASS', 'PLASTIC', 'ALUMINUM', 'METALS', 'E-WASTE'];
 
@@ -69,6 +69,21 @@ export class CenterAllComponent implements OnInit {
     private formBuilder: FormBuilder,
     private locationService: LocationService
   ) {
+    this.initializeForm();
+    this.subscribeToQueryParams();
+  }
+
+  ngOnInit(): void {
+    this.setupFormChangeListeners();
+    this.setupKeyEventListeners();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private initializeForm(): void {
     this.searchForm = this.formBuilder.group({
       name: [''],
       county: [''],
@@ -77,7 +92,9 @@ export class CenterAllComponent implements OnInit {
       sortBy: ['createdAt'],
       sortOrder: ['asc'],
     });
+  }
 
+  private subscribeToQueryParams(): void {
     this.route.queryParamMap.subscribe((params: ParamMap) => {
       this.searchQuery = params.get('name') || '';
       this.searchForm.setValue({
@@ -92,30 +109,16 @@ export class CenterAllComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.route.queryParamMap.subscribe((params: ParamMap) => {
-
-      this.searchQuery = params.get('name') || '';
-      this.searchForm.setValue({
-        name: this.searchQuery,
-        county: params.get('county') || '',
-        city: params.get('city') || '',
-        materials: '',
-        sortBy: params.get('sortBy') || 'createdAt',
-        sortOrder: params.get('sortOrder') || 'asc',
-      });
-      this.initializeSearch();
-    });
-
+  private setupFormChangeListeners(): void {
     this.searchForm.get('county').valueChanges
       .pipe(
         debounceTime(300),
         distinctUntilChanged(),
-        tap(() => this.searchForm.get('city').setValue('')), // Clear city on county change
+        tap(() => this.searchForm.get('city').setValue('')),
         tap((county) => this.handleCountyChange(county)),
-        filter(() => false) // Prevent reactive changes
+        filter(() => false)
       )
-      .subscribe()
+      .subscribe();
 
     this.searchForm.get('city').valueChanges
       .pipe(
@@ -185,16 +188,15 @@ export class CenterAllComponent implements OnInit {
         filter(() => false) // Prevent reactive changes
       )
       .subscribe();
+  }
 
-    console.log(this.availableMaterials)
-
+  private setupKeyEventListeners(): void {
     fromEvent<KeyboardEvent>(document, 'keydown')
       .pipe(
         filter((event) => event.key === 'Enter'),
         filter(() => this.searchForm.valid)
       )
       .subscribe(() => this.searchCenters());
-
   }
 
   onSelectCounty(event: TypeaheadMatch): void {
@@ -225,6 +227,10 @@ export class CenterAllComponent implements OnInit {
       startWith({ dataState: DataState.LOADING }),
       catchError((error: string) => of({ dataState: DataState.ERROR, error }))
     );
+  }
+
+  toggleFilters() {
+    this.isFiltersCollapsed = !this.isFiltersCollapsed;
   }
 
   searchCenters(): void {
@@ -374,7 +380,6 @@ export class CenterAllComponent implements OnInit {
       this.searchForm.get('sortOrder').setValue(newSortOrder, { emitEvent: true });
     }
 
-    // Trigger the search with updated sorting parameters
     this.searchCenters();
   }
 
