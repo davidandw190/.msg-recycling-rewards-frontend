@@ -70,6 +70,7 @@
       <!-- Pagination -->
       <nav *ngIf="state?.appData?.data?.page.totalPages > 0">
         <ngb-pagination
+          [pageSize]="5"
           [(page)]="currentPage"
           [collectionSize]="state?.appData?.data?.page?.totalElements"
           [maxSize]="3"

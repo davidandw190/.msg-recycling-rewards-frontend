@@ -28,17 +28,13 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private centerService: CenterService,
-    private paginationConfig: NgbPaginationConfig
-  ) {
-    paginationConfig.size = 'sm';
-    paginationConfig.boundaryLinks = true;
-  }
+    private centerService: CenterService
+  ) {}
 
   ngOnInit(): void {
     this.homeState$ = this.currentPage$
       .pipe(
-        switchMap(pageNumber => this.centerService.centers$(pageNumber)),
+        switchMap(pageNumber => this.centerService.centersNearUser$(pageNumber)),
         tap(response => {
           console.log(response);
           this.dataSubject.next(response);
