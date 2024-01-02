@@ -40,6 +40,17 @@ export class CenterService {
         catchError(this.handleError)
       );
 
+
+  centersNearUser$(page: number = 0): Observable<CustomHttpResponse<HomePageResponse>> {
+    return this.http.get<CustomHttpResponse<HomePageResponse>>
+    (`${this.server}/centers/list-nearby?page=${page}`)
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
+  }
+
+
   searchCenters$(name: string = '',
                  county: string = '',
                  city: string = '',
