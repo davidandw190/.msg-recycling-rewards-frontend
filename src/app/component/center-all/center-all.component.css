@@ -8,37 +8,88 @@
   font-weight: bold;
 }
 
-/* Add these styles to your component's CSS file */
-.selected-materials {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.selected-materials .badge {
-  background-color: #28a745; /* Green color */
-  color: #fff; /* White text */
-  border-radius: 4px;
-  padding: 6px 12px;
-  margin-right: 8px;
-  display: flex;
-  align-items: center;
-}
 
 th.sortable {
   cursor: pointer;
 }
 
+/*th.filtered::after {*/
+/*  content: ' •';*/
+/*}*/
 
-th.sorted-asc::after {
-  content: ' ↑';
+/* Add your custom styles here */
+.margin-top-90 {
+  margin-top: 90px;
 }
 
-th.sorted-desc::after {
-  content: ' ↓';
+.flex-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: -10px;
 }
 
-th.filtered::after {
-  content: ' •';
+.chip-set-container {
+  margin-left: 12px;
 }
+
+.btn-export {
+  margin-left: 12px;
+}
+
+.btn-create {
+  margin-right: 3px;
+}
+
+.btn-group-container {
+  margin-right: 1px;
+}
+
+.filter-btn {
+  border-color: #A01540;
+  color: #A01540;
+}
+
+.filter-btn:hover {
+  background-color: #A01540;
+  color: white;
+}
+
+.filter-btn .active {
+  background-color: #A01540;
+  color: white;
+}
+
+
+
+.pagination-container {
+  justify-content: flex-end;
+}
+
+.table-header {
+  background: linear-gradient(#28a745, #218838);
+  color: white;
+}
+
+.table-body {
+  background-color: #f8f9fa;
+}
+
+.pagination {
+  justify-content: flex-end;
+}
+
+.alert-info {
+  margin-top: 3rem;
+}
+
+.filter-btn.active {
+  background-color: #A01540;
+  color: white;
+}
+
+.badge-green {
+  background-color: green;
+  color: white;
+}
+

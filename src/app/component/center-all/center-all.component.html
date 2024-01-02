@@ -17,7 +17,7 @@
           <div class="col-12">
             <h4 class="fw-bold">Available Recycling Centers ({{state?.appData?.data?.page?.totalElements}})</h4>
             <div class="d-flex justify-content-end align-items-center" style="margin-top: -10px">
-              <mat-chip-set #chipSet aria-label="Enter keywords">
+              <mat-chip-set #chipSet class="chip-set-container">
                 <div *ngFor="let material of selectedMaterials">
                   <mat-chip-row (removed)="onRemoveMaterial(material)">
                     {{ material }}
@@ -28,16 +28,33 @@
                 </div>
               </mat-chip-set>
 
-              <button class="btn btn-danger me-2" (click)="redirectNewCenter()" style="margin-left: 12px">
-                <i class="bi bi-file-earmark-excel"></i> Export
+              <button class="btn btn-danger btn-export me-2" (click)="redirectNewCenter()">
+                <i class="fa-regular fa-file-excel"></i> Export
               </button>
 
-              <button class="btn btn-success me-3" (click)="redirectNewCenter()">
+              <button class="btn btn-success btn-create me-3" (click)="redirectNewCenter()">
                 <i class="fa-regular fa-square-plus"></i> Create
               </button>
 
-              <div class="btn-group me-1">
-                <button type="button" matBadgePosition="before" class="filter btn btn-outline-success" style="border-color: #A01540;" [matBadge]="numEnabledFilters" [matBadgeHidden]="numEnabledFilters < 1"  (click)="toggleFilters()" [attr.aria-expanded]="!isFiltersCollapsed"><i  class="bi bi-funnel"> </i> </button>
+              <div class="btn-group btn-group-container">
+                <button
+                  type="button"
+                  matBadgePosition="before"
+                  aria-pressed="true"
+                  class="filter-btn btn btn-outline-success"
+                  [matBadge]="numEnabledFilters"
+                  matBadgeColor="primary"
+                  [matBadgeHidden]="numEnabledFilters < 1"
+                  (click)="toggleFilters()"
+                  [attr.aria-expanded]="!isFiltersCollapsed"
+                  [class.active]="!isFiltersCollapsed"
+                >
+                  <i class="fa-solid fa-filter"></i>
+                  <i *ngIf="!isFiltersCollapsed" class="fa-solid fa-sort-up"></i>
+                  <i *ngIf="isFiltersCollapsed" class="fa-solid fa-sort-down"></i>
+                </button>
+
+
                 <button type="button" class="btn btn-outline-secondary"  (click)="resetFilters()" [disabled]="numEnabledFilters === 0">Clear</button>
               </div>
             </div>
@@ -115,19 +132,7 @@
                       <option value="desc">Descending</option>
                     </select>
                   </div>
-
-<!--                  <div class="col-md-4 d-flex align-items-end mt-3">-->
-<!--                  <button type="button" class="btn btn-secondary me-2" (click)="resetFilters()">Reset Filters</button>-->
-<!--                  </div>-->
                 </div>
-
-                <!-- Selected Materials Badges -->
-<!--                <div class="selected-materials">-->
-<!--                  <div *ngFor="let material of selectedMaterials" class="badge bg-success">-->
-<!--                    {{ material }}-->
-<!--                    <button type="button" class="btn-close" aria-label="Remove" (click)="onRemoveMaterial(material)"></button>-->
-<!--                  </div>-->
-<!--                </div>-->
               </form>
             </div>
           </div>
@@ -135,30 +140,32 @@
 
         <!-- Table and Pagination Content -->
         <!-- Table Section -->
+        <!-- ... (your existing code) ... -->
+
         <div class="table-responsive mt-3">
-          <table matSort (matSortChange)="sort($event)" class="table table-hover">
+          <table matSort (matSortChange)="sort($event)" class="table table-bordered table-hover">
             <!-- Table Header -->
             <thead class="bg-gradient text-white">
             <tr>
-              <th scope="col" >Photo</th>
-              <th scope="col"  mat-sort-header="name">Name</th>
-              <th scope="col" >Contact</th>
-              <th scope="col"  mat-sort-header="county" class="sortable" [class.filtered]="isFiltered('county')" >County</th>
-              <th scope="col"  mat-sort-header="city" class="sortable" [class.filtered]="isFiltered('city')">City</th>
-              <th scope="col"  mat-sort-header="materials" class="sortable" [class.filtered]="isFiltered('materials')">Accepted Materials</th>
-              <th scope="col" >Working Intervals</th>
-              <!--              <th scope="col">Status</th>-->
-              <th scope="col">Action</th>
+              <th scope="col"  class="text-center">Photo</th>
+              <th scope="col" mat-sort-header="name">Name</th>
+              <th scope="col">Contact</th>
+              <th scope="col" mat-sort-header="county" class="sortable" [class.filtered]="isFiltered('county')">County</th>
+              <th scope="col" mat-sort-header="city" class="sortable" [class.filtered]="isFiltered('city')">City</th>
+              <th scope="col" mat-sort-header="materials" class="sortable" [class.filtered]="isFiltered('materials')">Accepted Materials</th>
+              <th scope="col"  class="text-center">Working Intervals</th>
+              <th scope="col" class="text-center">Action</th>
             </tr>
             </thead>
+
             <!-- Table Body -->
             <tbody *ngFor="let center of state?.appData?.data?.page?.content" class="table-body">
             <tr class="cell-1">
               <td><img src="https://robohash.org/recyclingcenter" width="42" height="42" class="rounded-circle"></td>
-              <td>  {{ center.name }} </td>
-              <td> {{ center.contact }} </td>
-              <td>  {{ center.county }} </td>
-              <td>  {{ center.city }} </td>
+              <td>{{ center.name }}</td>
+              <td>{{ center.contact }}</td>
+              <td>{{ center.county }}</td>
+              <td>{{ center.city }}</td>
               <td>
                 <div class="accepted-materials">
                   <ng-container *ngFor="let material of center | acceptedMaterials">
@@ -174,39 +181,38 @@
                   {{ center.openingHour | slice: 0:5 }} - {{ center.closingHour | slice: 0:5 }}
                 </ng-template>
               </td>
-<!--              <td>-->
-<!--                <span class="badge bg-success">OPEN</span>-->
-<!--              </td>-->
               <td>
-                <button type="button" [routerLink]="['/centers', center.centerId]" class="btn" style="background-color: #28a745; color: #fff;">  <i class="fa-solid fa-recycle"></i>  </button>
+                <button type="button" [routerLink]="['/centers', center.centerId]" class="btn btn-success">
+                  <i class="fa-solid fa-recycle"></i> View
+                </button>
               </td>
             </tr>
             </tbody>
           </table>
         </div>
 
-            <!-- Pagination -->
-            <nav *ngIf="state?.appData?.data?.page.totalPages > 0">
-              <ngb-pagination
-                [(page)]="currentPage"
-                [collectionSize]="state?.appData?.data?.page.totalElements"
-                [maxSize]="3"
-                [rotate]="true"
-                [boundaryLinks]="false"
-                [ellipses]="true"
-                (pageChange)="goToPage($event)"
-                class="pagination justify-content-end"
-              >
-                <ng-template ngbPaginationPrevious><i class="fa-solid fa-angle-left"></i> Prev</ng-template>
-                <ng-template ngbPaginationNext>Next <i class="fa-solid fa-angle-right"></i></ng-template>
-              </ngb-pagination>
-            </nav>
+        <!-- Pagination -->
+        <nav *ngIf="state?.appData?.data?.page.totalPages > 0" class="pagination-container">
+          <ngb-pagination
+            [(page)]="currentPage"
+            [collectionSize]="state?.appData?.data?.page.totalElements"
+            [maxSize]="3"
+            [rotate]="true"
+            [boundaryLinks]="false"
+            [ellipses]="true"
+            (pageChange)="goToPage($event)"
+            class="pagination justify-content-end"
+          >
+            <ng-template ngbPaginationPrevious><i class="fa-solid fa-angle-left"></i> Prev</ng-template>
+            <ng-template ngbPaginationNext>Next <i class="fa-solid fa-angle-right"></i></ng-template>
+          </ngb-pagination>
+        </nav>
 
-            <!-- No Centers Message -->
-            <div *ngIf="!state?.appData?.data?.page?.content?.length" class="alert alert-info mt-3" role="alert">
-              No recycling centers available at the moment. Check back later.
-            </div>
-          </div>
+        <!-- No Centers Message -->
+        <div *ngIf="!state?.appData?.data?.page?.content?.length" class="alert alert-info mt-3" role="alert">
+          No recycling centers available at the moment. Check back later.
+        </div>
+      </div>
     </section>
   </ng-container>
 
