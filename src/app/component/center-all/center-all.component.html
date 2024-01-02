@@ -17,7 +17,7 @@
           <div class="col-12">
             <h4 class="fw-bold">Available Recycling Centers ({{state?.appData?.data?.page?.totalElements}})</h4>
             <div class="d-flex justify-content-end align-items-center" style="margin-top: -10px">
-              <mat-chip-grid #chipGrid aria-label="Enter keywords">
+              <mat-chip-set #chipSet aria-label="Enter keywords">
                 <div *ngFor="let material of selectedMaterials">
                   <mat-chip-row (removed)="onRemoveMaterial(material)">
                     {{ material }}
@@ -26,19 +26,22 @@
                     </button>
                   </mat-chip-row>
                 </div>
-              </mat-chip-grid>
+              </mat-chip-set>
 
               <button class="btn btn-danger me-2" (click)="redirectNewCenter()" style="margin-left: 12px">
                 <i class="bi bi-file-earmark-excel"></i> Export
               </button>
 
-              <button class="btn btn-success me-2" (click)="redirectNewCenter()">
-                <i class="fa-regular fa-square-plus"></i> New Center
+              <button class="btn btn-success me-3" (click)="redirectNewCenter()">
+                <i class="fa-regular fa-square-plus"></i> Create
               </button>
-              <button type="button" class="btn btn-outline-primary" (click)="toggleFilters()" [attr.aria-expanded]="!isFiltersCollapsed">
-                <i class="bi bi-funnel"></i> Filters
-              </button>
+
+              <div class="btn-group me-1">
+                <button type="button" matBadgePosition="before" class="filter btn btn-outline-success" style="border-color: #A01540;" [matBadge]="numEnabledFilters" [matBadgeHidden]="numEnabledFilters < 1"  (click)="toggleFilters()" [attr.aria-expanded]="!isFiltersCollapsed"><i  class="bi bi-funnel"> </i> </button>
+                <button type="button" class="btn btn-outline-secondary"  (click)="resetFilters()" [disabled]="numEnabledFilters === 0">Clear</button>
+              </div>
             </div>
+
 
             <div #filtersCollapse="ngbCollapse" [(ngbCollapse)]="isFiltersCollapsed" class="mt-3">
               <form [formGroup]="searchForm" (ngSubmit)="searchCenters()">
@@ -94,11 +97,14 @@
                     <label class="visually-hidden">Sort By</label>
                     <select formControlName="sortBy" class="form-control">
                       <option value="createdAt">Created At</option>
-                      <option value="name">Name</option>
+                      <option value="name">Center Name</option>
                       <option value="contact">Contact</option>
-                      <option value="County">County</option>
-                      <option value="City">City</option>
-                      <!-- Add other sorting options as needed -->
+                      <option value="county">County</option>
+                      <option value="city">City</option>
+                      <option value="acceptedMaterials">Accepted Materials</option>
+                      <option value="openingHour">Opening Hour</option>
+                      <option value="closingHour">Closing Hour</option>
+
                     </select>
                   </div>
 
@@ -110,9 +116,9 @@
                     </select>
                   </div>
 
-                  <div class="col-md-4 d-flex align-items-end">
-                    <button type="button" class="btn btn-secondary mb-3 me-2" (click)="resetFilters()">Reset Filters</button>
-                  </div>
+<!--                  <div class="col-md-4 d-flex align-items-end mt-3">-->
+<!--                  <button type="button" class="btn btn-secondary me-2" (click)="resetFilters()">Reset Filters</button>-->
+<!--                  </div>-->
                 </div>
 
                 <!-- Selected Materials Badges -->

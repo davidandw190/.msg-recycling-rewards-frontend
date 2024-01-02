@@ -28,6 +28,12 @@ import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
 import {AcceptedMaterialsPipe} from "./pipes/accepted-materials.pipe";
 import {HttpCacheService} from "./service/http.cache.service";
 import {CacheInterceptor} from "./interceptor/cache.interceptor";
+import {MatButtonModule} from "@angular/material/button";
+import {MatSortModule} from "@angular/material/sort";
+import {MatChipsModule} from "@angular/material/chips";
+import {MatIconModule} from "@angular/material/icon";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatBadgeModule} from "@angular/material/badge";
 
 @NgModule({
   declarations: [
@@ -61,11 +67,17 @@ import {CacheInterceptor} from "./interceptor/cache.interceptor";
     AcceptedMaterialsPipe,
 
     NgbTimepickerModule,
+    MatButtonModule,
+    MatSortModule,
+    MatChipsModule,
+    MatIconModule,
+    MatSlideToggleModule,
+    MatBadgeModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
-    HttpCacheService,
+    // { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
+    // HttpCacheService,
   ],
   bootstrap: [AppComponent],
   exports: [HighlightSearchPipe]

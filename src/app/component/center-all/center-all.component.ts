@@ -59,6 +59,8 @@ export class CenterAllComponent implements OnInit {
 
   cities: string[] = [];
 
+  numEnabledFilters: number = 0;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -234,6 +236,7 @@ export class CenterAllComponent implements OnInit {
     const sortBy = this.searchForm.get('sortBy').value;
     const sortOrder = this.searchForm.get('sortOrder').value;
 
+    this.updateEnabledFilters();
     this.isLoadingSubject.next(true);
 
     this.centerService
@@ -309,6 +312,18 @@ export class CenterAllComponent implements OnInit {
     }
   }
 
+  private updateEnabledFilters(): void {
+    // Count the number of enabled filters excluding "createdAt", "asc", and "materials"
+    this.numEnabledFilters = Object.entries(this.searchForm.controls)
+      .filter(([key, control]) => key !== 'sortBy' || control.value !== 'createdAt')
+      .filter(([key, control]) => key !== 'sortOrder' || control.value !== 'asc')
+      .filter(([key, control]) => key !== 'materials') // Exclude materials
+      .filter(([key, control]) => control.value !== null && control.value !== '')
+      .length
+      + this.selectedMaterials.length;
+  }
+
+
   onRemoveMaterial(material: string): void {
     this.selectedMaterials = this.selectedMaterials.filter((m) => m !== material);
     this.updateSearch(); // Update search when a material is removed
@@ -362,26 +377,9 @@ export class CenterAllComponent implements OnInit {
     this.searchCenters();
   }
 
-
-  // isSorted(column: string, order: string): boolean {
-  //   // return this.searchForm.get('sortBy').value === column && this.searchForm.get('sortOrder').value === order;
-  //
-  //   const sortBy = this.searchForm.get('sortBy').value;
-  //   const sortOrder = this.searchForm.get('sortOrder').value;
-  //
-  //   // Check if the column is sorted
-  //   if (sortBy === column && sortOrder === order) {
-  //     return true;
-  //   }
-  //
-  //   // Check if the column is filtered
-  //   return this.isFiltered(column) && sortOrder === order;
-  // }
-
   isFiltered(column: string): boolean {
     return this.searchForm.get(column).value !== '';
   }
-
 
   private updateUrlParameters(): void {
     const name = this.searchForm.get('name').value;
