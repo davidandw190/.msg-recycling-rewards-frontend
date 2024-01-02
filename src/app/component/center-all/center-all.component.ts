@@ -23,6 +23,7 @@ import {CenterService} from '../../service/center.service';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {LocationService} from "../../service/location.service";
 import {Sort} from "@angular/material/sort";
+import {RecyclingCenter} from "../../interface/recycling-center";
 
 @Component({
   selector: 'app-center-all',
@@ -403,4 +404,7 @@ export class CenterAllComponent implements OnInit {
     });
   }
 
+  isCenterOpen(center: RecyclingCenter): boolean {
+    return this.centerService.isCenterOpen(center);
+  }
 }

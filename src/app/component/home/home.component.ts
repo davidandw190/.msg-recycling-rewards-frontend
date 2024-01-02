@@ -73,15 +73,7 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/centers/all'])
   }
 
-  isCenterOpen(center: any): boolean {
-    if (center.alwaysOpen) {
-      return true; // Center is always open
-    }
-
-    const currentDateTime = new Date();
-    const openingTime = new Date(currentDateTime.toDateString() + ' ' + center.openingHour);
-    const closingTime = new Date(currentDateTime.toDateString() + ' ' + center.closingHour);
-
-    return currentDateTime >= openingTime && currentDateTime <= closingTime;
+  isCenterOpen(center: RecyclingCenter): boolean {
+    return this.centerService.isCenterOpen(center);
   }
 }

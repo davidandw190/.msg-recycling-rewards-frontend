@@ -1,5 +1,5 @@
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #A01540">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #A01540; box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);">
   <div class="container">
     <a class="navbar-brand text-color" [routerLink]="['/']">
       <span class="brand-name"><i class="fa-solid fa-leaf"></i> .msgRecyclingRewards</span>
@@ -15,17 +15,27 @@
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Centers</a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" [routerLink]="['/centers/all']"><i class="bi bi-person-plus-fill"></i> All Centers</a></li>
-            <li><a class="dropdown-item" [routerLink]="['/centers/all']"><i class="bi bi-people-fill"></i> Favourite Centers</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/centers/all']"><i class="bi bi-people-fill"></i> My Favourites </a></li>
           </ul>
         </li>
 
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Leaderboard</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" [routerLink]="['/leaderboards/monthly']"><i class="bi bi-person-plus-fill"></i> Monthly Leaderboard</a></li>
-            <li><a class="dropdown-item" [routerLink]="['/leaderboard']"><i class="bi bi-people-fill"></i> Global Leaderboard</a></li>
-          </ul>
+<!--        <li class="nav-item dropdown">-->
+<!--          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Vouchers</a>-->
+<!--          <ul class="dropdown-menu">-->
+<!--            <li><a class="dropdown-item" [routerLink]="['/centers/all']"><i class="bi bi-person-plus-fill"></i> All Centers</a></li>-->
+<!--            <li><a class="dropdown-item" [routerLink]="['/centers/all']"><i class="bi bi-people-fill"></i> My Favourites </a></li>-->
+<!--          </ul>-->
+<!--        </li>-->
+
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/vouchers']">Vouchers</a>
         </li>
+
+
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/leaderboard']">Leaderboard</a>
+        </li>
+
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Challenges</a>
@@ -44,7 +54,7 @@
             <img [src]="user?.imageUrl" [alt]="user?.firstName" class="user-avatar-md rounded-circle" style="width: 28px; height: 28px;">
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" [routerLink]="['/profile']"><i class="bi bi-person-circle"></i>{{ user?.firstName }} {{ user?.lastName }}</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/profile']"><i class="fa-solid fa-user"></i> {{ user?.firstName }} {{ user?.lastName }}</a></li>
             <li style="cursor: pointer;"><a class="dropdown-item" (click)="logOut()"><i class="bi bi-box-arrow-in-right"></i> Logout</a></li>
           </ul>
         </li>

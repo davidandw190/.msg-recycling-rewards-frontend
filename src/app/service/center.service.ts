@@ -80,6 +80,18 @@ export class CenterService {
         catchError(this.handleError)
       );
 
+  isCenterOpen(center: RecyclingCenter): boolean {
+    if (center.alwaysOpen) {
+      return true;
+    }
+
+    const currentDateTime = new Date();
+    const openingTime = new Date(currentDateTime.toDateString() + ' ' + center.openingHour);
+    const closingTime = new Date(currentDateTime.toDateString() + ' ' + center.closingHour);
+
+    return currentDateTime >= openingTime && currentDateTime <= closingTime;
+  }
+
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.log(error);
