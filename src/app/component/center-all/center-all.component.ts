@@ -55,8 +55,6 @@ export class CenterAllComponent implements OnInit {
 
   selectedMaterials: string[] = []
 
-  sortedColumn: string;
-
   counties: string[] = this.locationService.getAllCounties();
 
   cities: string[] = [];
@@ -83,7 +81,7 @@ export class CenterAllComponent implements OnInit {
         name: this.searchQuery,
         county: params.get('county') || '',
         city: params.get('city') || '',
-        materials: params.get('materials') || '',
+        materials: '',
         sortBy: params.get('sortBy') || 'createdAt',
         sortOrder: params.get('sortOrder') || 'asc',
       });
@@ -99,7 +97,7 @@ export class CenterAllComponent implements OnInit {
         name: this.searchQuery,
         county: params.get('county') || '',
         city: params.get('city') || '',
-        materials: params.get('materials') || '',
+        materials: '',
         sortBy: params.get('sortBy') || 'createdAt',
         sortOrder: params.get('sortOrder') || 'asc',
       });
@@ -302,6 +300,7 @@ export class CenterAllComponent implements OnInit {
 
   onSelectMaterials(event: TypeaheadMatch): void {
     const selectedMaterial = event.item;
+    this.searchForm.get("materials").setValue("")
 
     // Check if the material is not already in the list
     if (!this.selectedMaterials.includes(selectedMaterial)) {
@@ -341,30 +340,43 @@ export class CenterAllComponent implements OnInit {
     const currentSortBy = this.searchForm.get('sortBy').value;
     const currentSortOrder = this.searchForm.get('sortOrder').value;
 
-    // Toggle the sorting order when the same column is clicked
-    const newSortOrder = currentSortBy === event.active ? (currentSortOrder === 'asc' ? 'desc' : 'asc') : 'asc';
+    // Check if the column is "materials"
+    if (event.active === 'materials') {
+      // Set newSortBy to "acceptedMaterial"
+      const newSortBy = 'acceptedMaterials';
 
-    this.searchForm.get('sortBy').setValue(event.active, { emitEvent: false });
-    this.searchForm.get('sortOrder').setValue(newSortOrder, { emitEvent: false });
+      // Toggle the sorting order when the same column is clicked
+      const newSortOrder = currentSortBy === newSortBy ? (currentSortOrder === 'asc' ? 'desc' : 'asc') : 'asc';
+
+      this.searchForm.get('sortBy').setValue(newSortBy, { emitEvent: true });
+      this.searchForm.get('sortOrder').setValue(newSortOrder, { emitEvent: true });
+    } else {
+      // Toggle the sorting order when the same column is clicked
+      const newSortOrder = currentSortBy === event.active ? (currentSortOrder === 'asc' ? 'desc' : 'asc') : 'asc';
+
+      this.searchForm.get('sortBy').setValue(event.active, { emitEvent: true });
+      this.searchForm.get('sortOrder').setValue(newSortOrder, { emitEvent: true });
+    }
 
     // Trigger the search with updated sorting parameters
     this.searchCenters();
   }
 
-  isSorted(column: string, order: string): boolean {
-    // return this.searchForm.get('sortBy').value === column && this.searchForm.get('sortOrder').value === order;
 
-    const sortBy = this.searchForm.get('sortBy').value;
-    const sortOrder = this.searchForm.get('sortOrder').value;
-
-    // Check if the column is sorted
-    if (sortBy === column && sortOrder === order) {
-      return true;
-    }
-
-    // Check if the column is filtered
-    return this.isFiltered(column) && sortOrder === order;
-  }
+  // isSorted(column: string, order: string): boolean {
+  //   // return this.searchForm.get('sortBy').value === column && this.searchForm.get('sortOrder').value === order;
+  //
+  //   const sortBy = this.searchForm.get('sortBy').value;
+  //   const sortOrder = this.searchForm.get('sortOrder').value;
+  //
+  //   // Check if the column is sorted
+  //   if (sortBy === column && sortOrder === order) {
+  //     return true;
+  //   }
+  //
+  //   // Check if the column is filtered
+  //   return this.isFiltered(column) && sortOrder === order;
+  // }
 
   isFiltered(column: string): boolean {
     return this.searchForm.get(column).value !== '';
