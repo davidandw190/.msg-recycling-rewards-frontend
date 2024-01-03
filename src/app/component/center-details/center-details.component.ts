@@ -35,6 +35,8 @@ export class CenterDetailsComponent implements OnInit {
   earnedRewardPoints: number | null = null;
   earnedSustainabilityIndex: number | null = null;
 
+  userSustainabilityIndex: number;
+
   materialUnits: number = null;
 
   centerId: number;
@@ -116,6 +118,7 @@ export class CenterDetailsComponent implements OnInit {
             this.centerId = response.data.center.centerId;
             this.userId = response.data.user.id
             this.acceptedMaterials = [...response.data.center.acceptedMaterials] || [];
+            this.userSustainabilityIndex = this.sustainabilityIndexPipe.transform(response.data.rewardPoints.valueOf())
             return { dataState: DataState.LOADED, appData: response };
           }),
 
@@ -140,7 +143,7 @@ export class CenterDetailsComponent implements OnInit {
     this.recyclingForm = this.formBuilder.group({
       recycledMaterialType: [defaultMaterialType, Validators.required],
       unitMeasure: [defaultUnitMeasure, Validators.required],
-      amount: [null, [Validators.required, Validators.min(1)]],
+      amount: [null, [Validators.required, Validators.min(1), Validators.max(10_000)]],
     });
 
     const unitMeasures = this.materialUnitMeasures.get(defaultMaterialType) || [];
@@ -167,6 +170,7 @@ export class CenterDetailsComponent implements OnInit {
       const selectedMaterial = this.acceptedMaterials.find((m) => m.name === materialType);
 
       if (selectedMaterial) {
+        this.materialUnits = amount
         const unitRatio = this.materialUnitMeasures.get(materialType)?.find(unit => unit.value === unitMeasure)?.ratio || 1;
         // this.addedValue = amount * rewardPointsPerUnit * unitRatio;
         if (unitRatio !== null) {
@@ -242,11 +246,14 @@ export class CenterDetailsComponent implements OnInit {
         .subscribe((result) => {
           this.centerDetailsState$ = of(result);
         });
+
+      this.earnedRewardPoints = null;
+      this.earnedSustainabilityIndex = null;
+
     } else {
       this.isLoadingSubject.next(false);
     }
   }
-
 
   get recycledMaterialTypeValue(): string {
     return this.recyclingForm.get('recycledMaterialType').value;
@@ -256,6 +263,13 @@ export class CenterDetailsComponent implements OnInit {
     this.modalService.open(longContent, {
       scrollable: true,
       size: "lg"
+    });
+  }
+
+  openStatsModal(content: TemplateRef<any>) {
+    this.modalService.open(content, {
+      centered: true, // Center the modal
+      size: 'lg', // Set the size (you can adjust it as needed)
     });
   }
 

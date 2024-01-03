@@ -124,6 +124,19 @@ thead {
   font-size: 12px;
 }
 
+.badge-soft-recyclers {
+  color: #fff !important;
+  background-color: #A01540;
+  font-size: 12px;
+}
+
+.badge-soft-activities {
+  color: #fff !important;
+  background-color: #A01540;
+  font-size: 12px;
+}
+
+
 .badge-soft-glass {
   color: #fff !important;
   background-color: #3b76e1;

@@ -31,7 +31,7 @@
             </div>
 
             <!-- Stats Card -->
-            <div class="card border rounded-3 mt-3 fade-bottom">
+            <div class="card border rounded-3 mt-3 fade-bottom" (click)="openStatsModal(statsModalContent)">
               <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between mb-3">
                   <div>
@@ -78,8 +78,8 @@
                     <h5 class="card-title mb-0">My Current Reward Points</h5>
                     <h6 class="card-subtitle mb-2 text-muted">Points obtained up until now</h6>
                   </div>
-                  <div>
-                    <i class="bi bi-award h2 text-primary"></i>
+                  <div class="h2">
+                    <i class="fa-solid fa-award"></i>
                   </div>
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
@@ -96,7 +96,8 @@
                     </ul>
                   </div>
                   <div>
-                    <button class="btn btn-primary">
+                    <!-- Redeem Button -->
+                    <button mat-flat-button style="background-color: #A01540FF; color: white" [disabled]="isLoading$ | async">
                       <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                       <span *ngIf="!(isLoading$ | async)">Redeem</span>
                     </button>
@@ -121,7 +122,7 @@
                   <div>
                     <ul class="list-group list-group-flush">
                       <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <span class="me-2 h4">+123%</span>
+                        <span class="me-2 h4">{{ userSustainabilityIndex }}%</span>
                         <div *ngIf="earnedRewardPoints !== null" class="mb-3">
                           <span class="mt-1 h3" style="color: #28a745"> + {{ earnedSustainabilityIndex}} </span>
                         </div>
@@ -129,7 +130,8 @@
                     </ul>
                   </div>
                   <div>
-                    <button class="btn btn-primary">
+                    <!-- Learn More Button -->
+                    <button mat-flat-button style="background-color: #A01540FF; color: white" [disabled]="isLoading$ | async">
                       <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                       <span *ngIf="!(isLoading$ | async)">Learn More</span>
                     </button>
@@ -253,7 +255,7 @@
                   <!-- Button to Contribute-->
                   <div class="row">
                     <div class="col-md-12 d-flex justify-content-end">
-                      <button type="submit" class="btn btn-primary" [disabled]="recyclingForm.invalid">
+                      <button mat-flat-button style="background-color: #28a745; color: white;" [disabled]="recyclingForm.invalid">
                         <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                         <span *ngIf="!(isLoading$ | async)">Contribute</span>
                       </button>
@@ -300,6 +302,54 @@
           </div>
         </div>
       </div>
+
+
+      <!-- Define the modal content template -->
+      <ng-template #statsModalContent let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title">Center Stats</h4>
+          <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span class="me-2 h3"><i class="fa-solid fa-users me-2"></i> 245</span>
+              <span class="modal-badge badge-soft-recyclers">Active Recyclers</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span class="me-2 h3"><i class="fa-solid fa-recycle me-2"></i>  1,124</span>
+              <span class="modal-badge badge-soft-activities">Recycling Activities</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span class="me-2 h3"><i class="fa-solid fa-bottle-water me-3"></i>  56,789 kg</span>
+              <span class="modal-badge badge-soft-plastic h3">Plastic Recycled</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span class="me-2 h3"><i class="fa-solid fa-wine-glass-empty me-3"></i>  23,456 kg</span>
+              <span class="modal-badge badge-soft-glass h5">Glass Recycled</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center mb-3">
+              <span class="me-2 h3"> <i class="fa-regular fa-newspaper me-2"></i> 12,345 kg</span>
+              <span class="modal-badge badge-soft-paper"><i class="fa-regular fa-newspaper"></i> Paper Recycled</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span class="me-2 h3"> <i class="fa-regular fa-trash-can me-2"></i> 31,000 kg</span>
+              <span class="modal-badge badge-soft-aluminium h3">Aluminum Recycled</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span class="me-2 h3"><i class="fa-solid fa-layer-group"></i>  13,456 kg</span>
+              <span class="modal-badge badge-soft-metals">Metals Recycled</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center mb-3">
+              <span class="me-2 h3"><i class="fa-solid fa-car-battery me-2"></i> 22,345 kg</span>
+              <span class="modal-badge badge-soft-ewaste">Electronics Recycled</span>
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+        </div>
+      </ng-template>
     </section>
   </ng-container>
 </ng-container>
