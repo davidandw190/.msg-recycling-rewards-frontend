@@ -34,6 +34,8 @@ import {MatChipsModule} from "@angular/material/chips";
 import {MatIconModule} from "@angular/material/icon";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatBadgeModule} from "@angular/material/badge";
+import {SustainabilityIndexPipe} from "./pipes/sustainability-index.pipe";
+import {RewardPointsPipe} from "./pipes/reward-points.pipe";
 
 @NgModule({
   declarations: [
@@ -49,7 +51,8 @@ import {MatBadgeModule} from "@angular/material/badge";
     CenterDetailsComponent,
     CenterNewComponent,
     StatsComponent,
-    HighlightSearchPipe
+    HighlightSearchPipe,
+
   ],
   imports: [
     BrowserModule,
@@ -65,7 +68,6 @@ import {MatBadgeModule} from "@angular/material/badge";
     MatSelectModule,
     NgMultiSelectDropDownModule,
     AcceptedMaterialsPipe,
-
     NgbTimepickerModule,
     MatButtonModule,
     MatSortModule,
@@ -73,11 +75,15 @@ import {MatBadgeModule} from "@angular/material/badge";
     MatIconModule,
     MatSlideToggleModule,
     MatBadgeModule,
+    RewardPointsPipe,
+    SustainabilityIndexPipe,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     // { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
     // HttpCacheService,
+    RewardPointsPipe,
+    SustainabilityIndexPipe
   ],
   bootstrap: [AppComponent],
   exports: [HighlightSearchPipe]

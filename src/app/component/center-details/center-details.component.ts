@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, inject, OnInit, TemplateRef} from '@angular/core';
-import {BehaviorSubject, catchError, finalize, map, Observable, of, startWith, switchMap} from 'rxjs';
+import {BehaviorSubject, catchError, map, Observable, of, startWith, switchMap} from 'rxjs';
 import {AppState} from '../../interface/app-state';
 import {CustomHttpResponse} from '../../interface/custom-http-response';
 import {DataState} from '../../enum/data-state.enum';
@@ -10,6 +10,8 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RecyclableMaterial} from '../../interface/recyclable-material';
 import {UnitMeasure} from '../../interface/unit-measure';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {SustainabilityIndexPipe} from "../../pipes/sustainability-index.pipe";
+import {RewardPointsPipe} from "../../pipes/reward-points.pipe";
 
 @Component({
   selector: 'app-center-details',
@@ -99,7 +101,9 @@ export class CenterDetailsComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private centerService: CenterService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private rewardPointsPipe: RewardPointsPipe,
+    private sustainabilityIndexPipe: SustainabilityIndexPipe
   ) {}
 
   ngOnInit(): void {
@@ -150,11 +154,11 @@ export class CenterDetailsComponent implements OnInit {
     });
 
     this.recyclingForm.valueChanges.subscribe(() => {
-      this.calculateAddedValue();
+      this.computeAddedValue();
     });
   }
 
-  calculateAddedValue() {
+  computeAddedValue() {
     const materialType = this.recyclingForm.value.recycledMaterialType;
     const unitMeasure = this.recyclingForm.value.unitMeasure;
     const amount = this.recyclingForm.value.amount;
@@ -163,13 +167,16 @@ export class CenterDetailsComponent implements OnInit {
       const selectedMaterial = this.acceptedMaterials.find((m) => m.name === materialType);
 
       if (selectedMaterial) {
-        const rewardPointsPerUnit = selectedMaterial.reward_points || 1;
         const unitRatio = this.materialUnitMeasures.get(materialType)?.find(unit => unit.value === unitMeasure)?.ratio || 1;
         // this.addedValue = amount * rewardPointsPerUnit * unitRatio;
         if (unitRatio !== null) {
-          this.materialUnits = amount * unitRatio;
-          this.earnedRewardPoints = this.materialUnits * rewardPointsPerUnit;
-          this.earnedSustainabilityIndex = 5/100 * this.earnedRewardPoints;
+          this.earnedRewardPoints = this.rewardPointsPipe.transform(
+            amount,
+            selectedMaterial,
+            unitRatio
+          );
+          this.earnedSustainabilityIndex = this.sustainabilityIndexPipe.transform(this.earnedRewardPoints);
+
         } else {
           this.earnedRewardPoints = null;
           this.earnedSustainabilityIndex = null;
@@ -239,9 +246,6 @@ export class CenterDetailsComponent implements OnInit {
       this.isLoadingSubject.next(false);
     }
   }
-
-
-
 
 
   get recycledMaterialTypeValue(): string {
