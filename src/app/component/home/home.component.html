@@ -19,9 +19,27 @@
         </div>
       </div>
 
+      <div *ngIf="false" [formGroup]="tableFilterForm" (ngSubmit)="searchCenters()" class="invisible-form">
+        <select formControlName="sortBy" class="form-control">
+          <option value="createdAt">Created At</option>
+          <option value="name">Center Name</option>
+          <option value="contact">Contact</option>
+          <option value="county">County</option>
+          <option value="city">City</option>
+          <option value="acceptedMaterials">Accepted Materials</option>
+          <option value="openingHour">Opening Hour</option>
+          <option value="closingHour">Closing Hour</option>
+        </select>
+
+        <select formControlName="sortOrder" class="form-control">
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
+        </select>
+      </div>
+
       <!-- Table Section -->
       <div class="table-responsive mt-3">
-        <table matSort class="table table-hover table-bordered">
+        <table matSort (matSortChange)="sort($event)"  class="table table-hover table-bordered">
           <!-- Table Header -->
           <thead class="bg-gradient text-white">
           <tr>
@@ -68,11 +86,10 @@
       </div>
 
       <!-- Pagination -->
-      <nav *ngIf="state?.appData?.data?.page.totalPages > 0">
+      <nav *ngIf="state?.appData?.data?.page.totalPages > 0" class="pagination-container">
         <ngb-pagination
-          [pageSize]="5"
           [(page)]="currentPage"
-          [collectionSize]="state?.appData?.data?.page?.totalElements"
+          [collectionSize]="state?.appData?.data?.page.totalElements"
           [maxSize]="3"
           [rotate]="true"
           [boundaryLinks]="false"
@@ -87,3 +104,4 @@
     </div>
   </section>
 </ng-container>
+

@@ -14,11 +14,6 @@ import {NgForm} from "@angular/forms";
   providedIn: 'root'
 })
 export class CenterService {
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-    }),
-  };
 
   private readonly server: string = 'http://localhost:8080';
 
@@ -40,10 +35,18 @@ export class CenterService {
         catchError(this.handleError)
       );
 
+  centersNearUser$(page: number = 0,
+                   sortBy: string = '',
+                   sortOrder: string = ''
+  ): Observable<CustomHttpResponse<HomePageResponse>> {
 
-  centersNearUser$(page: number = 0): Observable<CustomHttpResponse<HomePageResponse>> {
+    const params = new HttpParams()
+      .set('sortBy', sortBy)
+      .set('sortOrder', sortOrder)
+      .set('page', page.toString());
+
     return this.http.get<CustomHttpResponse<HomePageResponse>>
-    (`${this.server}/centers/list-nearby?page=${page}`)
+    (`${this.server}/centers/list-nearby`, {params})
       .pipe(
         tap(console.log),
         catchError(this.handleError)
@@ -57,7 +60,9 @@ export class CenterService {
                  materials: string = '',
                  sortBy: string = '',
                  sortOrder: string = '',
-                 page: number = 0): Observable<CustomHttpResponse<CentersPageResponse>> {
+                 page: number = 0
+  ): Observable<CustomHttpResponse<CentersPageResponse>> {
+
     const params = new HttpParams()
       .set('name', name)
       .set('county', county)
