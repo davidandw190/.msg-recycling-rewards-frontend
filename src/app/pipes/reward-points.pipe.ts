@@ -7,9 +7,8 @@ import {RecyclableMaterial} from "../interface/recyclable-material";
   standalone: true
 })
 export class RewardPointsPipe implements PipeTransform {
-  transform(amount: number, material: RecyclableMaterial, unitRatio: number): number {
-    const rewardPointsPerUnit = material.reward_points || 1;
-    const rawResult = amount * rewardPointsPerUnit * unitRatio;
-    return Math.ceil(rawResult);
+  transform(materialAmount: number, material: RecyclableMaterial, unitRatio: number): number {
+    const rewardPointsPerUnit = material.rewardPoints || 1;
+    return Math.ceil(materialAmount / unitRatio) * rewardPointsPerUnit;
   }
 }

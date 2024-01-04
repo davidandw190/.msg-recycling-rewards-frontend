@@ -31,7 +31,7 @@
             </div>
 
             <!-- Stats Card -->
-            <div class="card border rounded-3 mt-3 fade-bottom" (click)="openStatsModal(statsModalContent)">
+            <div class="card border rounded-3 mt-3 fade-bottom" (click)="openStatsModal(centerStatsModal)">
               <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between mb-3">
                   <div>
@@ -43,23 +43,23 @@
                 </div>
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span class="me-2 h5">245</span>
-                    <span class="badge bg-secondary text-dark">Recyclers</span>
+                    <span class="me-2 h5"><i class="fa-solid fa-users me-2"></i> {{ state?.appData?.data?.centerStats?.recyclersNumber }} </span>
+                    <span class="badge badge-soft-recyclers">Active Recyclers</span>
                   </li>
                   <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span class="me-2 h5">1,124</span>
-                    <span class="badge bg-secondary text-dark">Activities</span>
+                    <span class="h5"><i class="fa-solid fa-recycle me-2"></i> {{ state?.appData?.data?.centerStats?.activitiesNumber }}</span>
+                    <span class="badge badge-soft-activities">Recycling Activities</span>
                   </li>
                   <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span class="me-2 h5">56,789 kg</span>
-                    <span class="badge bg-secondary text-dark">Plastic Recycled</span>
+                    <span class="h5"><i class="fa-solid fa-bottle-water me-3"></i> {{ state?.appData?.data?.centerStats?.plasticRecycled | unitConversion: "KG" }} kg</span>
+                    <span class="badge badge-soft-plastic">Plastic Recycled</span>
                   </li>
                   <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span class="me-2 h5">23,456 kg</span>
+                    <span class="h5"><i class="fa-solid fa-wine-glass-empty me-3"></i> {{ state?.appData?.data?.centerStats?.glassRecycled | unitConversion: "KG" }} kg</span>
                     <span class="badge badge-soft-glass h5">Glass Recycled</span>
                   </li>
                   <li class="list-group-item d-flex justify-content-between align-items-center mb-3">
-                    <span class="me-2 h5">12,345 kg</span>
+                    <span class="me-2 h5"><i class="fa-regular fa-newspaper me-2"></i>  {{ state?.appData?.data?.centerStats?.paperRecycled | unitConversion: "KG" }} kg</span>
                     <span class="badge badge-soft-paper h5">Paper Recycled</span>
                   </li>
                 </ul>
@@ -197,14 +197,6 @@
                     </div>
                   </div>
 
-
-<!--                  <div class="row mb-3">-->
-<!--                    <label class="col-sm-3 col-form-label">Image URL</label>-->
-<!--                    <div class="col-sm-9">-->
-<!--                      <input type="text" [ngModel]="state?.appData?.data?.center?.imageUrl" name="imageUrl" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">-->
-<!--                    </div>-->
-<!--                  </div>-->
-
                   <button [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" type="submit" class="btn btn-primary float-end">
                     <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
                     <span *ngIf="isLoading$ | async">Loading...</span>
@@ -304,8 +296,8 @@
       </div>
 
 
-      <!-- Define the modal content template -->
-      <ng-template #statsModalContent let-modal>
+      <!-- Center Stats Modal -->
+      <ng-template #centerStatsModal let-modal>
         <div class="modal-header">
           <h4 class="modal-title">Center Stats</h4>
           <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
@@ -313,35 +305,35 @@
         <div class="modal-body">
           <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between align-items-center">
-              <span class="me-2 h3"><i class="fa-solid fa-users me-2"></i> 245</span>
+              <span class="me-2 h3"><i class="fa-solid fa-users me-2"></i> {{ state?.appData?.data?.centerStats?.recyclersNumber }} </span>
               <span class="modal-badge badge-soft-recyclers">Active Recyclers</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-              <span class="me-2 h3"><i class="fa-solid fa-recycle me-2"></i>  1,124</span>
+              <span class="me-2 h3"><i class="fa-solid fa-recycle me-2"></i>  {{ state?.appData?.data?.centerStats?.activitiesNumber </span>
               <span class="modal-badge badge-soft-activities">Recycling Activities</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-              <span class="me-2 h3"><i class="fa-solid fa-bottle-water me-3"></i>  56,789 kg</span>
+              <span class="me-2 h3"><i class="fa-solid fa-bottle-water me-3"></i>  {{ state?.appData?.data?.centerStats?.plasticRecycled | unitConversion: "KG" }} kg</span>
               <span class="modal-badge badge-soft-plastic h3">Plastic Recycled</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-              <span class="me-2 h3"><i class="fa-solid fa-wine-glass-empty me-3"></i>  23,456 kg</span>
+              <span class="me-2 h3"><i class="fa-solid fa-wine-glass-empty me-3"></i>  {{ state?.appData?.data?.centerStats?.glassRecycled | unitConversion: "KG" }} kg</span>
               <span class="modal-badge badge-soft-glass h5">Glass Recycled</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center mb-3">
-              <span class="me-2 h3"> <i class="fa-regular fa-newspaper me-2"></i> 12,345 kg</span>
-              <span class="modal-badge badge-soft-paper"><i class="fa-regular fa-newspaper"></i> Paper Recycled</span>
+              <span class="me-2 h3"> <i class="fa-regular fa-newspaper me-2"></i> {{ state?.appData?.data?.centerStats?.paperRecycled | unitConversion: "KG" }} kg</span>
+              <span class="modal-badge badge-soft-paper">Paper Recycled</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-              <span class="me-2 h3"> <i class="fa-regular fa-trash-can me-2"></i> 31,000 kg</span>
+              <span class="me-2 h3"> <i class="fa-regular fa-trash-can me-2"></i> {{ state?.appData?.data?.centerStats?.aluminiumRecycled | unitConversion: "KG" }} kg</span>
               <span class="modal-badge badge-soft-aluminium h3">Aluminum Recycled</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-              <span class="me-2 h3"><i class="fa-solid fa-layer-group"></i>  13,456 kg</span>
+              <span class="me-2 h3"><i class="fa-solid fa-layer-group"></i>  {{ state?.appData?.data?.centerStats?.metalsRecycled | unitConversion: "KG" }} kg</span>
               <span class="modal-badge badge-soft-metals">Metals Recycled</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center mb-3">
-              <span class="me-2 h3"><i class="fa-solid fa-car-battery me-2"></i> 22,345 kg</span>
+              <span class="me-2 h3"><i class="fa-solid fa-car-battery me-2"></i> {{ state?.appData?.data?.centerStats?.electronicsRecycled | unitConversion: "KG" }} kg</span>
               <span class="modal-badge badge-soft-ewaste">Electronics Recycled</span>
             </li>
           </ul>

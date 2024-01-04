@@ -32,7 +32,7 @@ export class AcceptedMaterialsPipe implements PipeTransform {
         return 'badge-soft-metals';
       case 'ALUMINIUM':
         return 'badge-soft-aluminum';
-      case 'E-WASTE':
+      case 'ELECTRONICS':
         return 'badge-soft-ewaste';
       default:
         return 'badge-soft-default';
