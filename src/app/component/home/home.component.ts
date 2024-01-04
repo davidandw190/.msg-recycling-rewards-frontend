@@ -38,7 +38,6 @@ export class HomeComponent implements OnInit {
 
   readonly DataState = DataState;
 
-
   tableFilterForm: FormGroup;
 
   sortBy: string = 'createdAt';
@@ -55,7 +54,6 @@ export class HomeComponent implements OnInit {
       sortBy: ['createdAt'],
       sortOrder: ['asc'],
     });
-
   }
 
   ngOnInit(): void {
@@ -127,8 +125,8 @@ export class HomeComponent implements OnInit {
 
       this.tableFilterForm.get('sortBy').setValue(newSortBy, { emitEvent: true });
       this.tableFilterForm.get('sortOrder').setValue(newSortOrder, { emitEvent: true });
-    } else {
 
+    } else {
       const newSortOrder = currentSortBy === event.active ? (currentSortOrder === 'asc' ? 'desc' : 'asc') : 'asc';
 
       this.tableFilterForm.get('sortBy').setValue(event.active, { emitEvent: true });

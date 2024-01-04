@@ -1,4 +1,4 @@
 export interface AppStats {
-  activeRecyclers?: number;
-  totalRewardPoints?: number;
+  activeRecyclersNumber?: number;
+  monthlyRewardPoints?: number;
 }

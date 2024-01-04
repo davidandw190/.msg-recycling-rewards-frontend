@@ -4,7 +4,7 @@ export interface CenterStats {
   plasticRecycled?: number;
   paperRecycled?: number;
   glassRecycled?: number;
-  aluminumRecycled?: number;
+  aluminiumRecycled?: number;
   electronicsRecycled?: number;
   metalsRecycled?: number;
 }

@@ -1,6 +1,6 @@
 
 .section {
-  background-color: #f8f9fa;
+  /*background-color: #f8f9fa;*/
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -60,6 +60,11 @@
 
 .row.justify-content-center.align-items-center {
   min-height: 100vh;
+}
+
+body {
+  margin-top: 20px;
+  background: #eee;
 }
 
 

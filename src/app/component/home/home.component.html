@@ -2,8 +2,17 @@
   <!-- Main Content -->
   <section class="main-section">
     <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
+
     <div style="margin-top: 100px"></div>
-    <app-stats></app-stats>
+<!--    <ng-container *ngIf="state?.appData?.data?.appStats">-->
+<!--    </ng-container>-->
+
+    <app-stats
+      [activeRecyclers]="state?.appData?.data?.appStats?.activeRecyclersNumber || 0"
+      [userRewardPoints]="state?.appData?.data?.userRewardPoints || 0"
+      [recyclersRewardPoints]="state?.appData?.data?.appStats?.monthlyRewardPoints || 0"
+    ></app-stats>
+
     <div class="container mt-3">
       <div class="row">
         <div class="col">
@@ -13,8 +22,7 @@
           <button mat-flat-button (click)="navigateToCreateCenter()" style="background-color: #28a745; color: white; margin-right: 10px" class="m-lg-2-2">
             <i class="fa-regular fa-square-plus"></i> New Center
           </button>
-          <!-- Add a 'View More' button -->
-          <button mat-flat-button (click)="navigateToCentersView()" style="background-color: #A01540FF; color: cornsilk">
+          <button mat-flat-button (click)="navigateToCentersView()" style="background-color: #A01540FF; color: white">
             <i class="fa-solid fa-list-ul"></i> More</button>
         </div>
       </div>
@@ -23,7 +31,7 @@
         <select formControlName="sortBy" class="form-control">
           <option value="createdAt">Created At</option>
           <option value="name">Center Name</option>
-          <option value="contact">Contact</option>
+          <option value="contact">Contact Info</option>
           <option value="county">County</option>
           <option value="city">City</option>
           <option value="acceptedMaterials">Accepted Materials</option>

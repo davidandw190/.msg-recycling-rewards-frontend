@@ -27,8 +27,8 @@ export class CenterService {
         catchError(this.handleError)
       );
 
-  centers$ = (page: number = 0): Observable<CustomHttpResponse<HomePageResponse>> =>
-    this.http.get<CustomHttpResponse<HomePageResponse>>
+  centers$ = (page: number = 0): Observable<CustomHttpResponse<CentersPageResponse>> =>
+    this.http.get<CustomHttpResponse<CentersPageResponse>>
     (`${this.server}/centers/list-all?page=${page}`)
       .pipe(
         tap(console.log),

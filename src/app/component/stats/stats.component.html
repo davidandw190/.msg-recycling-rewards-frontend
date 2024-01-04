@@ -6,7 +6,7 @@
         <div class="card-body d-flex align-items-center">
           <div>
             <p class="mb-0 text-secondary">Active Recyclers</p>
-            <h4 class="my-1 text-info">48K</h4>
+            <h4 class="my-1 text-info">{{ activeRecyclers }}</h4>
             <p class="mb-0 font-13">of us helping make our planet greener</p>
           </div>
           <div class="widgets-icons-2 rounded-circle bg-gradient-scooter text-white ms-auto">
@@ -22,8 +22,8 @@
         <div class="card-body d-flex align-items-center">
           <div>
             <p class="mb-0 text-secondary">My Environmental Impact</p>
-            <h4 class="my-1 text-danger">+0.44%</h4>
-            <p class="mb-0 font-13">my environmental impact this month</p>
+            <h4 class="my-1 text-danger"> {{ userSustainabilityIndex }}%</h4>
+            <p class="mb-0 font-13">my environmental impact in <strong>{{ currentMonth | date: 'MMMM'}}</strong></p>
           </div>
           <div class="widgets-icons-2 rounded-circle bg-gradient-bloody text-white ms-auto">
             <i class="fa-solid fa-leaf"></i>
@@ -38,7 +38,7 @@
         <div class="card-body d-flex align-items-center">
           <div>
             <p class="mb-0 text-secondary">Global Environmental Impact</p>
-            <h4 class="my-1 text-success">38.9%</h4>
+            <h4 class="my-1 text-success">{{ recyclersSustainabilityIndex}}%</h4>
             <p class="mb-0 font-13">of the planet is positively impacted by us</p>
           </div>
           <div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto">
@@ -54,8 +54,8 @@
         <div class="card-body d-flex align-items-center">
           <div>
             <p class="mb-0 text-secondary">My Reward Points</p>
-            <h4 class="my-1 text-warning">2.500</h4>
-            <p class="mb-0 font-13">reward points accumulated this month</p>
+            <h4 class="my-1 text-warning"> {{ userRewardPoints }}</h4>
+            <p class="mb-0 font-13">reward points accumulated in <strong>{{ currentMonth | date: 'MMMM'}}</strong></p>
           </div>
           <div class="widgets-icons-2 rounded-circle bg-gradient-blooker text-white ms-auto">
             <i class="fa-solid fa-award"></i>

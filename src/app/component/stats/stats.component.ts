@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {SustainabilityIndexPipe} from "../../pipes/sustainability-index.pipe";
 
 @Component({
   selector: 'app-stats',
@@ -7,18 +8,24 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class StatsComponent implements OnInit {
 
-  @Input() rewardPoints: number;
+  @Input() userRewardPoints: number;
   @Input() activeRecyclers: number;
-  @Input() recyclersRewardPoints: number
+  @Input() recyclersRewardPoints: number;
 
-  recyclersEnvironmentalImpact: number;
-  userEnvironmentalImpact: number;
+  currentMonth: Date = new Date();
 
-  constructor() {
+  userSustainabilityIndex: number = 0;
+  recyclersSustainabilityIndex: number = 0;
+
+  constructor(
+    private sustainabilityIndexPipe: SustainabilityIndexPipe
+  ) {
+
   }
 
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    this.userSustainabilityIndex = this.sustainabilityIndexPipe.transform(this.userRewardPoints);
+    this.recyclersSustainabilityIndex = this.sustainabilityIndexPipe.transform(this.recyclersRewardPoints);
   }
 
 
