@@ -3,6 +3,7 @@ import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {catchError, Observable, tap, throwError} from "rxjs";
 import {CustomHttpResponse} from "../interface/custom-http-response";
 import {CentersPageResponse} from "../interface/centers-page-response";
+import {VouchersPageResponse} from "../interface/vouchers-page-response";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class VoucherService {
     sortBy: string = '',
     sortOrder: string = '',
     page: number = 0
-  ): Observable<CustomHttpResponse<CentersPageResponse>> {
+  ): Observable<CustomHttpResponse<VouchersPageResponse>> {
 
     const params = new HttpParams()
       .set('code', code)
@@ -31,7 +32,7 @@ export class VoucherService {
       .set('sortOrder', sortOrder)
       .set('page', page.toString());
 
-    return this.http.get<CustomHttpResponse<CentersPageResponse>>
+    return this.http.get<CustomHttpResponse<VouchersPageResponse>>
     (`${this.server}/vouchers/search`, {params})
       .pipe(
         tap(console.log),
