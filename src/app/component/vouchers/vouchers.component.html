@@ -1,1 +1,67 @@
-<p>vouchers works!</p>
+<ng-container *ngIf="(vouchersState$ | async) as state" [ngSwitch]="state.dataState">
+  <ng-container *ngSwitchCase="DataState.LOADED">
+    <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
+    <div style="margin-top: 90px"></div>
+    <section>
+      <div class="container">
+        <nav aria-label="breadcrumb" style="margin-top: 8px;">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"> <a [routerLink]="['/']">Home</a> </li>
+            <li class="breadcrumb-item active"> Vouchers </li>
+          </ol>
+        </nav>
+        <div class="row mt-3">
+          <div class="col">
+            <h4 class="fw-bold text-start">Earned Vouchers</h4>
+          </div>
+          <div class="col-xm-12">
+            <table class="table table-hover">
+              <thead>
+              <tr>
+                <th scope="col">Voucher Code</th>
+                <th scope="col">Type</th>
+                <th scope="col">Threshold</th>
+                <th scope="col"> Status</th>
+                <th scope="col">Earned On</th>
+                <th scope="col">Expires At</th>
+                <th scope="col">Action</th>
+              </tr>
+              </thead>
+              <tbody class="table-body">
+              <tr *ngFor="let voucher of state?.appData?.data?.page?.content" class="cell-1">
+                <td>{{ voucher.uniqueCode }}</td>
+                <td>{{ voucher.voucherType?.name }}</td>
+                <td>{{ voucher.voucherType?.thresholdPoints }}</td>
+                <td> STATUS HERE</td>
+                <td>{{ voucher.createdAt | date: 'mediumDate' }}</td>
+                <td>{{ voucher.expiresAt | date: 'mediumDate' }}</td>
+                <td>
+                  <button [routerLink]="['/vouchers', voucher.uniqueCode]" type="button" class="btn btn-info btn-sm">View</button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+            <!-- Pagination -->
+            <nav *ngIf="state?.appData?.data?.page.totalPages > 0" class="pagination-container">
+              <ngb-pagination
+                [(page)]="currentPage"
+                [collectionSize]="state?.appData?.data?.page.totalElements"
+                [maxSize]="3"
+                [rotate]="true"
+                [boundaryLinks]="false"
+                [ellipses]="true"
+                (pageChange)="goToPage($event)"
+                class="pagination justify-content-end"
+              >
+                <ng-template ngbPaginationPrevious><i class="fa-solid fa-angle-left"></i> Prev</ng-template>
+                <ng-template ngbPaginationNext>Next <i class="fa-solid fa-angle-right"></i></ng-template>
+              </ngb-pagination>
+            </nav>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </ng-container>
+</ng-container>
