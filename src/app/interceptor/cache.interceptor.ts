@@ -48,7 +48,7 @@ export class CacheInterceptor implements HttpInterceptor {
   }
 
   private shouldBypassCache(request: HttpRequest<any>): boolean {
-    const bypassUrls = ['verify', 'login', 'register', 'refresh', 'reset-pass', 'verify', 'new/password'];
+    const bypassUrls = [ '/search/', 'verify', 'login', 'register', 'refresh', 'reset-pass', 'verify', 'new/password'];
     return bypassUrls.some(url => request.url.includes(url));
   }
 

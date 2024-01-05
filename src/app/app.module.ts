@@ -35,6 +35,8 @@ import {MatBadgeModule} from "@angular/material/badge";
 import {SustainabilityIndexPipe} from "./pipes/sustainability-index.pipe";
 import {RewardPointsPipe} from "./pipes/reward-points.pipe";
 import {UnitConversionPipe} from "./pipes/unit-converter.pipe";
+import { VouchersComponent } from './component/vouchers/vouchers.component';
+import { VoucherDetailsComponent } from './component/voucher-details/voucher-details.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,8 @@ import {UnitConversionPipe} from "./pipes/unit-converter.pipe";
     CenterNewComponent,
     StatsComponent,
     HighlightSearchPipe,
+    VouchersComponent,
+    VoucherDetailsComponent,
 
   ],
   imports: [
