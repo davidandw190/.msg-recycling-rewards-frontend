@@ -1,0 +1,12 @@
+.nav-cell {
+  /*color: #A01540;*/
+  color: forestgreen;
+}
+
+.nav-cell.active {
+  color: white;
+  /*background-color: #A01540;*/
+  background-color: forestgreen;
+}
+
+

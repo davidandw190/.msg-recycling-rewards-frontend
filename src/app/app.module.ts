@@ -18,7 +18,7 @@ import {NgOptimizedImage} from "@angular/common";
 import {CenterDetailsComponent} from './component/center-details/center-details.component';
 import {CenterNewComponent} from './component/center-new/center-new.component';
 import {StatsComponent} from './component/stats/stats.component';
-import {NgbModule, NgbTimepickerModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModule, NgbNavModule, NgbTimepickerModule} from '@ng-bootstrap/ng-bootstrap';
 import {CenterAllComponent} from './component/center-all/center-all.component';
 import {HighlightSearchPipe} from "./pipes/highlight-search.pipe";
 import {TypeaheadModule} from "ngx-bootstrap/typeahead";
@@ -37,6 +37,7 @@ import {RewardPointsPipe} from "./pipes/reward-points.pipe";
 import {UnitConversionPipe} from "./pipes/unit-converter.pipe";
 import { VouchersComponent } from './component/vouchers/vouchers.component';
 import { VoucherDetailsComponent } from './component/voucher-details/voucher-details.component';
+import {MatTabsModule} from "@angular/material/tabs";
 
 @NgModule({
   declarations: [
@@ -57,31 +58,33 @@ import { VoucherDetailsComponent } from './component/voucher-details/voucher-det
     VoucherDetailsComponent,
 
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    NgOptimizedImage,
-    NgbModule,
-    ReactiveFormsModule,
-    TypeaheadModule,
-    MatInputModule,
-    MatSelectModule,
-    NgMultiSelectDropDownModule,
-    AcceptedMaterialsPipe,
-    NgbTimepickerModule,
-    MatButtonModule,
-    MatSortModule,
-    MatChipsModule,
-    MatIconModule,
-    MatSlideToggleModule,
-    MatBadgeModule,
-    RewardPointsPipe,
-    SustainabilityIndexPipe,
-    UnitConversionPipe,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        NgOptimizedImage,
+        NgbModule,
+        ReactiveFormsModule,
+        TypeaheadModule,
+        MatInputModule,
+        MatSelectModule,
+        NgMultiSelectDropDownModule,
+        AcceptedMaterialsPipe,
+        NgbTimepickerModule,
+        MatButtonModule,
+        MatSortModule,
+        MatChipsModule,
+        MatIconModule,
+        MatSlideToggleModule,
+        MatBadgeModule,
+        RewardPointsPipe,
+        SustainabilityIndexPipe,
+        UnitConversionPipe,
+        NgbNavModule,
+        MatTabsModule
+    ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     // { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },

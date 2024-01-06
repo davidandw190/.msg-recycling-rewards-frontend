@@ -27,88 +27,88 @@
         </div>
       </div>
 
-      <div *ngIf="false" [formGroup]="tableFilterForm" (ngSubmit)="searchCenters()" class="invisible-form">
-        <select formControlName="sortBy" class="form-control">
-          <option value="createdAt">Created At</option>
-          <option value="name">Center Name</option>
-          <option value="contact">Contact Info</option>
-          <option value="county">County</option>
-          <option value="city">City</option>
-          <option value="acceptedMaterials">Accepted Materials</option>
-          <option value="openingHour">Opening Hour</option>
-          <option value="closingHour">Closing Hour</option>
-        </select>
+        <div *ngIf="false" [formGroup]="tableFilterForm" (ngSubmit)="searchCenters()" class="invisible-form">
+          <select formControlName="sortBy" class="form-control">
+            <option value="createdAt">Created At</option>
+            <option value="name">Center Name</option>
+            <option value="contact">Contact Info</option>
+            <option value="county">County</option>
+            <option value="city">City</option>
+            <option value="acceptedMaterials">Accepted Materials</option>
+            <option value="openingHour">Opening Hour</option>
+            <option value="closingHour">Closing Hour</option>
+          </select>
 
-        <select formControlName="sortOrder" class="form-control">
-          <option value="asc">Ascending</option>
-          <option value="desc">Descending</option>
-        </select>
-      </div>
+          <select formControlName="sortOrder" class="form-control">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </div>
 
-      <!-- Table Section -->
-      <div class="table-responsive mt-3">
-        <table matSort (matSortChange)="sort($event)"  class="table table-hover table-bordered">
-          <!-- Table Header -->
-          <thead class="bg-gradient text-white">
-          <tr>
-            <th class="text-center" scope="col" style="width: 6%;">Photo</th>
-            <th scope="col" mat-sort-header="name" style="width: 15%;">Center Name</th>
-            <th scope="col" style="width: 15%;">Contact Information</th>
-            <th scope="col" mat-sort-header="county" style="width: 10%;">County</th>
-            <th scope="col" mat-sort-header="city" style="width: 10%;">City</th>
-            <th scope="col" mat-sort-header="materials" class="text-center" style="width: 20%;">Accepted Materials</th>
-            <th class="text-center" scope="col" style="width: 12%;">Working Intervals</th>
-            <th scope="col" style="width: 6%;" class="text-center">Engage</th>
-          </tr>
-          </thead>
-          <!-- Table Body -->
-          <tbody *ngFor="let center of state?.appData?.data?.page?.content" class="table-body">
-          <tr class="cell-1">
-            <td  class="text-center"><img src="https://robohash.org/recyclingcenter" width="42" height="42" class="rounded-circle"></td>
-            <td> <strong style="color:#A01540;">{{ center.name }}</strong></td>
-            <td>{{ center.contact }}</td>
-            <td>{{ center.county }}</td>
-            <td>{{ center.city }}</td>
-            <td>
-              <div class="accepted-materials">
-                <ng-container *ngFor="let material of center | acceptedMaterials">
-                  <span class="badge mb-0" [ngClass]="material.badgeClass">{{ material.name }}</span>
+        <!-- Table Section -->
+        <div class="table-responsive mt-3">
+          <table matSort (matSortChange)="sort($event)"  class="table table-hover table-bordered">
+            <!-- Table Header -->
+            <thead class="bg-gradient text-white">
+            <tr>
+              <th class="text-center" scope="col" style="width: 6%;">Photo</th>
+              <th scope="col" mat-sort-header="name" style="width: 15%;">Center Name</th>
+              <th scope="col" style="width: 15%;">Contact Information</th>
+              <th scope="col" mat-sort-header="county" style="width: 10%;">County</th>
+              <th scope="col" mat-sort-header="city" style="width: 10%;">City</th>
+              <th scope="col" mat-sort-header="materials" class="text-center" style="width: 20%;">Accepted Materials</th>
+              <th class="text-center" scope="col" style="width: 12%;">Working Intervals</th>
+              <th scope="col" style="width: 6%;" class="text-center">Engage</th>
+            </tr>
+            </thead>
+            <!-- Table Body -->
+            <tbody *ngFor="let center of state?.appData?.data?.page?.content" class="table-body">
+            <tr class="cell-1">
+              <td  class="text-center"><img src="https://robohash.org/recyclingcenter" width="42" height="42" class="rounded-circle"></td>
+              <td> <strong style="color:#A01540;">{{ center.name }}</strong></td>
+              <td>{{ center.contact }}</td>
+              <td>{{ center.county }}</td>
+              <td>{{ center.city }}</td>
+              <td>
+                <div class="accepted-materials">
+                  <ng-container *ngFor="let material of center | acceptedMaterials">
+                    <span class="badge mb-0" [ngClass]="material.badgeClass">{{ material.name }}</span>
+                  </ng-container>
+                </div>
+              </td>
+              <td class="text-center" [ngClass]="{ ' text-success': isCenterOpen(center), ' text-danger': !isCenterOpen(center) }">
+                <ng-container *ngIf="center.alwaysOpen; else hourInterval">
+                  <strong>Open Always</strong>
                 </ng-container>
-              </div>
-            </td>
-            <td class="text-center" [ngClass]="{ ' text-success': isCenterOpen(center), ' text-danger': !isCenterOpen(center) }">
-              <ng-container *ngIf="center.alwaysOpen; else hourInterval">
-                <strong>Open Always</strong>
-              </ng-container>
 
-              <ng-template #hourInterval>
-                <strong>{{ center.openingHour | slice: 0:5 }} - {{ center.closingHour | slice: 0:5 }}</strong>
-              </ng-template>
-            </td>
-            <td class="text-center">
-              <button type="button" [routerLink]="['/centers', center.centerId]" class="btn" style="background-color: #28a745; color: #fff;">  <i class="fa-solid fa-recycle"></i>  </button>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
+                <ng-template #hourInterval>
+                  <strong>{{ center.openingHour | slice: 0:5 }} - {{ center.closingHour | slice: 0:5 }}</strong>
+                </ng-template>
+              </td>
+              <td class="text-center">
+                <button type="button" [routerLink]="['/centers', center.centerId]" class="btn" style="background-color: #28a745; color: #fff;">  <i class="fa-solid fa-recycle"></i>  </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
 
-      <!-- Pagination -->
-      <nav *ngIf="state?.appData?.data?.page.totalPages > 0" class="pagination-container">
-        <ngb-pagination
-          [(page)]="currentPage"
-          [collectionSize]="state?.appData?.data?.page.totalElements"
-          [maxSize]="3"
-          [rotate]="true"
-          [boundaryLinks]="false"
-          [ellipses]="true"
-          (pageChange)="goToPage($event)"
-          class="pagination justify-content-end"
-        >
-          <ng-template ngbPaginationPrevious><i class="fa-solid fa-angle-left"></i> Prev</ng-template>
-          <ng-template ngbPaginationNext>Next <i class="fa-solid fa-angle-right"></i></ng-template>
-        </ngb-pagination>
-      </nav>
+        <!-- Pagination -->
+        <nav *ngIf="state?.appData?.data?.page.totalPages > 0" class="pagination-container">
+          <ngb-pagination
+            [(page)]="currentPage"
+            [collectionSize]="state?.appData?.data?.page.totalElements"
+            [maxSize]="3"
+            [rotate]="true"
+            [boundaryLinks]="false"
+            [ellipses]="true"
+            (pageChange)="goToPage($event)"
+            class="pagination justify-content-end"
+          >
+            <ng-template ngbPaginationPrevious><i class="fa-solid fa-angle-left"></i> Prev</ng-template>
+            <ng-template ngbPaginationNext>Next <i class="fa-solid fa-angle-right"></i></ng-template>
+          </ngb-pagination>
+        </nav>
     </div>
   </section>
 </ng-container>
