@@ -19,7 +19,7 @@
         <form [formGroup]="searchForm" (ngSubmit)="searchVouchers()" class="d-flex justify-content-end">
           <div class="d-flex align-items-center">
             <label class="visually-hidden">Voucher Code</label>
-            <input type="text" formControlName="code" class="form-control" placeholder="Voucher Code" />
+            <input type="text" formControlName="code" class="form-control mt-3" placeholder="Voucher Code" />
           </div>
 
           <select formControlName="sortBy" class="invisible-form">
@@ -43,23 +43,23 @@
 
 
 
-      <nav ngbNav #nav="ngbNav" class="nav-pills mt-3 mb-3">
-        <ng-container ngbNavItem *ngFor="let tab of ['Available', 'Redeemed', 'Expired']">
+      <nav ngbNav #nav="ngbNav" class="nav-pills mb-4" style="margin-top: -30px;">
+        <ng-container ngbNavItem *ngFor="let tab of ['Available', 'Redeemed', 'Expired', 'All Vouchers']">
           <button ngbNavLink mat-button class="nav-cell" (click)="updateActiveTab(tab)">{{ tab }}</button>
           <ng-template ngbNavContent>
             <div class="col-xm-12">
 
               <!-- Table for each tab -->
-              <table class="table table-hover">
+              <table matSort (matSortChange)="sort($event)" class="table table-hover table-bordered">
                 <thead>
                 <tr>
-                  <th scope="col">Voucher Code</th>
-                  <th scope="col">Type</th>
-                  <th scope="col">Threshold</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Earned On</th>
-                  <th scope="col">Expires At</th>
-                  <th scope="col">Action</th>
+                  <th mat-sort-header="uniqueCode" style="width: 10%;" scope="col">Voucher Code</th>
+                  <th mat-sort-header="voucherType" style="width: 15%;" scope="col">Type</th>
+                  <th mat-sort-header="voucherType.threshold" style="width: 12%;" scope="col">Threshold</th>
+                  <th mat-sort-header="status" style="width: 8%;" scope="col">Status</th>
+                  <th mat-sort-header="createdAt" style="width: 12%;" scope="col">Earned On</th>
+                  <th mat-sort-header="expiresAt" style="width: 12%;" scope="col">Expires At</th>
+                  <th style="width: 8%;" scope="col">Action</th>
                 </tr>
                 </thead>
                 <tbody class="table-body">
@@ -67,11 +67,11 @@
                   <td>{{ voucher.uniqueCode }}</td>
                   <td>{{ voucher.voucherType?.name }}</td>
                   <td>{{ voucher.voucherType?.thresholdPoints }}</td>
-                  <td> STATUS HERE</td>
+                  <td [innerHTML]="voucher | voucherStatus"></td>
                   <td>{{ voucher.createdAt | date: 'mediumDate' }}</td>
                   <td>{{ voucher.expiresAt | date: 'mediumDate' }}</td>
                   <td>
-                    <button [routerLink]="['/vouchers', voucher.uniqueCode]" type="button" class="btn btn-info btn-sm">View</button>
+                    <button [routerLink]="['/vouchers', voucher.uniqueCode]" type="button" class="btn btn-info btn-sm">  </button>
                   </td>
                 </tr>
                 </tbody>

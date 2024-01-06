@@ -66,8 +66,27 @@ export class VouchersComponent implements OnInit, OnDestroy {
   }
 
   updateActiveTab(activeTab: string): void {
-    const redeemed = activeTab === 'Redeemed' ? false : null;
-    const expired = activeTab === 'Expired';
+    let redeemed: boolean | null = null;
+    let expired: boolean | null = null;
+
+    switch (activeTab) {
+      case 'Redeemed':
+        redeemed = true;
+        break;
+      case 'Expired':
+        expired = true;
+        break;
+      case 'Available':
+        redeemed = false;
+        expired = false;
+        break;
+      case 'All Vouchers':
+        break;
+
+      default:
+        // Handle default case (if any)
+        break;
+    }
 
     this.searchForm.get('redeemed').setValue(redeemed);
     this.searchForm.get('expired').setValue(expired);

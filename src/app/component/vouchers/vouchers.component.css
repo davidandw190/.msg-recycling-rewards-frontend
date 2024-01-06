@@ -13,4 +13,9 @@
   display: none;
 }
 
+.badge {
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
 

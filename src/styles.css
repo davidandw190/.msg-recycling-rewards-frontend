@@ -155,6 +155,25 @@ thead {
   font-size: 12px;
 }
 
+
+.badge-redeemed {
+  color: #fff !important;
+  background-color: #dc3545;
+  font-size: 12px;
+}
+
+.badge-expired {
+  color: #000 !important;
+  background-color: #ffc107;
+  font-size: 12px;
+}
+
+.badge-available {
+  color: #fff !important;
+  background-color: #28a745;
+  font-size: 12px;
+}
+
 .accepted-materials {
   display: flex;
   gap: 5px; /* Adjust the spacing between badges as needed */
