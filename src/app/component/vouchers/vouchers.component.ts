@@ -22,6 +22,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Sort} from "@angular/material/sort";
 import {VouchersPageResponse} from "../../interface/vouchers-page-response";
 import {VoucherService} from "../../service/voucher.service";
+import {Voucher} from "../../interface/voucher";
 
 @Component({
   selector: 'app-vouchers',
@@ -84,7 +85,6 @@ export class VouchersComponent implements OnInit, OnDestroy {
         break;
 
       default:
-        // Handle default case (if any)
         break;
     }
 
@@ -223,4 +223,7 @@ export class VouchersComponent implements OnInit, OnDestroy {
     });
   }
 
+  isVoucherRedeemable(voucher: Voucher): boolean {
+    return !voucher.redeemed && (!voucher.expiresAt || new Date(voucher.expiresAt) >= new Date());
+  }
 }

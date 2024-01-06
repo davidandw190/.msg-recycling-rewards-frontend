@@ -6,7 +6,11 @@ import {Voucher} from "../interface/voucher";
   name: 'voucherStatus'
 })
 export class VoucherStatusPipe implements PipeTransform {
-  transform(voucher: Voucher): string {
+  transform(voucher: Voucher, actionButton: boolean = false): string {
+    if (actionButton) {
+      return this.getActionButtonMarkup(voucher);
+    }
+
     const badgeClass = this.getBadgeClass(voucher);
     return `<span class="badge ${badgeClass}">${this.getStatusText(voucher)}</span>`;
   }
@@ -28,6 +32,14 @@ export class VoucherStatusPipe implements PipeTransform {
       return 'EXPIRED';
     } else {
       return 'AVAILABLE';
+    }
+  }
+
+  private getActionButtonMarkup(voucher: Voucher): string {
+    if (!voucher.redeemed && (!voucher.expiresAt || new Date(voucher.expiresAt) >= new Date())) {
+      return '<button type="button" class="btn btn-redeem">REDEEM</button>';
+    } else {
+      return '<button type="button" class="btn btn-details">DETAILS</button>';
     }
   }
 }

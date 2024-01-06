@@ -64,14 +64,15 @@
                 </thead>
                 <tbody class="table-body">
                 <tr *ngFor="let voucher of state?.appData?.data?.page?.content" class="cell-1">
-                  <td>{{ voucher.uniqueCode }}</td>
+                  <td>{{ voucher.uniqueCode }} <i class="fa-regular fa-copy"></i></td>
                   <td>{{ voucher.voucherType?.name }}</td>
                   <td>{{ voucher.voucherType?.thresholdPoints }}</td>
                   <td [innerHTML]="voucher | voucherStatus"></td>
                   <td>{{ voucher.createdAt | date: 'mediumDate' }}</td>
                   <td>{{ voucher.expiresAt | date: 'mediumDate' }}</td>
-                  <td>
-                    <button [routerLink]="['/vouchers', voucher.uniqueCode]" type="button" class="btn btn-info btn-sm">  </button>
+                  <td class="text-center">
+                    <button type="button" mat-flat-button [routerLink]="['/vouchers', voucher.uniqueCode]"  class="btn" style="background-color: #28a745; color: #fff;" *ngIf="isVoucherRedeemable(voucher)"><i class="fa-solid fa-leaf"></i></button>
+                    <button type="button" mat-flat-button [routerLink]="['/vouchers', voucher.uniqueCode]" class="btn" style="background-color: #948a8a; color: #fff;" *ngIf="!isVoucherRedeemable(voucher)"><i class="fa-solid fa-info"></i></button>
                   </td>
                 </tr>
                 </tbody>

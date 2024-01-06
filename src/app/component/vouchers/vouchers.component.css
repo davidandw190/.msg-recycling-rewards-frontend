@@ -19,3 +19,32 @@
 }
 
 
+.btn-redeem,
+.btn-details {
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.btn-redeem {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-details {
+  background-color: #A01540FF;
+  color: white;
+}
+
+.btn-redeem:hover{
+  background-color: #218838;
+  color: white;
+}
+
+.btn-details:hover {
+  background-color: #a01540;
+  color: white;
+}
+
+
