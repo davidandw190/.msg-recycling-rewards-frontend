@@ -38,6 +38,7 @@ import {UnitConversionPipe} from "./pipes/unit-converter.pipe";
 import { VouchersComponent } from './component/vouchers/vouchers.component';
 import { VoucherDetailsComponent } from './component/voucher-details/voucher-details.component';
 import {MatTabsModule} from "@angular/material/tabs";
+import {VoucherStatusPipe} from "./pipes/voucher-status.pipe";
 
 @NgModule({
   declarations: [
@@ -83,7 +84,8 @@ import {MatTabsModule} from "@angular/material/tabs";
         SustainabilityIndexPipe,
         UnitConversionPipe,
         NgbNavModule,
-        MatTabsModule
+        MatTabsModule,
+        VoucherStatusPipe
     ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
