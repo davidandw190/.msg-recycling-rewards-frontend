@@ -64,7 +64,13 @@
                 </thead>
                 <tbody class="table-body">
                 <tr *ngFor="let voucher of state?.appData?.data?.page?.content" class="cell-1">
-                  <td>{{ voucher.uniqueCode }} <i class="fa-regular fa-copy"></i></td>
+                  <td  class="copy-to-clipboard"
+                       (click)="copyToClipboard(voucher.uniqueCode)"
+                       ngxClipboard
+                       [cbContent]="voucher.uniqueCode">
+                    <span class="voucher-code">{{ voucher.uniqueCode }}</span>
+                    <i class="fa-regular fa-copy"></i>
+                  </td>
                   <td>{{ voucher.voucherType?.name }}</td>
                   <td>{{ voucher.voucherType?.thresholdPoints }}</td>
                   <td [innerHTML]="voucher | voucherStatus"></td>

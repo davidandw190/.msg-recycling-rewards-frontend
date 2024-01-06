@@ -20,9 +20,11 @@ import {CustomHttpResponse} from "../../interface/custom-http-response";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Sort} from "@angular/material/sort";
+
 import {VouchersPageResponse} from "../../interface/vouchers-page-response";
 import {VoucherService} from "../../service/voucher.service";
 import {Voucher} from "../../interface/voucher";
+import {ClipboardService} from "ngx-clipboard";
 
 @Component({
   selector: 'app-vouchers',
@@ -50,7 +52,8 @@ export class VouchersComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private voucherService: VoucherService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private clipboardService: ClipboardService
   ) {
   }
 
@@ -225,5 +228,10 @@ export class VouchersComponent implements OnInit, OnDestroy {
 
   isVoucherRedeemable(voucher: Voucher): boolean {
     return !voucher.redeemed && (!voucher.expiresAt || new Date(voucher.expiresAt) >= new Date());
+  }
+
+  copyToClipboard(code: string) {
+    this.clipboardService.copyFromContent(code);
+
   }
 }
