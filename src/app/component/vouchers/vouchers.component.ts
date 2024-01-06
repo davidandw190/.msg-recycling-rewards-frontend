@@ -1,17 +1,17 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
   BehaviorSubject,
   catchError,
+  combineLatest,
   debounceTime,
   distinctUntilChanged,
-  filter,
-  fromEvent,
   map,
   Observable,
   of,
   startWith,
   Subject,
   switchMap,
+  takeUntil,
   tap
 } from "rxjs";
 import {AppState} from "../../interface/app-state";
@@ -28,7 +28,7 @@ import {VoucherService} from "../../service/voucher.service";
   templateUrl: './vouchers.component.html',
   styleUrls: ['./vouchers.component.css']
 })
-export class VouchersComponent {
+export class VouchersComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
 
   vouchersState$: Observable<AppState<CustomHttpResponse<VouchersPageResponse>>>;
@@ -44,9 +44,6 @@ export class VouchersComponent {
 
   searchForm: FormGroup;
 
-  isFiltersCollapsed = true;
-
-  numEnabledFilters: number = 0;
 
   constructor(
     private router: Router,
@@ -54,19 +51,79 @@ export class VouchersComponent {
     private voucherService: VoucherService,
     private formBuilder: FormBuilder
   ) {
-    this.initializeForm();
-    this.initializeSearch()
   }
 
   ngOnInit(): void {
-    this.setupFormChangeListeners();
-    this.setupKeyEventListeners();
+    this.initializeForm();
+    this.initializeSearch()
+    this.searchVouchers()
+    this.setupSearchObservable();
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
+  updateActiveTab(activeTab: string): void {
+    const redeemed = activeTab === 'Redeemed' ? false : null;
+    const expired = activeTab === 'Expired';
+
+    this.searchForm.get('redeemed').setValue(redeemed);
+    this.searchForm.get('expired').setValue(expired);
+
+    this.searchVouchers();
+  }
+
+  searchVouchers(): void {
+    const { code, sortBy, sortOrder } = this.searchForm.value;
+    const page = this.currentPageSubject.value;
+    const { redeemed, expired } = this.searchForm.value;
+
+    this.isLoadingSubject.next(true);
+
+    this.voucherService
+      .searchVouchers$(code, sortBy, sortOrder, page, redeemed, expired)
+      .pipe(
+        tap((response) => this.dataSubject.next(response)),
+        catchError((error: string) => of({ dataState: DataState.ERROR, error }))
+      )
+      .subscribe();
+  }
+
+  goToPage(pageNumber?: number): void {
+    const { code, sortBy, sortOrder, redeemed, expired } = this.searchForm.value;
+
+    this.isLoadingSubject.next(true);
+
+    this.voucherService
+      .searchVouchers$(code, sortBy, sortOrder, pageNumber - 1, redeemed, expired)
+      .pipe(
+        tap((response) => {
+          this.dataSubject.next(response);
+          this.currentPageSubject.next(pageNumber - 1);
+        }),
+        catchError((error: string) => of({ dataState: DataState.ERROR, error }))
+      )
+      .subscribe();
+  }
+
+  sort(event: Sort): void {
+    const currentSortBy = this.searchForm.get('sortBy').value;
+    const currentSortOrder = this.searchForm.get('sortOrder').value;
+
+    const newSortOrder = currentSortBy === event.active ? (currentSortOrder === 'asc' ? 'desc' : 'asc') : 'asc';
+
+    this.searchForm.get('sortBy').setValue(event.active, { emitEvent: true });
+    this.searchForm.get('sortOrder').setValue(newSortOrder, { emitEvent: true });
+
+    this.searchVouchers();
+  }
+
+  redirectNewCenter() {
+    this.router.navigate(["/centers/new"])
+  }
+
 
   private initializeForm(): void {
     this.searchForm = this.formBuilder.group({
@@ -76,23 +133,17 @@ export class VouchersComponent {
       redeemed: [false],
       expired: [false],
     });
-
-    // this.searchForm.get('redeemed').setValue(false);
-    // this.searchForm.get('expired').setValue(false);
   }
 
-  private setupFormChangeListeners(): void {
+  private initializeSearch(): void {
+    this.vouchersState$ = this.dataSubject.pipe(
+      map((response) => ({ dataState: DataState.LOADED, appData: response })),
+      startWith({ dataState: DataState.LOADING }),
+      catchError((error: string) => of({ dataState: DataState.ERROR, error }))
+    );
+  }
 
-    this.searchVouchers();
-
-    this.searchForm.valueChanges
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        tap(() => this.isLoadingSubject.next(true))
-      )
-      .subscribe();
-
+  private setupSearchObservable(): void {
     this.searchForm.get('code').valueChanges
       .pipe(
         debounceTime(300),
@@ -112,36 +163,31 @@ export class VouchersComponent {
           console.error(error);
           return of({ dataState: DataState.ERROR, error });
         }),
-        tap((response) => this.handleSearch(response))
+        tap((response) => this.handleSearch(response)),
+        takeUntil(this.destroy$)
       )
       .subscribe();
 
-    this.searchForm.get('sortBy').valueChanges
+    combineLatest([
+      this.searchForm.valueChanges.pipe(debounceTime(100), distinctUntilChanged()),
+      this.searchForm.get('code').valueChanges.pipe(debounceTime(100), distinctUntilChanged()),
+      this.searchForm.get('sortBy').valueChanges.pipe(debounceTime(100), distinctUntilChanged()),
+      this.searchForm.get('sortOrder').valueChanges.pipe(debounceTime(100), distinctUntilChanged()),
+      this.searchForm.get('redeemed').valueChanges.pipe(debounceTime(100), distinctUntilChanged()),
+      this.searchForm.get('expired').valueChanges.pipe(debounceTime(100), distinctUntilChanged())
+    ])
       .pipe(
-        debounceTime(100),
-        distinctUntilChanged(),
-        tap(() => this.searchVouchers()), // Trigger search when the sorting changes
-        filter(() => false) // Prevent reactive changes
+        tap(() => this.isLoadingSubject.next(true)),
+        switchMap(([code, sortBy, sortOrder, redeemed, expired]) =>
+          this.voucherService.searchVouchers$(code, sortBy, sortOrder, 0, redeemed, expired)
+        ),
+        catchError((error: string) => {
+          console.error(error);
+          return of({ dataState: DataState.ERROR, error });
+        }),
+        takeUntil(this.destroy$)
       )
-      .subscribe();
-
-    this.searchForm.get('sortOrder').valueChanges
-      .pipe(
-        debounceTime(100),
-        distinctUntilChanged(),
-        tap(() => this.searchVouchers()), // Trigger search when the sorting changes
-        filter(() => false) // Prevent reactive changes
-      )
-      .subscribe();
-  }
-
-  private setupKeyEventListeners(): void {
-    fromEvent<KeyboardEvent>(document, 'keydown')
-      .pipe(
-        filter((event) => event.key === 'Enter'),
-        filter(() => this.searchForm.valid)
-      )
-      .subscribe(() => this.searchVouchers());
+      .subscribe((response) => this.handleSearch(response));
   }
 
 
@@ -158,138 +204,4 @@ export class VouchersComponent {
     });
   }
 
-  private initializeSearch(): void {
-    this.vouchersState$ = this.dataSubject.pipe(
-      map((response) => ({ dataState: DataState.LOADED, appData: response })),
-      startWith({ dataState: DataState.LOADING }),
-      catchError((error: string) => of({ dataState: DataState.ERROR, error }))
-    );
-  }
-
-  toggleFilters() {
-    this.isFiltersCollapsed = !this.isFiltersCollapsed;
-  }
-
-  searchVouchers(): void {
-    const code = this.searchForm.get('code').value;
-    const sortBy = this.searchForm.get('sortBy').value;
-    const sortOrder = this.searchForm.get('sortOrder').value;
-    const page = this.currentPageSubject.value;
-
-    // Retrieve redeemed and expired values
-    const redeemed = this.searchForm.get('redeemed').value;
-    const expired = this.searchForm.get('expired').value;
-
-
-
-    // Create an object to hold non-null parameters
-    const queryParams: any = {
-      code,
-      sortBy,
-      sortOrder,
-      page,
-      redeemed,
-      expired,
-    };
-
-    // // Add redeemed and expired to queryParams if they are not null
-    // if (redeemed !== null) {
-    //   queryParams.redeemed = redeemed;
-    // }
-    //
-    // if (expired !== null) {
-    //   queryParams.expired = expired;
-    // }
-
-    // this.updateEnabledFilters();
-    this.isLoadingSubject.next(true);
-
-    console.log('redeemed:', redeemed);
-    console.log('expired:', expired);
-
-    console.log('redeemed:', queryParams.redeemed);
-    console.log('expired:', queryParams.expired);
-
-    this.voucherService
-      .searchVouchers$(code, sortBy, sortOrder, page, redeemed, expired)
-      .pipe(
-        tap((response) => {
-          this.dataSubject.next(response);
-        }),
-        catchError((error: string) => of({ dataState: DataState.ERROR, error }))
-      )
-      .subscribe();
-  }
-
-
-
-
-  goToPage(pageNumber?: number): void {
-    const code  = this.searchForm.get('code').value;
-    const sortBy  = this.searchForm.get('sortBy').value;
-    const sortOrder  = this.searchForm.get('sortOrder').value;
-    const redeemed  = this.searchForm.get('redeemed').value;
-    const expired  = this.searchForm.get('expired').value;
-    // console.log(materials)
-
-    this.isLoadingSubject.next(true);
-
-    this.voucherService
-      .searchVouchers$( code, sortBy, sortOrder, pageNumber - 1, redeemed, expired)
-      .pipe(
-        tap((response) => {
-          this.dataSubject.next(response);
-          this.currentPageSubject.next(pageNumber - 1);
-        }),
-        catchError((error: string) => of({ dataState: DataState.ERROR, error }))
-      )
-      .subscribe();
-  }
-
-
-  private updateSearch(): void {
-    this.isLoadingSubject.next(true);
-    this.searchVouchers();
-  }
-
-  redirectNewCenter() {
-    this.router.navigate(["/centers/new"])
-  }
-
-
-  sort(event: Sort): void {
-    const currentSortBy = this.searchForm.get('sortBy').value;
-    const currentSortOrder = this.searchForm.get('sortOrder').value;
-
-      // Toggle the sorting order when the same column is clicked
-      const newSortOrder = currentSortBy === event.active ? (currentSortOrder === 'asc' ? 'desc' : 'asc') : 'asc';
-
-      this.searchForm.get('sortBy').setValue(event.active, { emitEvent: true });
-      this.searchForm.get('sortOrder').setValue(newSortOrder, { emitEvent: true });
-
-
-    this.searchVouchers();
-  }
-
-
-  updateActiveTab(activeTab: string) {
-
-    if (activeTab === 'Available') {
-      this.searchForm.get('redeemed').setValue(false);
-      this.searchForm.get('expired').setValue(false);
-
-    } else if (activeTab === 'Redeemed') {
-      this.searchForm.get('redeemed').setValue(false);
-      this.searchForm.get('expired').setValue(null);
-    } else if (activeTab === 'Expired'){
-      this.searchForm.get('redeemed').setValue(null);
-      this.searchForm.get('expired').setValue(true);
-    }
-
-    console.log(this.searchForm.get('expired').value)
-    console.log(this.searchForm.get('redeemed').value)
-
-    this.searchVouchers()
-
-  }
 }

@@ -29,7 +29,6 @@ export class VoucherService {
       .set('sortOrder', sortOrder)
       .set('page', page.toString());
 
-    // Add redeemed and expired parameters only if they are not null
     if (redeemed !== null) {
       params = params.set('redeemed', redeemed.toString());
     }
@@ -51,7 +50,6 @@ export class VoucherService {
       catchError(this.handleError)
     );
   }
-
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.log(error);
