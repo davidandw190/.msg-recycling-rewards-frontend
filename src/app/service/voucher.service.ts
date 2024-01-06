@@ -17,28 +17,41 @@ export class VoucherService {
 
   searchVouchers$(
     code: string = '',
-    redeemed: boolean = null,
-    expired: boolean = null,
     sortBy: string = '',
     sortOrder: string = '',
-    page: number = 0
+    page: number = 0,
+    redeemed: boolean | null,
+    expired: boolean | null,
   ): Observable<CustomHttpResponse<VouchersPageResponse>> {
-
-    const params = new HttpParams()
+    let params = new HttpParams()
       .set('code', code)
-      .set('redeemed', redeemed)
-      .set('expired', expired)
       .set('sortBy', sortBy)
       .set('sortOrder', sortOrder)
       .set('page', page.toString());
 
-    return this.http.get<CustomHttpResponse<VouchersPageResponse>>
-    (`${this.server}/vouchers/search`, {params})
-      .pipe(
-        tap(console.log),
-        catchError(this.handleError)
-      );
+    // Add redeemed and expired parameters only if they are not null
+    if (redeemed !== null) {
+      params = params.set('redeemed', redeemed.toString());
+    }
+
+    if (expired !== null) {
+      params = params.set('expired', expired.toString());
+    }
+
+    console.log(redeemed)
+    console.log(expired)
+
+    console.log(params)
+
+    return this.http.get<CustomHttpResponse<VouchersPageResponse>>(
+      `${this.server}/vouchers/search`,
+      { params }
+    ).pipe(
+      tap(console.log),
+      catchError(this.handleError)
+    );
   }
+
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.log(error);

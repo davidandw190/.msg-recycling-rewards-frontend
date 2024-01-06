@@ -71,11 +71,14 @@ export class VouchersComponent {
   private initializeForm(): void {
     this.searchForm = this.formBuilder.group({
       code: [''],
-      redeemed: [false],
-      expired: [false],
       sortBy: ['createdAt'],
       sortOrder: ['desc'],
+      redeemed: [false],
+      expired: [false],
     });
+
+    // this.searchForm.get('redeemed').setValue(false);
+    // this.searchForm.get('expired').setValue(false);
   }
 
   private setupFormChangeListeners(): void {
@@ -98,10 +101,11 @@ export class VouchersComponent {
         switchMap(() =>
           this.voucherService.searchVouchers$(
             this.searchForm.get('code').value,
-            this.searchForm.get('redeemed').value,
-            this.searchForm.get('expired').value,
             this.searchForm.get('sortBy').value,
-            this.searchForm.get('sortOrder').value
+            this.searchForm.get('sortOrder').value,
+            0,
+            this.searchForm.get('redeemed').value,
+            this.searchForm.get('expired').value
           )
         ),
         catchError((error: string) => {
@@ -168,21 +172,49 @@ export class VouchersComponent {
 
   searchVouchers(): void {
     const code = this.searchForm.get('code').value;
-    const redeemed = this.searchForm.get('redeemed').value;
-    const expired = this.searchForm.get('expired').value;
     const sortBy = this.searchForm.get('sortBy').value;
     const sortOrder = this.searchForm.get('sortOrder').value;
     const page = this.currentPageSubject.value;
 
+    // Retrieve redeemed and expired values
+    const redeemed = this.searchForm.get('redeemed').value;
+    const expired = this.searchForm.get('expired').value;
+
+
+
+    // Create an object to hold non-null parameters
+    const queryParams: any = {
+      code,
+      sortBy,
+      sortOrder,
+      page,
+      redeemed,
+      expired,
+    };
+
+    // // Add redeemed and expired to queryParams if they are not null
+    // if (redeemed !== null) {
+    //   queryParams.redeemed = redeemed;
+    // }
+    //
+    // if (expired !== null) {
+    //   queryParams.expired = expired;
+    // }
+
     // this.updateEnabledFilters();
     this.isLoadingSubject.next(true);
 
+    console.log('redeemed:', redeemed);
+    console.log('expired:', expired);
+
+    console.log('redeemed:', queryParams.redeemed);
+    console.log('expired:', queryParams.expired);
+
     this.voucherService
-      .searchVouchers$(code, redeemed, expired, sortBy, sortOrder, page)
+      .searchVouchers$(code, sortBy, sortOrder, page, redeemed, expired)
       .pipe(
         tap((response) => {
           this.dataSubject.next(response);
-          // this.updateUrlParameters();
         }),
         catchError((error: string) => of({ dataState: DataState.ERROR, error }))
       )
@@ -190,32 +222,30 @@ export class VouchersComponent {
   }
 
 
+
+
   goToPage(pageNumber?: number): void {
-    const name = this.searchForm.get('name').value;
-    const county = this.searchForm.get('county').value;
-    const city = this.searchForm.get('city').value;
+    const code  = this.searchForm.get('code').value;
     const sortBy  = this.searchForm.get('sortBy').value;
     const sortOrder  = this.searchForm.get('sortOrder').value;
+    const redeemed  = this.searchForm.get('redeemed').value;
+    const expired  = this.searchForm.get('expired').value;
     // console.log(materials)
 
     this.isLoadingSubject.next(true);
 
-    // this.centerService
-    //   .searchCenters$(name, county, city, materials, sortBy, sortOrder, pageNumber - 1)
-    //   .pipe(
-    //     tap((response) => {
-    //       this.dataSubject.next(response);
-    //       this.updateUrlParameters();
-    //       this.currentPageSubject.next(pageNumber - 1);
-    //     }),
-    //     catchError((error: string) => of({ dataState: DataState.ERROR, error }))
-    //   )
-    //   .subscribe();
+    this.voucherService
+      .searchVouchers$( code, sortBy, sortOrder, pageNumber - 1, redeemed, expired)
+      .pipe(
+        tap((response) => {
+          this.dataSubject.next(response);
+          this.currentPageSubject.next(pageNumber - 1);
+        }),
+        catchError((error: string) => of({ dataState: DataState.ERROR, error }))
+      )
+      .subscribe();
   }
 
-  resetFilters(): void {
-
-  }
 
   private updateSearch(): void {
     this.isLoadingSubject.next(true);
@@ -231,47 +261,35 @@ export class VouchersComponent {
     const currentSortBy = this.searchForm.get('sortBy').value;
     const currentSortOrder = this.searchForm.get('sortOrder').value;
 
-    // Check if the column is "materials"
-    if (event.active === 'materials') {
-      // Set newSortBy to "acceptedMaterial"
-      const newSortBy = 'acceptedMaterials';
-
-      // Toggle the sorting order when the same column is clicked
-      const newSortOrder = currentSortBy === newSortBy ? (currentSortOrder === 'asc' ? 'desc' : 'asc') : 'asc';
-
-      this.searchForm.get('sortBy').setValue(newSortBy, { emitEvent: true });
-      this.searchForm.get('sortOrder').setValue(newSortOrder, { emitEvent: true });
-    } else {
       // Toggle the sorting order when the same column is clicked
       const newSortOrder = currentSortBy === event.active ? (currentSortOrder === 'asc' ? 'desc' : 'asc') : 'asc';
 
       this.searchForm.get('sortBy').setValue(event.active, { emitEvent: true });
       this.searchForm.get('sortOrder').setValue(newSortOrder, { emitEvent: true });
-    }
+
 
     this.searchVouchers();
   }
 
 
-  // private updateUrlParameters(): void {
-  //   const name = this.searchForm.get('name').value;
-  //   const county = this.searchForm.get('county').value;
-  //   const city = this.searchForm.get('city').value;
-  //   const materials = this.selectedMaterials.join(",");
-  //   const sortBy = this.searchForm.get('sortBy').value;
-  //   const sortOrder = this.searchForm.get('sortOrder').value;
-  //
-  //   this.router.navigate([], {
-  //     relativeTo: this.route,
-  //     queryParams: {
-  //       name,
-  //       county,
-  //       city,
-  //       materials,
-  //       sortBy,
-  //       sortOrder,
-  //     },
-  //     queryParamsHandling: 'merge',
-  //   });
-  // }
+  updateActiveTab(activeTab: string) {
+
+    if (activeTab === 'Available') {
+      this.searchForm.get('redeemed').setValue(false);
+      this.searchForm.get('expired').setValue(false);
+
+    } else if (activeTab === 'Redeemed') {
+      this.searchForm.get('redeemed').setValue(false);
+      this.searchForm.get('expired').setValue(null);
+    } else if (activeTab === 'Expired'){
+      this.searchForm.get('redeemed').setValue(null);
+      this.searchForm.get('expired').setValue(true);
+    }
+
+    console.log(this.searchForm.get('expired').value)
+    console.log(this.searchForm.get('redeemed').value)
+
+    this.searchVouchers()
+
+  }
 }
