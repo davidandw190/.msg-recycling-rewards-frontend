@@ -39,6 +39,7 @@ import { VouchersComponent } from './component/vouchers/vouchers.component';
 import { VoucherDetailsComponent } from './component/voucher-details/voucher-details.component';
 import {MatTabsModule} from "@angular/material/tabs";
 import {VoucherStatusPipe} from "./pipes/voucher-status.pipe";
+import {ClipboardModule} from "ngx-clipboard";
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import {VoucherStatusPipe} from "./pipes/voucher-status.pipe";
         MatButtonModule,
         MatSortModule,
         MatChipsModule,
+        ClipboardModule,
         MatIconModule,
         MatSlideToggleModule,
         MatBadgeModule,
