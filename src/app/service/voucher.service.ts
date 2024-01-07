@@ -4,6 +4,7 @@ import {catchError, Observable, tap, throwError} from "rxjs";
 import {CustomHttpResponse} from "../interface/custom-http-response";
 import {CentersPageResponse} from "../interface/centers-page-response";
 import {VouchersPageResponse} from "../interface/vouchers-page-response";
+import {VoucherDetailsResponse} from "../interface/voucher-details-response";
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +51,14 @@ export class VoucherService {
       catchError(this.handleError)
     );
   }
+
+  voucher$ = (code: string) => <Observable<CustomHttpResponse<VoucherDetailsResponse>>>
+    this.http.get<CustomHttpResponse<VoucherDetailsResponse>>
+    (`${this.server}/vouchers/get/${code}`)
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.log(error);
