@@ -5,6 +5,9 @@ import {CustomHttpResponse} from "../interface/custom-http-response";
 import {CentersPageResponse} from "../interface/centers-page-response";
 import {VouchersPageResponse} from "../interface/vouchers-page-response";
 import {VoucherDetailsResponse} from "../interface/voucher-details-response";
+import {NgForm} from "@angular/forms";
+import {CenterDetailsResponse} from "../interface/center-details-response";
+import {CenterNewResponse} from "../interface/center-new-response";
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +58,14 @@ export class VoucherService {
   voucher$ = (code: string) => <Observable<CustomHttpResponse<VoucherDetailsResponse>>>
     this.http.get<CustomHttpResponse<VoucherDetailsResponse>>
     (`${this.server}/vouchers/get/${code}`)
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
+
+  redeem$ = (code: string) => <Observable<CustomHttpResponse<VoucherDetailsResponse>>>
+    this.http.post<CustomHttpResponse<VoucherDetailsResponse>>
+    (`${this.server}/vouchers/redeem/${code}`, {})
       .pipe(
         tap(console.log),
         catchError(this.handleError)

@@ -4,7 +4,7 @@
     <div style="margin-top: 90px"></div>
     <section>
       <div class="container">
-        <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <nav aria-label="breadcrumb" class="breadcrumb-nav mb-4">
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
             <li class="breadcrumb-item"><a [routerLink]="['/vouchers']">Vouchers</a></li>
@@ -13,19 +13,30 @@
         </nav>
         <div class="row">
           <div class="col-md-12">
-            <div class="voucher">
+            <button class="btn btn-danger me-2" type="button" style="font-weight: 500;">
+              <i class="bi bi-file-earmark-pdf-fill"></i>
+              Download (PDF)
+            </button>
+
+            <button
+              class="btn btn-success redeem-button"
+              style="font-weight: 500;"
+              [disabled]="(this.voucherStatus !== 'AVAILABLE')"
+              (click)="redeem()"
+            >
+              <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              Redeem
+            </button>
+
+            <div class="voucher mt-3">
               <div class="voucher-header">
                 <div class="voucher-company">
-                  <a class="btn btn-recycle" style="font-weight: 500;">
-                    <i class="bi bi-file-earmark-pdf-fill"></i>
-                    Download (PDF)
-                  </a>
+                  <h2 class="voucher-title"> {{ state?.appData?.data?.voucher.voucherType.name }} - Voucher <span class="voucher-code">#{{ state?.appData?.data?.voucher.uniqueCode }}</span></h2>
                 </div>
               </div>
               <hr>
               <div id="voucher">
                 <div class="voucher-header">
-                  <h2 class="voucher-title mb-4"> {{ state?.appData?.data?.voucher.voucherType.name }} - Voucher <span class="voucher-code">#{{ state?.appData?.data?.voucher.uniqueCode }}</span></h2>
                   <div class="voucher-from">
                     <small>from</small>
                     <address class="address-details">
@@ -45,7 +56,7 @@
                     </address>
                   </div>
                   <div class="voucher-date">
-                    <img src="../../../../assets/msg-logo.svg" width="100px"  alt="RecyclingRewards Logo" style="margin-top: -100px">
+                    <img src="../../../../assets/msg-logo.svg" width="100px"  alt="RecyclingRewards Logo" style="margin-top: -200px">
                     <br>
                     <div class="date text-inverse text-muted">
                       Earn Date: {{ state?.appData?.data?.voucher?.expiresAt | date: 'mediumDate' }} {{ state?.appData?.data?.voucher?.expiresAt | date: 'shortTime' }}
@@ -53,8 +64,8 @@
                     <div class="date text-inverse text-muted">
                       Expires At: {{ state?.appData?.data?.voucher?.expiresAt | date: 'mediumDate' }} {{ state?.appData?.data?.voucher?.expiresAt | date: 'shortTime' }}
                     </div>
-                    <div *ngIf="voucherStatus == 'REDEEMED'" class="date text-inverse">
-                      <strong>Redeem Date:</strong> {{ state?.appData?.data?.voucher?.createdAt | date: 'mediumDate' }}
+                    <div *ngIf="voucherStatus == 'REDEEMED'" class="date text-inverse text-muted">
+                      Redeem Date: {{ state?.appData?.data?.voucher?.createdAt | date: 'mediumDate' }}
                     </div>
 
                     <div class="mt-3">
@@ -88,15 +99,16 @@
                   <p class="text-center m-b-5 f-w-600">
                     Thank you for making a positive impact on the environment!
                   </p>
-                  <p class="text-center contact-details">
-                    <span><i class="fa fa-fw fa-lg fa-globe"></i> RecyclingRewards.io</span> <br>
-                    <span><i class="fa fa-fw fa-lg fa-phone-volume"></i> Telephone: +40 707 474 3563</span><br>
-                    <span><i class="fa fa-fw fa-lg fa-envelope"></i> Email: support@recycling-rewards.io</span>
-                  </p>
                   <div class="redemption-instructions text-center">
                     <strong>Redemption Instructions:</strong><br>
-                    To redeem this voucher, simply visit our partner businesses and present it at the checkout. For detailed redemption guidelines, contact us or visit our website at <strong><a href="your_website_link" target="_blank">RecyclingRewards.io</a></strong>.
+                    To redeem this voucher, simply visit our partner businesses and present it at the checkout. For detailed redemption guidelines, contact us or visit our website at <strong><a href="#" target="_blank">msg-recycling-rewards.io</a></strong>.
                   </div>
+                  <p class="text-center contact-details">
+                    <span><i class="fa fa-fw fa-lg fa-globe"></i> Visit: msg-recycling-rewards.io</span> <br>
+                    <span><i class="fa fa-fw fa-lg fa-envelope"></i> Email: recycling-rewards@msg.com</span><br>
+                    <span><i class="fa fa-fw fa-lg fa-phone-volume"></i> Phone: +40 733 900 010, +40 743 211 312</span><br>
+                  </p>
+
                 </div>
               </div>
             </div>

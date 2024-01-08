@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {BehaviorSubject, catchError, map, Observable, of, startWith, switchMap} from "rxjs";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {BehaviorSubject, catchError, map, Observable, of, startWith, Subject, switchMap, takeUntil} from "rxjs";
 import {CustomHttpResponse} from "../../interface/custom-http-response";
 import {VoucherDetailsResponse} from "../../interface/voucher-details-response";
 import { AppState } from 'src/app/interface/app-state';
@@ -15,7 +15,7 @@ const VOUCHER_CODE: string = 'code';
   templateUrl: './voucher-details.component.html',
   styleUrls: ['./voucher-details.component.css']
 })
-export class VoucherDetailsComponent implements OnInit {
+export class VoucherDetailsComponent implements OnInit, OnDestroy {
   voucherDetailsState$: Observable<AppState<CustomHttpResponse<VoucherDetailsResponse>>>;
   private dataSubject = new BehaviorSubject<CustomHttpResponse<VoucherDetailsResponse>>(null);
   private isLoadingSubject = new BehaviorSubject<boolean>(false);
@@ -23,12 +23,16 @@ export class VoucherDetailsComponent implements OnInit {
   readonly DataState = DataState;
 
   voucherStatus: string;
+  currentVoucherCode: string;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private voucherService: VoucherService,
     private voucherStatusPipe: VoucherStatusPipe
   ) { }
+
 
   ngOnInit(): void {
     this.voucherDetailsState$ = this.activatedRoute.paramMap.pipe(
@@ -38,7 +42,8 @@ export class VoucherDetailsComponent implements OnInit {
             map(response => {
               console.log(response);
               this.dataSubject.next(response);
-              this.voucherStatus = this.voucherStatusPipe.transform(response.data.voucher, false, true)
+              this.voucherStatus = this.voucherStatusPipe.transform(response.data.voucher, false, true);
+              this.currentVoucherCode = response.data.voucher.uniqueCode;
               return { dataState: DataState.LOADED, appData: response };
             }),
 
@@ -51,4 +56,33 @@ export class VoucherDetailsComponent implements OnInit {
       })
     );
   }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  redeem() {
+    this.isLoadingSubject.next(true);
+
+    this.voucherService.redeem$(this.currentVoucherCode).pipe(
+      switchMap(() => this.voucherService.voucher$(this.currentVoucherCode)),
+      map((response) => {
+        console.log(response);
+        this.isLoadingSubject.next(false);
+        this.voucherStatus = this.voucherStatusPipe.transform(response.data.voucher, false, true);
+        this.currentVoucherCode = response.data.voucher.uniqueCode;
+        return { dataState: DataState.LOADED, appData: response };
+      }),
+      catchError((error: string) => {
+        this.isLoadingSubject.next(false);
+        return of({ dataState: DataState.ERROR, error });
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe((result) => {
+      this.voucherDetailsState$ = of(result);
+    });
+  }
+
+
 }
