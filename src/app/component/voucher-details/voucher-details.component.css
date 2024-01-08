@@ -3,6 +3,11 @@
   padding: 20px;
 }
 
+.voucher-pane {
+  background: #fff;
+  padding: 20px;
+}
+
 .voucher-company {
   font-size: 20px;
 }
@@ -123,4 +128,23 @@
 .badge.bg-recycle {
   background-color: #4caf50;
   color: #fff;
+}
+
+
+.badge-redeemed {
+  color: #fff !important;
+  background-color: #dc3545;
+  font-size: 12px;
+}
+
+.badge-expired {
+  color: #000 !important;
+  background-color: #ffc107;
+  font-size: 12px;
+}
+
+.badge-available {
+  color: #fff !important;
+  background-color: #28a745;
+  font-size: 12px;
 }

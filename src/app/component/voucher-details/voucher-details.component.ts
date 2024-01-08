@@ -7,6 +7,7 @@ import {ActivatedRoute, ParamMap} from "@angular/router";
 import { DataState } from 'src/app/enum/data-state.enum';
 import {VoucherService} from "../../service/voucher.service";
 import {VoucherStatusPipe} from "../../pipes/voucher-status.pipe";
+import {jsPDF} from 'jspdf';
 
 const VOUCHER_CODE: string = 'code';
 
@@ -84,5 +85,11 @@ export class VoucherDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  exportAsPDF(): void {
+    const filename = `voucher-${this.dataSubject.value.data['voucher'].voucherType.name }-${this.dataSubject.value.data['voucher'].uniqueCode}.pdf`;
+    const doc = new jsPDF();
+    doc.html(document.getElementById('voucher-pane'), { margin: 2, windowWidth: 1000, width: 200,
+      callback: (voucher) => voucher.save(filename) });
+  }
 
 }

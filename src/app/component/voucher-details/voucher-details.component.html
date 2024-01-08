@@ -13,7 +13,11 @@
         </nav>
         <div class="row">
           <div class="col-md-12">
-            <button class="btn btn-danger me-2" type="button" style="font-weight: 500;">
+            <button class="btn btn-danger me-2"
+                    type="button"
+                    style="font-weight: 500;"
+                    (click)="exportAsPDF()"
+            >
               <i class="bi bi-file-earmark-pdf-fill"></i>
               Download (PDF)
             </button>
@@ -28,7 +32,7 @@
               Redeem
             </button>
 
-            <div class="voucher mt-3">
+            <div class="voucher-pane mt-3" id="voucher-pane">
               <div class="voucher-header">
                 <div class="voucher-company">
                   <h2 class="voucher-title"> {{ state?.appData?.data?.voucher.voucherType.name }} - Voucher <span class="voucher-code">#{{ state?.appData?.data?.voucher.uniqueCode }}</span></h2>
@@ -42,7 +46,7 @@
                     <address class="address-details">
                       <strong class="text-inverse">.msg-recycling-rewards.io</strong><br>
 <!--                      Calea Torontalului 1A,<br>-->
-                      Address: 300668, Timișoara, Romania<br>
+                      Address: 300668, Timisoara, Romania<br>
                       Email: recycling-rewards@msg.com<br>
                       Phone: +40 733 900 010<br>
                     </address>
@@ -56,7 +60,7 @@
                     </address>
                   </div>
                   <div class="voucher-date">
-                    <img src="../../../../assets/msg-logo.svg" width="100px"  alt="RecyclingRewards Logo" style="margin-top: -200px">
+<!--                    <img src="../../../../assets/msg-logo.svg" width="100px"  alt="RecyclingRewards Logo" style="margin-top: -200px">-->
                     <br>
                     <div class="date text-inverse text-muted">
                       Earn Date: {{ state?.appData?.data?.voucher?.expiresAt | date: 'mediumDate' }} {{ state?.appData?.data?.voucher?.expiresAt | date: 'shortTime' }}
@@ -82,11 +86,8 @@
                           <span class="text-inverse text-muted">{{ state?.appData?.data?.voucher?.voucherType?.thresholdPoints | sustainabilityIndex}}%</span>
                         </div>
                         <div class="sub-price">
-<!--                          <i class="fa fa-plus text-muted"></i>-->
-                        </div>
-                        <div class="sub-price">
                           <small>MONTH OF ACTIVITY</small>
-                          <span class="text-inverse text-muted">FEBRUARY 2024</span>
+                          <span class="text-inverse text-muted">{{ }}</span>
                         </div>
                       </div>
                     </div>
