@@ -8,6 +8,7 @@ import { DataState } from 'src/app/enum/data-state.enum';
 import {VoucherService} from "../../service/voucher.service";
 import {VoucherStatusPipe} from "../../pipes/voucher-status.pipe";
 import {jsPDF} from 'jspdf';
+import html2canvas from "html2canvas";
 
 const VOUCHER_CODE: string = 'code';
 
@@ -86,10 +87,22 @@ export class VoucherDetailsComponent implements OnInit, OnDestroy {
   }
 
   exportAsPDF(): void {
-    const filename = `voucher-${this.dataSubject.value.data['voucher'].voucherType.name }-${this.dataSubject.value.data['voucher'].uniqueCode}.pdf`;
-    const doc = new jsPDF();
-    doc.html(document.getElementById('voucher-pane'), { margin: 2, windowWidth: 1000, width: 200,
-      callback: (voucher) => voucher.save(filename) });
-  }
+    const filename = `voucher-${this.dataSubject.value.data['voucher'].voucherType.name }-#${this.dataSubject.value.data['voucher'].uniqueCode}.pdf`;
+    const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'landscape' });
+    const img = new Image();
+    img.src = 'assets/msg-logo.png';
+    doc.setFont('fa-solid-900', 'normal');
+    doc.addImage(img, 'png', 10, 78, 12, 15);
 
+    const voucherElement = document.getElementById('voucher-pane');
+
+    if (voucherElement) {
+      html2canvas(voucherElement, { scale: 2 }).then((canvas) => {
+        const imageData = canvas.toDataURL('image/png');
+        doc.addImage(imageData, 'PNG', 10, 15, doc.internal.pageSize.width - 20, doc.internal.pageSize.height - 80);
+
+        doc.save(filename);
+      });
+    }
+  }
 }

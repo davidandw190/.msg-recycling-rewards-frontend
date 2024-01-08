@@ -60,10 +60,10 @@
                     </address>
                   </div>
                   <div class="voucher-date">
-<!--                    <img src="../../../../assets/msg-logo.svg" width="100px"  alt="RecyclingRewards Logo" style="margin-top: -200px">-->
+                    <img src="../../../../assets/msg-logo.png" width="100px"  alt=".MSG" style="margin-top: -200px">
                     <br>
                     <div class="date text-inverse text-muted">
-                      Earn Date: {{ state?.appData?.data?.voucher?.expiresAt | date: 'mediumDate' }} {{ state?.appData?.data?.voucher?.expiresAt | date: 'shortTime' }}
+                      Earn Date: Jan 6 2024 {{ state?.appData?.data?.voucher?.expiresAt | date: 'shortTime' }}
                     </div>
                     <div class="date text-inverse text-muted">
                       Expires At: {{ state?.appData?.data?.voucher?.expiresAt | date: 'mediumDate' }} {{ state?.appData?.data?.voucher?.expiresAt | date: 'shortTime' }}
@@ -82,17 +82,18 @@
                     <div class="voucher-price-left">
                       <div class="voucher-price-row">
                         <div class="sub-price">
-                          <small>SUSTAINABILITY INDEX</small>
-                          <span class="text-inverse text-muted">{{ state?.appData?.data?.voucher?.voucherType?.thresholdPoints | sustainabilityIndex}}%</span>
+                          <small>SUSTAINABILITY  INDEX</small>
+                          <span class="text-inverse text-muted">+ {{ state?.appData?.data?.voucher?.voucherType?.thresholdPoints | sustainabilityIndex}}%</span>
                         </div>
                         <div class="sub-price">
                           <small>MONTH OF ACTIVITY</small>
-                          <span class="text-inverse text-muted">{{ }}</span>
+                          <span class="text-inverse text-muted">JANUARY 2024</span>
                         </div>
                       </div>
                     </div>
                     <div class="voucher-price-right">
-                      <small>REWARDS POINTS</small> <span class="f-w-600"><strong>{{ state?.appData?.data?.voucher?.voucherType.thresholdPoints }}</strong></span>
+                      <small>REWARD POINTS</small>
+                      <span class="f-w-600"><strong>{{ state?.appData?.data?.voucher?.voucherType.thresholdPoints }}</strong></span>
                     </div>
                   </div>
                 </div>
@@ -102,12 +103,12 @@
                   </p>
                   <div class="redemption-instructions text-center">
                     <strong>Redemption Instructions:</strong><br>
-                    To redeem this voucher, simply visit our partner businesses and present it at the checkout. For detailed redemption guidelines, contact us or visit our website at <strong><a href="#" target="_blank">msg-recycling-rewards.io</a></strong>.
+                    To redeem this voucher, simply visit our partner businesses and present it at the checkout. For detailed redemption guidelines, contact us or visit our website at <strong><a href="#" target="_blank" style="color: #28a745">msg-recycling-rewards.io</a></strong>.
                   </div>
                   <p class="text-center contact-details">
-                    <span><i class="fa fa-fw fa-lg fa-globe"></i> Visit: msg-recycling-rewards.io</span> <br>
-                    <span><i class="fa fa-fw fa-lg fa-envelope"></i> Email: recycling-rewards@msg.com</span><br>
-                    <span><i class="fa fa-fw fa-lg fa-phone-volume"></i> Phone: +40 733 900 010, +40 743 211 312</span><br>
+                    <span><i class="fa fa-leaf"></i> Visit Us: msg-recycling-rewards.io</span> <br>
+                    <span><i class="fa-solid fa-envelope"></i> Email: recycling-rewards@msg.com</span><br>
+                    <span><i class="fa-solid fa-phone"></i> Call: +40 733 900 010 / +40 743 211 312</span><br>
                   </p>
 
                 </div>

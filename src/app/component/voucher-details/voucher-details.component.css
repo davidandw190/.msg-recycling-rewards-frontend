@@ -148,3 +148,10 @@
   background-color: #28a745;
   font-size: 12px;
 }
+
+.voucher-price .voucher-price-left::after,
+.voucher-price .voucher-price-right::before {
+  content: '\00a0'; /* Non-breaking space */
+  margin: 0 5px; /* Adjust the margin as needed */
+  display: inline-block;
+}
