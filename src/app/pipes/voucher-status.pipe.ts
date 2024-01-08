@@ -3,12 +3,17 @@ import {Voucher} from "../interface/voucher";
 
 @Pipe({
   standalone: true,
+  pure: false,
   name: 'voucherStatus'
 })
 export class VoucherStatusPipe implements PipeTransform {
-  transform(voucher: Voucher, actionButton: boolean = false): string {
+  transform(voucher: Voucher, actionButton: boolean = false, textOnly: boolean = false,): string {
     if (actionButton) {
       return this.getActionButtonMarkup(voucher);
+    }
+
+    if (textOnly) {
+      return this.getStatusText(voucher)
     }
 
     const badgeClass = this.getBadgeClass(voucher);

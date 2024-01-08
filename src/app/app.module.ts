@@ -94,7 +94,8 @@ import {ClipboardModule} from "ngx-clipboard";
     // { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
     // HttpCacheService,
     RewardPointsPipe,
-    SustainabilityIndexPipe
+    SustainabilityIndexPipe,
+    VoucherStatusPipe
   ],
   bootstrap: [AppComponent],
   exports: [HighlightSearchPipe]

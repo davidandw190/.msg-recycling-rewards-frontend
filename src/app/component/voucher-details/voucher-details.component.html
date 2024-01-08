@@ -18,21 +18,22 @@
                 <div class="voucher-company">
                   <a class="btn btn-recycle" style="font-weight: 500;">
                     <i class="bi bi-file-earmark-pdf-fill"></i>
-                    Download Voucher (PDF)
+                    Download (PDF)
                   </a>
                 </div>
               </div>
               <hr>
               <div id="voucher">
                 <div class="voucher-header">
-                  <h2 class="voucher-title mb-4">Sustainability Voucher <span class="voucher-code">#{{ state?.appData?.data?.voucher.uniqueCode }}</span></h2>
+                  <h2 class="voucher-title mb-4"> {{ state?.appData?.data?.voucher.voucherType.name }} - Voucher <span class="voucher-code">#{{ state?.appData?.data?.voucher.uniqueCode }}</span></h2>
                   <div class="voucher-from">
                     <small>from</small>
                     <address class="address-details">
-                      <strong class="text-inverse">RecyclingRewards.io</strong><br>
-                      12 Asdas, Timisoara, Romania<br>
-                      Phone: +40 0787 767 434<br>
-                      Email:
+                      <strong class="text-inverse">.msg-recycling-rewards.io</strong><br>
+<!--                      Calea Torontalului 1A,<br>-->
+                      Address: 300668, Timișoara, Romania<br>
+                      Email: recycling-rewards@msg.com<br>
+                      Phone: +40 733 900 010<br>
                     </address>
                   </div>
                   <div class="voucher-to">
@@ -40,62 +41,62 @@
                     <address class="address-details">
                       <strong class="text-inverse">{{ state?.appData?.data?.user.firstName }} {{ state?.appData?.data?.user.lastName }}</strong><br>
                       Email: {{ state?.appData?.data?.user.email }} <br>
-                      Phone: {{ state?.appData?.data?.user.phone }} <br>
+                      Phone: {{ state?.appData?.data?.user.phone || " -" }} <br>
                     </address>
                   </div>
                   <div class="voucher-date">
-                    <img src="../../../../assets/msg-logo.svg" width="90px"  alt="RecyclingRewards Logo" style="margin-top: -100px">
+                    <img src="../../../../assets/msg-logo.svg" width="100px"  alt="RecyclingRewards Logo" style="margin-top: -100px">
                     <br>
-                    <div style="margin-top: -20px">
-<!--                      <small>Voucher Code: #{{ state?.appData?.data?.voucher.uniqueCode }}</small>-->
-                      <div class="date text-inverse">Earn Date: {{ state?.appData?.data?.voucher?.expiresAt | date: 'mediumDate' }}</div>
-                      <div class="date text-inverse">Expires At: {{ state?.appData?.data?.voucher?.expiresAt | date: 'mediumDate' }}</div>
-                      <div class="date text-inverse">Redeem Date: {{ state?.appData?.data?.voucher?.createdAt | date: 'mediumDate' }}</div>
-                      Voucher Type: <span class="badge bg-recycle">
-                        {{ state?.appData?.data?.voucher.voucherType.name }}
-                      </span>
+                    <div class="date text-inverse text-muted">
+                      Earn Date: {{ state?.appData?.data?.voucher?.expiresAt | date: 'mediumDate' }} {{ state?.appData?.data?.voucher?.expiresAt | date: 'shortTime' }}
+                    </div>
+                    <div class="date text-inverse text-muted">
+                      Expires At: {{ state?.appData?.data?.voucher?.expiresAt | date: 'mediumDate' }} {{ state?.appData?.data?.voucher?.expiresAt | date: 'shortTime' }}
+                    </div>
+                    <div *ngIf="voucherStatus == 'REDEEMED'" class="date text-inverse">
+                      <strong>Redeem Date:</strong> {{ state?.appData?.data?.voucher?.createdAt | date: 'mediumDate' }}
+                    </div>
+
+                    <div class="mt-3">
+                      <strong></strong> <span [innerHtml]="state?.appData?.data?.voucher | voucherStatus"></span>
                     </div>
                   </div>
                 </div>
                 <div class="voucher-content">
-                  <div class="table-responsive">
-                    <!-- Add your voucher content here -->
-                  </div>
                   <div class="voucher-price">
                     <div class="voucher-price-left">
                       <div class="voucher-price-row">
                         <div class="sub-price">
-                          <small>SUBTOTAL</small>
-                          <span class="text-inverse"></span>
+                          <small>SUSTAINABILITY INDEX</small>
+                          <span class="text-inverse text-muted">{{ state?.appData?.data?.voucher?.voucherType?.thresholdPoints | sustainabilityIndex}}%</span>
                         </div>
                         <div class="sub-price">
-                          <i class="fa fa-plus text-muted"></i>
+<!--                          <i class="fa fa-plus text-muted"></i>-->
                         </div>
                         <div class="sub-price">
-                          <small>TAX (5.4%)</small>
-                          <span class="text-inverse">ADSADASD</span>
+                          <small>MONTH OF ACTIVITY</small>
+                          <span class="text-inverse text-muted">FEBRUARY 2024</span>
                         </div>
                       </div>
                     </div>
                     <div class="voucher-price-right">
-                      <small>TOTAL</small> <span class="f-w-600">INDEX</span>
+                      <small>REWARDS POINTS</small> <span class="f-w-600"><strong>{{ state?.appData?.data?.voucher?.voucherType.thresholdPoints }}</strong></span>
                     </div>
                   </div>
                 </div>
                 <div class="voucher-footer">
                   <p class="text-center m-b-5 f-w-600">
-                    THANK YOU FOR YOUR CONTRIBUTION
+                    Thank you for making a positive impact on the environment!
                   </p>
                   <p class="text-center contact-details">
                     <span><i class="fa fa-fw fa-lg fa-globe"></i> RecyclingRewards.io</span> <br>
                     <span><i class="fa fa-fw fa-lg fa-phone-volume"></i> Telephone: +40 707 474 3563</span><br>
                     <span><i class="fa fa-fw fa-lg fa-envelope"></i> Email: support@recycling-rewards.io</span>
                   </p>
-                  <p class="text-center redemption-instructions">
+                  <div class="redemption-instructions text-center">
                     <strong>Redemption Instructions:</strong><br>
-                    Visit our partner businesses and present this voucher for redemption.<br>
-                    For detailed guidelines, contact us or visit our website.
-                  </p>
+                    To redeem this voucher, simply visit our partner businesses and present it at the checkout. For detailed redemption guidelines, contact us or visit our website at <strong><a href="your_website_link" target="_blank">RecyclingRewards.io</a></strong>.
+                  </div>
                 </div>
               </div>
             </div>

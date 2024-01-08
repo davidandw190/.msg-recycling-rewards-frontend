@@ -6,6 +6,7 @@ import { AppState } from 'src/app/interface/app-state';
 import {ActivatedRoute, ParamMap} from "@angular/router";
 import { DataState } from 'src/app/enum/data-state.enum';
 import {VoucherService} from "../../service/voucher.service";
+import {VoucherStatusPipe} from "../../pipes/voucher-status.pipe";
 
 const VOUCHER_CODE: string = 'code';
 
@@ -21,9 +22,12 @@ export class VoucherDetailsComponent implements OnInit {
   isLoading$ = this.isLoadingSubject.asObservable();
   readonly DataState = DataState;
 
+  voucherStatus: string;
+
   constructor(
     private activatedRoute: ActivatedRoute,
-    private voucherService: VoucherService
+    private voucherService: VoucherService,
+    private voucherStatusPipe: VoucherStatusPipe
   ) { }
 
   ngOnInit(): void {
@@ -34,6 +38,7 @@ export class VoucherDetailsComponent implements OnInit {
             map(response => {
               console.log(response);
               this.dataSubject.next(response);
+              this.voucherStatus = this.voucherStatusPipe.transform(response.data.voucher, false, true)
               return { dataState: DataState.LOADED, appData: response };
             }),
 
