@@ -48,6 +48,14 @@ export class UserService {
         catchError(this.handleError)
       );
 
+  register$ = (user: User) => <Observable<CustomHttpResponse<Profile>>>
+    this.http.post<CustomHttpResponse<Profile>>
+    (`${this.server}/user/register`, user)
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
+
   /**
    * Verifies a user's code by sending a GET request to the server with email and code parameters.
    * @param {string} email - User's email address.

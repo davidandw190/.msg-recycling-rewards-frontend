@@ -54,17 +54,6 @@ export class CenterDetailsComponent implements OnInit {
     ['PIECE', { label: 'Pieces', value: 'piece/(s)', ratio: 3 }],
   ]);
 
-  materialRewardPoints: Map<string, number> = new Map(
-    [
-      ['PAPER', 3],
-      ['PLASTIC', 3],
-      ['GLASS', 3],
-      ['METALS', 3],
-      ['ALUMINIUM', 3],
-      ['ELECTRONICS', 3],
-    ]
-  )
-
   materialUnitMeasures: Map<string, UnitMeasure[]> = new Map([
     ['PAPER', [
       this.unitMeasuresMap.get('KG'),
@@ -142,12 +131,6 @@ export class CenterDetailsComponent implements OnInit {
     this.unitMeasuresMap[materialType] = unitMeasures;
   }
 
-  private handleMaterialTypeChange(materialType: string): void {
-    const unitMeasures = this.materialUnitMeasures.get(materialType) || [];
-    this.recyclingForm.get('unitMeasure').setValue(unitMeasures.length > 0 ? unitMeasures[0].value : '');
-    this.unitMeasuresMap[materialType] = unitMeasures;
-  }
-
   private loadCenterDetails(centerId: number): Observable<AppState<CustomHttpResponse<CenterDetailsResponse>>> {
     return this.centerService.centerDetails$(centerId).pipe(
       map((response) => {
@@ -193,12 +176,6 @@ export class CenterDetailsComponent implements OnInit {
       this.earnedRewardPoints = null;
       this.earnedSustainabilityIndex = null;
     }
-  }
-
-
-  private getMaterialName(materialType: number): string {
-    const material = this.acceptedMaterials.find((m) => m.materialId === materialType);
-    return material ? material.name : '';
   }
 
   private getMaterialIdByName(materialName: string): number | null {
