@@ -10,8 +10,9 @@ import {
   map,
   Observable,
   of,
-  startWith, Subject,
-  switchMap, takeUntil,
+  startWith,
+  Subject,
+  switchMap,
   tap,
 } from 'rxjs';
 import {AppState} from '../../interface/app-state';
@@ -24,6 +25,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {LocationService} from "../../service/location.service";
 import {Sort} from "@angular/material/sort";
 import {RecyclingCenter} from "../../interface/recycling-center";
+import {HttpResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-center-all',
@@ -52,7 +54,7 @@ export class CenterAllComponent implements OnInit, OnDestroy {
 
   isFiltersCollapsed = true;
 
-  availableMaterials: string[] = ['PAPER', 'GLASS', 'PLASTIC', 'ALUMINUM', 'METALS', 'E-WASTE'];
+  availableMaterials: string[] = ['PAPER', 'GLASS', 'PLASTIC', 'ALUMINUM', 'METALS', 'ELECTRONICS'];
 
   selectedMaterials: string[] = []
 
@@ -175,8 +177,8 @@ export class CenterAllComponent implements OnInit, OnDestroy {
       .pipe(
         debounceTime(100),
         distinctUntilChanged(),
-        tap(() => this.searchCenters()), // Trigger search when the sorting changes
-        filter(() => false) // Prevent reactive changes
+        tap(() => this.searchCenters()),
+        filter(() => false)
       )
       .subscribe();
 
@@ -184,8 +186,8 @@ export class CenterAllComponent implements OnInit, OnDestroy {
       .pipe(
         debounceTime(100),
         distinctUntilChanged(),
-        tap(() => this.searchCenters()), // Trigger search when the sorting changes
-        filter(() => false) // Prevent reactive changes
+        tap(() => this.searchCenters()),
+        filter(() => false)
       )
       .subscribe();
   }
@@ -333,7 +335,7 @@ export class CenterAllComponent implements OnInit, OnDestroy {
 
   onRemoveMaterial(material: string): void {
     this.selectedMaterials = this.selectedMaterials.filter((m) => m !== material);
-    this.updateSearch(); // Update search when a material is removed
+    this.updateSearch();
   }
 
   private updateSearch(): void {
@@ -345,12 +347,32 @@ export class CenterAllComponent implements OnInit, OnDestroy {
     this.router.navigate(["/centers/new"])
   }
 
+  downloadCentersReport(): void {
+    this.centerService.downloadReport$().pipe(
+      catchError((error: string) => {
+        console.error(error);
+        return of({dataState: DataState.ERROR, error});
+      })
+    ).subscribe(response => {
+      if (response instanceof HttpResponse) {
+        const blob = new Blob([response.body], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+        const downloadLink = document.createElement('a');
+        const url = window.URL.createObjectURL(blob);
+        downloadLink.href = url;
+        downloadLink.download = 'recycling_centers_report.xlsx';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        window.URL.revokeObjectURL(url);
+      }
+    });
+  }
+
   private filterCities(value: string): Observable<string[]> {
     const filterValue = value.toLowerCase();
     const selectedCounty = this.searchForm.get('county').value;
     const citiesForCounty = this.getCitiesForCounty(selectedCounty);
 
-    // Return all cities when the filter value is empty
     if (!filterValue) {
       return of(citiesForCounty);
     }
@@ -381,10 +403,6 @@ export class CenterAllComponent implements OnInit, OnDestroy {
     }
 
     this.searchCenters();
-  }
-
-  isFiltered(column: string): boolean {
-    return this.searchForm.get(column).value !== '';
   }
 
   private updateUrlParameters(): void {

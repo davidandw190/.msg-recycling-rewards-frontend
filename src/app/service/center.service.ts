@@ -1,6 +1,6 @@
 
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpEvent, HttpHeaders, HttpParams} from "@angular/common/http";
 import {HomePageResponse} from "../interface/home-page-response";
 import {CustomHttpResponse} from "../interface/custom-http-response";
 import {catchError, Observable, tap, throwError} from "rxjs";
@@ -107,6 +107,14 @@ export class CenterService {
 
     return currentDateTime >= openingTime && currentDateTime <= closingTime;
   }
+
+  downloadReport$ = () => <Observable<HttpEvent<Blob>>>
+    this.http.get(`${this.server}/centers/download/report`,
+      { reportProgress: true, observe: 'events', responseType: 'blob' })
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
 
 
   private handleError(error: HttpErrorResponse): Observable<never> {

@@ -9,13 +9,13 @@
             <li class="breadcrumb-item">
               <a [routerLink]="['/']">Home</a>
             </li>
-            <li class="breadcrumb-item active"> All Centers </li>
+            <li class="breadcrumb-item active"> Recycling Centers </li>
           </ol>
         </nav>
 
         <div class="row mt-3">
           <div class="col-12">
-            <h4 class="fw-bold">Available Recycling Centers ({{state?.appData?.data?.page?.totalElements}})</h4>
+            <h4 class="fw-bold">Available Recycling Centers ({{ state?.appData?.data?.page?.totalElements }})</h4>
             <div class="d-flex justify-content-end align-items-center" style="margin-top: -10px">
               <mat-chip-set #chipSet class="chip-set-container">
                 <div *ngFor="let material of selectedMaterials">
@@ -28,7 +28,7 @@
                 </div>
               </mat-chip-set>
 
-              <button class="btn btn-danger btn-export me-2" (click)="redirectNewCenter()">
+              <button class="btn btn-danger btn-export me-2" (click)="downloadCentersReport()">
                 <i class="fa-regular fa-file-excel"></i> Export
               </button>
 
