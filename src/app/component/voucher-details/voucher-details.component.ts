@@ -9,6 +9,8 @@ import {VoucherService} from "../../service/voucher.service";
 import {VoucherStatusPipe} from "../../pipes/voucher-status.pipe";
 import {jsPDF} from 'jspdf';
 import html2canvas from "html2canvas";
+import {MatDialog} from "@angular/material/dialog";
+import {VoucherGuidelinesComponent} from "../voucher-guidelines/voucher-guidelines.component";
 
 const VOUCHER_CODE: string = 'code';
 
@@ -32,7 +34,8 @@ export class VoucherDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private activatedRoute: ActivatedRoute,
     private voucherService: VoucherService,
-    private voucherStatusPipe: VoucherStatusPipe
+    private voucherStatusPipe: VoucherStatusPipe,
+    private dialog: MatDialog
   ) { }
 
 
@@ -104,5 +107,9 @@ export class VoucherDetailsComponent implements OnInit, OnDestroy {
         doc.save(filename);
       });
     }
+  }
+
+  openVoucherGuidelines() {
+    this.dialog.open(VoucherGuidelinesComponent);
   }
 }

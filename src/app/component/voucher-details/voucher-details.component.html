@@ -6,31 +6,42 @@
       <div class="container">
         <nav aria-label="breadcrumb" class="breadcrumb-nav mb-4">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
-            <li class="breadcrumb-item"><a [routerLink]="['/vouchers']">Vouchers</a></li>
+            <li class="breadcrumb-item" ><a [routerLink]="['/']" style="color:#218838">Home</a></li>
+            <li class="breadcrumb-item"><a [routerLink]="['/vouchers']" style="color: #28a745">Vouchers</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ state?.appData?.data?.voucher.uniqueCode }}</li>
           </ol>
         </nav>
         <div class="row">
           <div class="col-md-12">
-            <button class="btn btn-danger me-2"
-                    type="button"
-                    style="font-weight: 500;"
-                    (click)="exportAsPDF()"
-            >
-              <i class="bi bi-file-earmark-pdf-fill"></i>
-              Download (PDF)
-            </button>
+            <div class="d-flex align-items-center mb-3">
+              <button class="btn btn-danger me-2"
+                      type="button"
+                      style="font-weight: 500;"
+                      (click)="exportAsPDF()"
+                      matTooltip="Download PDF in a nice PDF format"
+              >
+                <i class="bi bi-file-earmark-pdf-fill"></i>
+                Download (PDF)
+              </button>
 
-            <button
-              class="btn btn-success redeem-button"
-              style="font-weight: 500;"
-              [disabled]="(this.voucherStatus !== 'AVAILABLE')"
-              (click)="redeem()"
-            >
-              <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-              Redeem
-            </button>
+              <button class="btn btn-success redeem-button"
+                      style="font-weight: 500;"
+                      [disabled]="(this.voucherStatus !== 'AVAILABLE')"
+                      (click)="redeem()"
+                      matTooltip="Redeem Voucher at a Business Partner"
+              >
+                <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Redeem
+              </button>
+
+              <button mat-icon-button
+                      matTooltip="Voucher Earning & Redemption Guidelines"
+                      class="favorite-button"
+                      (click)="openVoucherGuidelines()"
+              >
+                <mat-icon style="color: #a01540">info</mat-icon>
+              </button>
+            </div>
 
             <div class="voucher-pane mt-3" id="voucher-pane">
               <div class="voucher-header">

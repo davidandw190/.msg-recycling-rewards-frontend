@@ -40,6 +40,9 @@ import { VoucherDetailsComponent } from './component/voucher-details/voucher-det
 import {MatTabsModule} from "@angular/material/tabs";
 import {VoucherStatusPipe} from "./pipes/voucher-status.pipe";
 import {ClipboardModule} from "ngx-clipboard";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatDialogModule} from "@angular/material/dialog";
+import { VoucherGuidelinesComponent } from './component/voucher-guidelines/voucher-guidelines.component';
 
 @NgModule({
   declarations: [
@@ -58,37 +61,40 @@ import {ClipboardModule} from "ngx-clipboard";
     HighlightSearchPipe,
     VouchersComponent,
     VoucherDetailsComponent,
+    VoucherGuidelinesComponent,
 
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        FormsModule,
-        BrowserAnimationsModule,
-        NgOptimizedImage,
-        NgbModule,
-        ReactiveFormsModule,
-        TypeaheadModule,
-        MatInputModule,
-        MatSelectModule,
-        NgMultiSelectDropDownModule,
-        AcceptedMaterialsPipe,
-        NgbTimepickerModule,
-        MatButtonModule,
-        MatSortModule,
-        MatChipsModule,
-        ClipboardModule,
-        MatIconModule,
-        MatSlideToggleModule,
-        MatBadgeModule,
-        RewardPointsPipe,
-        SustainabilityIndexPipe,
-        UnitConversionPipe,
-        NgbNavModule,
-        MatTabsModule,
-        VoucherStatusPipe
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    NgOptimizedImage,
+    NgbModule,
+    ReactiveFormsModule,
+    TypeaheadModule,
+    MatInputModule,
+    MatSelectModule,
+    NgMultiSelectDropDownModule,
+    AcceptedMaterialsPipe,
+    NgbTimepickerModule,
+    MatButtonModule,
+    MatSortModule,
+    MatChipsModule,
+    ClipboardModule,
+    MatIconModule,
+    MatSlideToggleModule,
+    MatBadgeModule,
+    RewardPointsPipe,
+    SustainabilityIndexPipe,
+    UnitConversionPipe,
+    NgbNavModule,
+    MatTabsModule,
+    VoucherStatusPipe,
+    MatTooltipModule,
+    MatDialogModule
+  ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     // { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
