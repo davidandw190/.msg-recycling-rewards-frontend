@@ -1,1 +1,105 @@
-<p>register works!</p>
+<section *ngIf="(registerState$ | async) as state" [ngSwitch]="state.dataState">
+  <div *ngIf="!state.registerSuccess" class="section">
+    <div class="container">
+      <div class="row justify-content-center align-items-center my-5">
+        <div class="col-md-8 col-lg-6">
+          <div class="card shadow-lg p-4">
+            <div class="card-body">
+              <div class="text-center">
+                <h2><i class="fa-solid fa-leaf"></i> msgRecyclingRewards</h2>
+                <h5 class="card-title mt-4 mb-5">Become a Recycler</h5>
+              </div>
+              <div *ngIf="state.dataState === DataState.ERROR" class="alert alert-danger position-relative" role="alert">
+                {{ state.error }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <form #registerForm="ngForm" (ngSubmit)="register(registerForm)">
+                <div class="row">
+                  <div class="col-md-6 form-outline mb-4">
+                    <label class="form-label">First Name</label>
+                    <input type="text" [disabled]="state.dataState === DataState.LOADING" ngModel name="firstName" class="form-control" required minlength="3">
+                  </div>
+
+                  <div class="col-md-6 form-outline mb-4">
+                    <label class="form-label">Last Name</label>
+                    <input type="text" [disabled]="state.dataState === DataState.LOADING" ngModel name="lastName" class="form-control" required minlength="3">
+                  </div>
+                </div>
+
+
+                <div class="form-outline mb-4">
+                  <label class="form-label">Email Address</label>
+                  <input type="email" [disabled]="state.dataState === DataState.LOADING" ngModel name="email" class="form-control" required minlength="5">
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 form-outline mb-4">
+                    <label class="form-label">County</label>
+                    <input type="text" [disabled]="state.dataState === DataState.LOADING" ngModel name="county" class="form-control" required minlength="3">
+                  </div>
+
+                  <div class="col-md-6 form-outline mb-4">
+                    <label class="form-label">City</label>
+                    <input type="text" [disabled]="state.dataState === DataState.LOADING" ngModel name="city" class="form-control" required minlength="3">
+                  </div>
+                </div>
+
+                <div class="form-outline mb-4">
+                  <label class="form-label">Password</label>
+                  <input type="password" [disabled]="state.dataState === DataState.LOADING" ngModel name="password" class="form-control" required minlength="5">
+                </div>
+                <div class="form-outline mb-4">
+                  <label class="form-label">Confirm Password</label>
+                  <input type="password" [disabled]="state.dataState === DataState.LOADING" ngModel name="confirmPassword" class="form-control" required minlength="5">
+                </div>
+                <div class="d-grid gap-2 mb-4">
+                  <button [disabled]="state.dataState === DataState.LOADING || registerForm.invalid || registerForm.pristine" type="submit" class="btn btn-msg-color">
+                    <span *ngIf="state.dataState === DataState.LOADING" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span *ngIf="state.dataState === DataState.LOADING">Saving...</span>
+                    <span *ngIf="!(state.dataState === DataState.LOADING)">Create Account</span>
+                  </button>
+                </div>
+              </form>
+              <div class="row mb-4">
+                <div class="col d-flex justify-content-center">
+                  <a [ngStyle]="{'pointer-events': state.dataState === DataState.LOADING ? 'none' : ''}" routerLink="/login" class="link">Account Login</a>
+                </div>
+                <div class="col">
+                  <a [ngStyle]="{'pointer-events': state.dataState === DataState.LOADING ? 'none' : ''}" routerLink="/resetpassword" class="link">Forgot password?</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success screen -->
+  <div *ngIf="state.registerSuccess" class="container">
+    <div class="row justify-content-center my-5">
+      <div class="col-md-6" style="margin-top: 50px;">
+        <div class="card">
+          <div class="card-body">
+            <div class="text-center">
+              <h2><i class="fa-solid fa-leaf"></i> msgRecyclingRewards</h2>
+              <h5 class="card-title mt-4 mb-4">{{ state.message }}</h5>
+              <i class="bi bi-check-circle-fill" style="font-size: 80px;color: green;"></i>
+              <p class="mt-2" style="font-size: 20px;">Please access your email and activate your account.</p>
+            </div>
+            <div class="row mb-4">
+              <div class="col d-flex justify-content-center">
+                <a [routerLink]="['/login']">Account Login</a>
+              </div>
+              <div class="col">
+                <a (click)="createAccountForm()" style="color: #0D6EFD; text-decoration: underline; cursor: pointer;">
+                  Create another account
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
