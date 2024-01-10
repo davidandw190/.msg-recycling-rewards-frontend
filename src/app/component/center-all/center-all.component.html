@@ -159,7 +159,12 @@
             <!-- Table Body -->
             <tbody *ngFor="let center of state?.appData?.data?.page?.content" class="table-body">
             <tr class="cell-1">
-              <td  class="text-center"><img src="https://robohash.org/recyclingcenter" width="42" height="42" class="rounded-circle"></td>
+              <td  class="text-center">
+                <img
+                  [src]="center.imageUrl || 'https://ui-avatars.com/api/?background=random&name=' + (center.name || '')"
+                  alt=""
+                  width="42" height="42" class="rounded-circle"
+                ></td>
               <td> <strong style="color:#A01540;">{{ center.name }}</strong></td>
               <td>{{ center.contact }}</td>
               <td>{{ center.county }}</td>

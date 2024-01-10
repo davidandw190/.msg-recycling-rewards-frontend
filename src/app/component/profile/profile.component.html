@@ -17,7 +17,9 @@
             <div class="p-4">
               <div class="profile-image text-center mb-3">
                 <span style="position: relative">
-                  <img [src]="state?.appData?.data?.user?.imageUrl" alt="https://img.freepik.com/free-icon/user_318-159711.jpg" class="profile-img" />
+                  <img [src]="state?.appData?.data?.user?.imageUrl || 'https://img.freepik.com/free-icon/user_318-159711.jpg'"
+                       alt="" class="profile-img" />
+
                   <i (click)="fileInput.click()" class="bi bi-camera-fill right-position"></i>
                 </span>
               </div>

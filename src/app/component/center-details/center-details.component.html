@@ -16,7 +16,12 @@
             <div class="card border rounded-3 mb-3">
               <div class="card-body">
                 <div class="d-flex align-items-start">
-                  <img src="state?.appData?.data?.center?.imageUrl" style="position: relative" class="rounded-circle avatar-lg img-thumbnail" alt="">
+                  <img
+                    [src]="state?.appData?.data?.center?.imageUrl || 'https://ui-avatars.com/api/?background=random&name=' + (state?.appData?.data?.center?.name || '')"
+                    style="position: relative"
+                    class="rounded-circle avatar-lg img-thumbnail"
+                    alt="Center Image"
+                  />
                   <div class="w-25 ms-2">
                     <h4 class="my-0">{{ state?.appData?.data?.center?.name }}</h4>
                     <p class="text-muted" style="font-size: 18px;"> {{ state?.appData?.data?.center?.contact }}</p>
