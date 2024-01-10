@@ -13,53 +13,82 @@
                 {{ state.error }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>
-              <form #registerForm="ngForm" (ngSubmit)="register(registerForm)">
+              <form [formGroup]="registerForm" (ngSubmit)="register()">
                 <div class="row">
                   <div class="col-md-6 form-outline mb-4">
                     <label class="form-label">First Name</label>
-                    <input type="text" [disabled]="state.dataState === DataState.LOADING" ngModel name="firstName" class="form-control" required minlength="3">
+                    <input formControlName="firstName" type="text" [disabled]="state.dataState === DataState.LOADING" class="form-control">
                   </div>
 
                   <div class="col-md-6 form-outline mb-4">
                     <label class="form-label">Last Name</label>
-                    <input type="text" [disabled]="state.dataState === DataState.LOADING" ngModel name="lastName" class="form-control" required minlength="3">
+                    <input formControlName="lastName" type="text" [disabled]="state.dataState === DataState.LOADING" class="form-control">
                   </div>
                 </div>
 
 
                 <div class="form-outline mb-4">
                   <label class="form-label">Email Address</label>
-                  <input type="email" [disabled]="state.dataState === DataState.LOADING" ngModel name="email" class="form-control" required minlength="5">
+                  <input formControlName="email" type="email" [disabled]="state.dataState === DataState.LOADING" class="form-control">
                 </div>
 
                 <div class="row">
                   <div class="col-md-6 form-outline mb-4">
                     <label class="form-label">County</label>
-                    <input type="text" [disabled]="state.dataState === DataState.LOADING" ngModel name="county" class="form-control" required minlength="3">
+                    <input
+                      [disabled]="state.dataState === DataState.LOADING"
+                      formControlName="county"
+                      [typeahead]="counties"
+                      [minLength]="0"
+                      [typeaheadWaitMs]="300"
+                      placeholder="Select County"
+                      class="form-control"
+                      (typeaheadOnSelect)="onSelectCounty($event)"
+                      required
+                    />
                   </div>
 
                   <div class="col-md-6 form-outline mb-4">
                     <label class="form-label">City</label>
-                    <input type="text" [disabled]="state.dataState === DataState.LOADING" ngModel name="city" class="form-control" required minlength="3">
+                    <input
+                      [disabled]="state.dataState === DataState.LOADING"
+                      formControlName="city"
+                      [typeahead]="cities"
+                      [minLength]="2"
+                      [typeaheadWaitMs]="300"
+                      placeholder="Select City"
+                      required
+                      class="form-control"
+                      (typeaheadOnSelect)="onSelectCity($event)"
+                    />
                   </div>
                 </div>
 
                 <div class="form-outline mb-4">
                   <label class="form-label">Password</label>
-                  <input type="password" [disabled]="state.dataState === DataState.LOADING" ngModel name="password" class="form-control" required minlength="5">
+                  <input formControlName="password" type="password" [disabled]="state.dataState === DataState.LOADING" class="form-control">
                 </div>
                 <div class="form-outline mb-4">
                   <label class="form-label">Confirm Password</label>
-                  <input type="password" [disabled]="state.dataState === DataState.LOADING" ngModel name="confirmPassword" class="form-control" required minlength="5">
+                  <input formControlName="confirmPassword" type="password" [disabled]="state.dataState === DataState.LOADING" class="form-control">
+                  <div *ngIf="registerForm.hasError('mismatch', 'confirmPassword') && (registerForm.get('confirmPassword').dirty || registerForm.get('confirmPassword').touched)">
+                    <small class="text-danger">Passwords do not match.</small>
+                  </div>
                 </div>
+
                 <div class="d-grid gap-2 mb-4">
-                  <button [disabled]="state.dataState === DataState.LOADING || registerForm.invalid || registerForm.pristine" type="submit" class="btn btn-msg-color">
-                    <span *ngIf="state.dataState === DataState.LOADING" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    <span *ngIf="state.dataState === DataState.LOADING">Saving...</span>
-                    <span *ngIf="!(state.dataState === DataState.LOADING)">Create Account</span>
+                  <button [disabled]="state.dataState === DataState.LOADING || !registerForm.valid" type="submit" class="btn btn-msg-color">
+                  <span *ngIf="state.dataState === DataState.LOADING">
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Saving...
+                  </span>
+                  <span *ngIf="state.dataState !== DataState.LOADING">Create Account</span>
                   </button>
                 </div>
               </form>
+
+
+
               <div class="row mb-4">
                 <div class="col d-flex justify-content-center">
                   <a [ngStyle]="{'pointer-events': state.dataState === DataState.LOADING ? 'none' : ''}" routerLink="/login" class="link">Account Login</a>
