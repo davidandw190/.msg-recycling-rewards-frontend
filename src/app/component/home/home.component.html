@@ -3,7 +3,7 @@
   <section class="main-section">
     <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
 
-    <div style="margin-top: 100px"></div>
+    <div style="margin-top: 90px"></div>
 <!--    <ng-container *ngIf="state?.appData?.data?.appStats">-->
 <!--    </ng-container>-->
 
@@ -100,6 +100,7 @@
           <ngb-pagination
             [(page)]="currentPage"
             [collectionSize]="state?.appData?.data?.page.totalElements"
+            [pageSize]="5"
             [maxSize]="3"
             [rotate]="true"
             [boundaryLinks]="false"
@@ -112,6 +113,32 @@
           </ngb-pagination>
         </nav>
     </div>
+
+    <div class="container mt-3">
+      <div class="row">
+        <div class="col-md-6 col-xl-6">
+          <div class="card bg-c-blue order-card">
+            <div class="card-block">
+              <h5 class="m-b-10"><i class="fa-solid fa-ticket"></i> My Vouchers</h5>
+              <h2 class="text-right"><span>486</span></h2>
+              <p class="m-b-0">more reward Points Needed Until I A Voucher<span class="f-right">View More</span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-6">
+          <div class="card bg-c-green order-card">
+            <div class="card-block">
+              <h5 class="m-b-20"><i class="fa-solid fa-lightbulb"></i> Eco Learn Daily</h5>
+              <h2 class="text-right"><h6>dasd Adas  adsad aa dsasdasd  asd asdad dasd asd aasd asdasd asdasd as</h6></h2>
+              <p class="m-b-0"><span class="f-right">View More</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
   </section>
 </ng-container>
 
