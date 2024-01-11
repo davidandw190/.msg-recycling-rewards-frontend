@@ -6,6 +6,7 @@ import {Profile} from "../interface/profile";
 import {Key} from "../enum/key.enum";
 import {User} from "../interface/user";
 import {JwtHelperService} from "@auth0/angular-jwt";
+import {AccountType} from "../interface/account-type";
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +56,15 @@ export class UserService {
         tap(console.log),
         catchError(this.handleError)
       );
+
+  verify$ = (key: string, type: AccountType) => <Observable<CustomHttpResponse<Profile>>>
+    this.http.get<CustomHttpResponse<Profile>>
+    (`${this.server}/user/verify/${type}/${key}`)
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
+
 
   /**
    * Verifies a user's code by sending a GET request to the server with email and code parameters.

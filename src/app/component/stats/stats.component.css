@@ -21,9 +21,9 @@
 }
 
 .bg-gradient-scooter {
-  background: #17ead9;
-  background: -webkit-linear-gradient(45deg, #17ead9, #6078ea) !important;
-  background: linear-gradient(45deg, #17ead9, #6078ea) !important;
+  background: #1779ea;
+  background: -webkit-linear-gradient(45deg, #17ead9, #425ee5) !important;
+  background: linear-gradient(45deg, #17ead9, #2d4bda) !important;
 }
 
 .widgets-icons-2 {
@@ -50,15 +50,15 @@
 }
 
 .bg-gradient-bloody {
-  background: #f54ea2;
-  background: -webkit-linear-gradient(45deg, #f54ea2, #ff7676) !important;
-  background: linear-gradient(45deg, #f54ea2, #ff7676) !important;
+  background: #a01540;
+  background: -webkit-linear-gradient(45deg, #a01540, #e84d4d) !important;
+  background: linear-gradient(45deg, #a01540, #de5e5e) !important;
 }
 
 .bg-gradient-ohhappiness {
-  background: #00b09b;
-  background: -webkit-linear-gradient(45deg, #00b09b, #96c93d) !important;
-  background: linear-gradient(45deg, #00b09b, #96c93d) !important;
+  background: #19c4af;
+  background: -webkit-linear-gradient(45deg, #069180, #96c93d) !important;
+  background: linear-gradient(45deg, #0d8d7e, #96c93d) !important;
 }
 
 .bg-gradient-blooker {
