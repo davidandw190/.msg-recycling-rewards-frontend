@@ -19,10 +19,26 @@
           <h4 class="fw-bold text-start">Recycling Centers in <span style="color: #A01540FF">{{state?.appData?.data?.user?.county}}</span> ({{ state?.appData?.data?.page?.totalElements }})</h4>
         </div>
         <div class="col text-end">
-          <button mat-flat-button (click)="navigateToCreateCenter()" style="background-color: #28a745; color: white; margin-right: 10px" class="m-lg-2-2">
+          <button
+            mat-flat-button
+            [matTooltipShowDelay]="500"
+            [matTooltipHideDelay]="500"
+            matTooltip="Create a New Recycling Center with which users can intercat with."
+            (click)="navigateToCreateCenter()"
+            style="background-color: #28a745; color: white; margin-right: 10px"
+            class="m-lg-2-2"
+          >
             <i class="fa-regular fa-square-plus"></i> New Center
           </button>
-          <button mat-flat-button (click)="navigateToCentersView()" style="background-color: #A01540FF; color: white">
+
+          <button
+            mat-flat-button
+            [matTooltipShowDelay]="500"
+            [matTooltipHideDelay]="500"
+            matTooltip="View All Recycling Centers"
+            (click)="navigateToCentersView()"
+            style="background-color: #A01540FF; color: white"
+          >
             <i class="fa-solid fa-list-ul"></i> More</button>
         </div>
       </div>
@@ -58,7 +74,7 @@
               <th scope="col" mat-sort-header="city" style="width: 10%;">City</th>
               <th scope="col" mat-sort-header="materials" class="text-center" style="width: 20%;">Accepted Materials</th>
               <th class="text-center" scope="col" style="width: 12%;">Working Intervals</th>
-              <th scope="col" style="width: 6%;" class="text-center">Engage</th>
+              <th scope="col" style="width: 6%;" class="text-center" >Engage</th>
             </tr>
             </thead>
             <!-- Table Body -->
@@ -88,7 +104,14 @@
                 </ng-template>
               </td>
               <td class="text-center">
-                <button type="button" [routerLink]="['/centers', center.centerId]" class="btn" style="background-color: #28a745; color: #fff;">  <i class="fa-solid fa-recycle"></i>  </button>
+                <button type="button"
+                        [matTooltipShowDelay]="800"
+                        [matTooltipHideDelay]="800"
+                        matTooltip="View Recycling Center details, view your past activities to the center and create a recylcing activity"
+                        [routerLink]="['/centers', center.centerId]"
+                        class="btn" style="background-color: #28a745; color: #fff;"
+                >
+                  <i class="fa-solid fa-recycle"></i>  </button>
               </td>
             </tr>
             </tbody>
@@ -118,19 +141,20 @@
       <div class="row">
         <div class="col-md-6 col-xl-6">
           <div class="card bg-c-blue order-card">
-            <div class="card-block">
+            <div class="card-block" [routerLink]="['/vouchers']">
               <h5 class="m-b-10"><i class="fa-solid fa-ticket"></i> My Vouchers</h5>
-              <h2 class="text-right"><span>486</span></h2>
-              <p class="m-b-0">more reward Points Needed Until I A Voucher<span class="f-right">View More</span></p>
+<!--              <h2 class="text-right"><span>486</span></h2>-->
+              <p class="m-b-0">I need <span style="font-size: 18px"><strong>245</strong></span> more reward Points Needed Until I A Voucher</p>
+              <p class="m-b-0"><span class="f-right">View More</span></p>
             </div>
           </div>
         </div>
 
         <div class="col-md-6 col-xl-6">
           <div class="card bg-c-green order-card">
-            <div class="card-block">
+            <div class="card-block" [routerLink]="['/ecolearn']">
               <h5 class="m-b-20"><i class="fa-solid fa-lightbulb"></i> Eco Learn Daily</h5>
-              <h2 class="text-right"><h6>dasd Adas  adsad aa dsasdasd  asd asdad dasd asd aasd asdasd asdasd as</h6></h2>
+              <span class="text-right"><p>{{ state?.appData?.data?.ecoTip }}</p></span>
               <p class="m-b-0"><span class="f-right">View More</span></p>
             </div>
           </div>

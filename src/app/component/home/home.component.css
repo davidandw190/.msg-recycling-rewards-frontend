@@ -37,6 +37,9 @@ body {
 
 .order-card {
   color: #fff;
+  display: flex;
+  flex-direction: column;
+  height: 80%;
 }
 
 .bg-c-blue {

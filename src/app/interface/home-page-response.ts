@@ -10,4 +10,5 @@ export interface HomePageResponse {
   userRewardPoints: number;
   userStats?: UserStats;
   appStats?: AppStats;
+  ecoTip: string;
 }
