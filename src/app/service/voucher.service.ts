@@ -1,13 +1,10 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {catchError, Observable, tap, throwError} from "rxjs";
 import {CustomHttpResponse} from "../interface/custom-http-response";
-import {CentersPageResponse} from "../interface/centers-page-response";
 import {VouchersPageResponse} from "../interface/vouchers-page-response";
 import {VoucherDetailsResponse} from "../interface/voucher-details-response";
-import {NgForm} from "@angular/forms";
-import {CenterDetailsResponse} from "../interface/center-details-response";
-import {CenterNewResponse} from "../interface/center-new-response";
+import {VoucherGuidelinesResponse} from "../interface/voucher-guidelines-response";
 
 @Injectable({
   providedIn: 'root'
@@ -54,6 +51,14 @@ export class VoucherService {
       catchError(this.handleError)
     );
   }
+
+  voucherTypes$ = (): Observable<CustomHttpResponse<VoucherGuidelinesResponse>> =>
+    this.http.get<CustomHttpResponse<VoucherGuidelinesResponse>>
+    (`${this.server}/vouchers/get/types`)
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
 
   voucher$ = (code: string) => <Observable<CustomHttpResponse<VoucherDetailsResponse>>>
     this.http.get<CustomHttpResponse<VoucherDetailsResponse>>

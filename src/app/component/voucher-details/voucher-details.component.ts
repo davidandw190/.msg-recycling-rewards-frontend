@@ -1,10 +1,10 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {BehaviorSubject, catchError, map, Observable, of, startWith, Subject, switchMap, takeUntil} from "rxjs";
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {BehaviorSubject, catchError, map, Observable, of, startWith, Subject, switchMap, takeUntil, tap} from "rxjs";
 import {CustomHttpResponse} from "../../interface/custom-http-response";
 import {VoucherDetailsResponse} from "../../interface/voucher-details-response";
-import { AppState } from 'src/app/interface/app-state';
+import {AppState} from 'src/app/interface/app-state';
 import {ActivatedRoute, ParamMap} from "@angular/router";
-import { DataState } from 'src/app/enum/data-state.enum';
+import {DataState} from 'src/app/enum/data-state.enum';
 import {VoucherService} from "../../service/voucher.service";
 import {VoucherStatusPipe} from "../../pipes/voucher-status.pipe";
 import {jsPDF} from 'jspdf';
@@ -17,7 +17,8 @@ const VOUCHER_CODE: string = 'code';
 @Component({
   selector: 'app-voucher-details',
   templateUrl: './voucher-details.component.html',
-  styleUrls: ['./voucher-details.component.css']
+  styleUrls: ['./voucher-details.component.css'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class VoucherDetailsComponent implements OnInit, OnDestroy {
   voucherDetailsState$: Observable<AppState<CustomHttpResponse<VoucherDetailsResponse>>>;
@@ -61,6 +62,7 @@ export class VoucherDetailsComponent implements OnInit, OnDestroy {
       })
     );
   }
+
 
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -110,6 +112,22 @@ export class VoucherDetailsComponent implements OnInit, OnDestroy {
   }
 
   openVoucherGuidelines() {
-    this.dialog.open(VoucherGuidelinesComponent);
+    this.voucherService
+      .voucherTypes$()
+      .pipe(
+        tap((response) => {
+          const dialogRef = this.dialog.open(VoucherGuidelinesComponent, {
+            data: {
+              voucherTypes: response.data.availableVoucherTypes,
+            },
+          });
+        }),
+        catchError((error: string) => {
+          console.error(error);
+          return of({ dataState: DataState.ERROR, error });
+        })
+      )
+      .subscribe();
+
   }
 }

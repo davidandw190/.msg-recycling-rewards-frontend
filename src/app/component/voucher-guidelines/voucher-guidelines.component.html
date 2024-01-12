@@ -1,6 +1,55 @@
-<h2 mat-dialog-title>Recycling Rewards Voucher Redemption Guidelines</h2>
-<mat-dialog-content class="mat-typography">
+<h2 mat-dialog-title class="mb-3 mt-3">Recycling Rewards Voucher Redemption Guidelines</h2>
 
+<mat-dialog-content class="mat-typography">
+  <div style="max-width: 700px; margin: 0 auto;">
+    <div>
+      <h3><strong>Earning Vouchers</strong></h3>
+      <p>Participate actively in our eco-friendly initiatives to accumulate reward points. Your commitment to recycling contributes to a sustainable environment and earns you reward points that unlock a world of exciting vouchers.</p>
+      <p>Be sure to check our app regularly for special promotions and bonus point opportunities, allowing you to fast-track your voucher earnings.</p>
+    </div>
+    <hr>
+
+    <div>
+      <h3><strong>Redeeming Vouchers</strong></h3>
+      <p>Redeeming your hard-earned points for vouchers is a simple and rewarding process. Navigate to the Redeem section in the app, select your desired voucher, and follow the intuitive steps to claim your reward.</p>
+      <p>Our user-friendly interface ensures a seamless redemption experience. If you encounter any issues, our dedicated support team is ready to assist you promptly.</p>
+    </div>
+
+    <div>
+      <h3><strong>Voucher Redemption Policy</strong></h3>
+      <p>Before redeeming your vouchers, familiarize yourself with our Voucher Redemption Policy to ensure a smooth and informed experience:</p>
+
+      <ul>
+        <li><strong>Expiration Dates:</strong> Vouchers have specific expiration dates. It's crucial to redeem them before the specified date to fully enjoy the benefits.</li>
+        <li><strong>Terms and Conditions:</strong> Each voucher type may come with unique terms and conditions. Take the time to understand these conditions to make informed choices.</li>
+        <li><strong>Irreversibility:</strong> Once a voucher is redeemed, the process is irreversible. Please choose your vouchers carefully as they cannot be reversed or exchanged for cash.</li>
+        <li><strong>Misuse Warning:</strong> Any attempt to manipulate or misuse the redemption process may result in the suspension of your account. Please use the vouchers responsibly.</li>
+        <li><strong>Additional Information:</strong> For more detailed information, refer to the complete Voucher Policy available at . If you have further questions, don't hesitate to contact our support team.</li>
+      </ul>
+
+      <p>By adhering to our policy, you can make the most of your vouchers and fully appreciate the benefits of our Recycling Rewards program.</p>
+    </div>
+
+    <div>
+      <h3><strong>Contact Information</strong></h3>
+      <p>Your satisfaction is our priority. If you have inquiries, feedback, or require assistance, please do not hesitate to reach out to our support team.</p>
+      <p><strong>Email:</strong> recycing.rewards@msg.com</p>
+      <p><strong>Phone:</strong> +1-800-123-4567</p>
+      <p>Our team is available during business hours to ensure a swift and helpful response to your needs.</p>
+    </div>
+
+    <hr>
+
+    <h3><strong>Voucher Types</strong></h3>
+
+    <ng-container *ngIf="data">
+      <div *ngFor="let voucherType of data.voucherTypes">
+        <h4>{{ voucherType.name }}</h4>
+        <p><strong>Threshold Points:</strong> {{ voucherType.thresholdPoints }}</p>
+        <!-- Add other details based on your backend response -->
+      </div>
+    </ng-container>
+  </div>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
