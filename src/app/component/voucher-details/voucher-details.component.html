@@ -6,8 +6,8 @@
       <div class="container">
         <nav aria-label="breadcrumb" class="breadcrumb-nav mb-4">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item" ><a [routerLink]="['/']" style="color:#218838">Home</a></li>
-            <li class="breadcrumb-item"><a [routerLink]="['/vouchers']" style="color: #28a745">Vouchers</a></li>
+            <li class="breadcrumb-item" ><a [routerLink]="['/']" style="color:#208c38">Home</a></li>
+            <li class="breadcrumb-item"><a [routerLink]="['/vouchers']" style="color: #208c38">Vouchers</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ state?.appData?.data?.voucher.uniqueCode }}</li>
           </ol>
         </nav>
@@ -18,6 +18,8 @@
                       type="button"
                       style="font-weight: 500;"
                       (click)="exportAsPDF()"
+                      [matTooltipShowDelay]="500"
+                      [matTooltipHideDelay]="500"
                       matTooltip="Download PDF in a nice PDF format"
               >
                 <i class="bi bi-file-earmark-pdf-fill"></i>
@@ -28,6 +30,8 @@
                       style="font-weight: 500;"
                       [disabled]="(this.voucherStatus !== 'AVAILABLE')"
                       (click)="redeem()"
+                      [matTooltipShowDelay]="500"
+                      [matTooltipHideDelay]="500"
                       matTooltip="Redeem Voucher at a Business Partner"
               >
                 <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -35,6 +39,8 @@
               </button>
 
               <button mat-icon-button
+                      [matTooltipShowDelay]="500"
+                      [matTooltipHideDelay]="500"
                       matTooltip="Voucher Earning & Redemption Guidelines"
                       class="favorite-button"
                       (click)="openVoucherGuidelines()"

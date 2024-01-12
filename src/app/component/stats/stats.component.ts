@@ -14,8 +14,7 @@ export class StatsComponent implements OnInit {
 
   currentMonth: Date = new Date();
 
-  userSustainabilityIndex: number = 0;
-  recyclersSustainabilityIndex: number = 0;
+  averageRecyclerContribution: number
 
   constructor(
     private sustainabilityIndexPipe: SustainabilityIndexPipe
@@ -24,8 +23,6 @@ export class StatsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userSustainabilityIndex = this.sustainabilityIndexPipe.transform(this.userRewardPoints);
-    this.recyclersSustainabilityIndex = this.sustainabilityIndexPipe.transform(this.recyclersRewardPoints);
   }
 
 
