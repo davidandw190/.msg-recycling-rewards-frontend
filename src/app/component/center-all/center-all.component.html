@@ -28,11 +28,21 @@
                 </div>
               </mat-chip-set>
 
-              <button class="btn btn-danger btn-export me-2" (click)="downloadCentersReport()">
+              <button class="btn btn-danger btn-export me-2"
+                      (click)="downloadCentersReport()"
+                      [matTooltipShowDelay]="800"
+                      [matTooltipHideDelay]="500"
+                      matTooltip="Download an Excel report of the current situation of the partner recycling centers"
+              >
                 <i class="fa-regular fa-file-excel"></i> Export
               </button>
 
-              <button class="btn btn-success btn-create me-3" (click)="redirectNewCenter()">
+              <button class="btn btn-success btn-create me-3"
+                      (click)="redirectNewCenter()"
+                      [matTooltipShowDelay]="800"
+                      [matTooltipHideDelay]="500"
+                      matTooltip="Register a new Recycling Center that users can engage with"
+              >
                 <i class="fa-regular fa-square-plus"></i> Create
               </button>
 
@@ -48,6 +58,9 @@
                   (click)="toggleFilters()"
                   [attr.aria-expanded]="!isFiltersCollapsed"
                   [class.active]="!isFiltersCollapsed"
+                  [matTooltipShowDelay]="800"
+                  [matTooltipHideDelay]="500"
+                  matTooltip="Trigger fields for filters"
                 >
                   <i class="fa-solid fa-filter"></i>
                   <i *ngIf="!isFiltersCollapsed" class="fa-solid fa-sort-up"></i>
@@ -55,7 +68,14 @@
                 </button>
 
 
-                <button type="button" class="btn btn-outline-secondary"  (click)="resetFilters()" [disabled]="numEnabledFilters === 0">Clear</button>
+                <button type="button"
+                        class="btn btn-outline-secondary"
+                        (click)="resetFilters()"
+                        [disabled]="numEnabledFilters === 0"
+                        [matTooltipShowDelay]="800"
+                        [matTooltipHideDelay]="800"
+                        matTooltip="Clear all applied filters"
+                >Clear</button>
               </div>
             </div>
 
@@ -76,7 +96,8 @@
                       formControlName="county"
                       [typeahead]="counties"
                       [minLength]="0"
-                      [typeaheadWaitMs]="300"
+                      [contentEditable]="false"
+                      [typeaheadWaitMs]="0"
                       placeholder="Select County"
                       class="form-control"
                       (typeaheadOnSelect)="onSelectCounty($event)"
@@ -89,7 +110,8 @@
                       formControlName="city"
                       [typeahead]="cities"
                       [minLength]="0"
-                      [typeaheadWaitMs]="300"
+                      [contentEditable]="false"
+                      [typeaheadWaitMs]="0"
                       placeholder="Select City"
                       class="form-control"
                       (typeaheadOnSelect)="onSelectCity($event)"
@@ -102,8 +124,9 @@
                     <input
                       formControlName="materials"
                       [typeahead]="availableMaterials"
+                      [contentEditable]="false"
                       [minLength]="0"
-                      [typeaheadWaitMs]="100"
+                      [typeaheadWaitMs]="0"
                       placeholder="Accepted Materials"
                       class="form-control"
                       (typeaheadOnSelect)="onSelectMaterials($event)"
@@ -190,7 +213,20 @@
               </td>
             </tr>
             </tbody>
+
           </table>
+
+          <ngb-alert *ngIf="state?.appData?.data?.page?.content.length === 0 && numEnabledFilters !== 0" style="margin-top: 0;" type="info" [dismissible]="false">
+            No recycling centers found by your criteria. Try changing your search criteria.
+          </ngb-alert>
+
+          <ngb-alert *ngIf="state?.appData?.data?.page?.content.length === 0 && numEnabledFilters === 0" style="margin-top: 0;" type="info" [dismissible]="false">
+            No recycling centers available at the moment. Check back later.
+          </ngb-alert>
+
+
+
+
         </div>
 
         <!-- Pagination -->
@@ -209,11 +245,6 @@
             <ng-template ngbPaginationNext>Next <i class="fa-solid fa-angle-right"></i></ng-template>
           </ngb-pagination>
         </nav>
-
-        <!-- No Centers Message -->
-        <div *ngIf="!state?.appData?.data?.page?.content?.length" class="alert alert-info mt-3" role="alert">
-          No recycling centers available at the moment. Check back later.
-        </div>
       </div>
     </section>
   </ng-container>

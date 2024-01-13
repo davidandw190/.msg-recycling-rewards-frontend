@@ -114,27 +114,28 @@ export class CenterAllComponent implements OnInit, OnDestroy {
   private setupFormChangeListeners(): void {
     this.searchForm.get('county').valueChanges
       .pipe(
-        debounceTime(300),
+        debounceTime(100),
         distinctUntilChanged(),
         tap(() => this.searchForm.get('city').setValue('')),
         tap((county) => this.handleCountyChange(county)),
-        filter(() => false)
+
+        // filter(() => false)
       )
       .subscribe();
 
     this.searchForm.get('city').valueChanges
       .pipe(
-        debounceTime(300),
+        debounceTime(100),
         distinctUntilChanged(),
         switchMap((value) => this.filterCities(value)),
         tap((cities) => (this.cities = cities)),
-        filter(() => false) // Prevent reactive changes
+        // filter(() => false)
       )
       .subscribe();
 
     this.searchForm.get('materials').valueChanges
       .pipe(
-        debounceTime(300),
+        debounceTime(100),
         distinctUntilChanged(),
         tap((material) => this.onSelectMaterials(material)),
         filter(() => false) // Prevent reactive changes
@@ -264,6 +265,10 @@ export class CenterAllComponent implements OnInit, OnDestroy {
     return this.locationService.getCitiesForCounty(county);
   }
 
+  private isValidCounty(county: string): boolean {
+    return this.counties.includes(county);
+  }
+
   goToPage(pageNumber?: number): void {
     const name = this.searchForm.get('name').value;
     const county = this.searchForm.get('county').value;
@@ -290,7 +295,8 @@ export class CenterAllComponent implements OnInit, OnDestroy {
 
   private handleCountyChange(county: string): void {
     const cityControl = this.searchForm.get('city');
-    if (this.locationService.isValidCounty(county)) {
+
+    if (this.isValidCounty(county)) {
       cityControl.enable();
       this.locationService.getCitiesForCounty(county);
     } else {

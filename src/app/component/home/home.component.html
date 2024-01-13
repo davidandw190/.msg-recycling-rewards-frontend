@@ -116,6 +116,10 @@
             </tr>
             </tbody>
           </table>
+
+          <ngb-alert *ngIf="state?.appData?.data?.page?.content.length === 0" type="info" [dismissible]="false">
+            There are currently no recycling centers <strong>{{ state?.appData?.data?.user?.county }}</strong>.
+          </ngb-alert>
         </div>
 
         <!-- Pagination -->
