@@ -19,7 +19,7 @@
         <form [formGroup]="searchForm" (ngSubmit)="searchVouchers()" class="d-flex justify-content-end">
           <div class="d-flex align-items-center">
             <label class="visually-hidden">Voucher Code</label>
-            <input type="text" formControlName="code" class="form-control mt-3" placeholder="Voucher Code" />
+            <input type="text" formControlName="code" class="form-control mt-3" style="margin-bottom: -8px" placeholder="Voucher Code" />
           </div>
 
           <select formControlName="sortBy" class="invisible-form">
@@ -45,7 +45,7 @@
 
       <nav ngbNav #nav="ngbNav" class="nav-pills mb-4" style="margin-top: -30px;">
         <ng-container ngbNavItem *ngFor="let tab of ['Available', 'Redeemed', 'Expired', 'All Vouchers']">
-          <button ngbNavLink mat-button class="nav-cell" (click)="updateActiveTab(tab)">{{ tab }}</button>
+          <button ngbNavLink mat-button class="nav-cell me-2" (click)="updateActiveTab(tab)">{{ tab }}</button>
           <ng-template ngbNavContent>
             <div class="col-xm-12">
 
@@ -62,6 +62,10 @@
                   <th style="width: 8%;" scope="col">Action</th>
                 </tr>
                 </thead>
+
+
+
+
                 <tbody class="table-body">
                 <tr *ngFor="let voucher of state?.appData?.data?.page?.content" class="cell-1">
                   <td  class="copy-to-clipboard"
@@ -83,12 +87,28 @@
                 </tr>
                 </tbody>
               </table>
+
+              <ngb-alert *ngIf="state?.appData?.data?.page?.content.length === 0" type="info" [dismissible]="false">
+                No vouchers available for the selected tab.
+              </ngb-alert>
             </div>
           </ng-template>
         </ng-container>
+
+        <button mat-icon-button
+                [matTooltipShowDelay]="500"
+                [matTooltipHideDelay]="500"
+                style="margin-top: -8px"
+                matTooltip="Voucher Earning & Redemption Guidelines"
+                (click)="openVoucherGuidelines()"
+        >
+          <mat-icon style="color: #a01540">info</mat-icon>
+        </button>
       </nav>
 
-      <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+
+      <div [ngbNavOutlet]="nav" class="mt-1"></div>
 
       <!-- Pagination -->
       <nav *ngIf="state?.appData?.data?.page.totalPages > 0" class="pagination-container">

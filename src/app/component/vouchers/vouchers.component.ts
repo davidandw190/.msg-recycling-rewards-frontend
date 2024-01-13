@@ -25,6 +25,8 @@ import {VouchersPageResponse} from "../../interface/vouchers-page-response";
 import {VoucherService} from "../../service/voucher.service";
 import {Voucher} from "../../interface/voucher";
 import {ClipboardService} from "ngx-clipboard";
+import {VoucherGuidelinesComponent} from "../voucher-guidelines/voucher-guidelines.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-vouchers',
@@ -53,7 +55,8 @@ export class VouchersComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private voucherService: VoucherService,
     private formBuilder: FormBuilder,
-    private clipboardService: ClipboardService
+    private clipboardService: ClipboardService,
+    private dialog: MatDialog
   ) {
   }
 
@@ -140,6 +143,26 @@ export class VouchersComponent implements OnInit, OnDestroy {
     this.searchForm.get('sortOrder').setValue(newSortOrder, { emitEvent: true });
 
     this.searchVouchers();
+  }
+
+  openVoucherGuidelines() {
+    this.voucherService
+      .voucherTypes$()
+      .pipe(
+        tap((response) => {
+          const dialogRef = this.dialog.open(VoucherGuidelinesComponent, {
+            data: {
+              voucherTypes: response.data.availableVoucherTypes,
+            },
+          });
+        }),
+        catchError((error: string) => {
+          console.error(error);
+          return of({ dataState: DataState.ERROR, error });
+        })
+      )
+      .subscribe();
+
   }
 
   redirectNewCenter() {
