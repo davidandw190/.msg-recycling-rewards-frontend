@@ -3,9 +3,22 @@ import {Profile} from "../../interface/profile";
 import {DataState} from "../../enum/data-state.enum";
 import {CustomHttpResponse} from "../../interface/custom-http-response";
 import {AppState} from "../../interface/app-state";
-import {BehaviorSubject, catchError, map, Observable, of, startWith} from "rxjs";
+import {
+  BehaviorSubject,
+  catchError,
+  debounceTime,
+  distinctUntilChanged, filter,
+  map,
+  Observable,
+  of,
+  startWith, switchMap,
+  tap
+} from "rxjs";
 import {UserService} from "../../service/user.service";
-import {NgForm} from "@angular/forms";
+import {FormBuilder, FormGroup, NgForm, Validators} from "@angular/forms";
+import {LocationService} from "../../service/location.service";
+import {TypeaheadMatch} from "ngx-bootstrap/typeahead";
+import {User} from "../../interface/user";
 
 @Component({
   selector: 'app-profile',
@@ -21,10 +34,16 @@ export class ProfileComponent implements OnInit {
   profileState$: Observable<AppState<CustomHttpResponse<Profile>>>;
 
   readonly DataState = DataState;
+  profileForm: FormGroup;
+
+  counties: string[] = this.locationService.getAllCounties();
+
+  cities: string[] = [];
 
   constructor(
     private userService: UserService,
-    private cdr: ChangeDetectorRef
+    private locationService: LocationService,
+    private formBuilder: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -33,35 +52,83 @@ export class ProfileComponent implements OnInit {
         map(response => {
           console.log(response)
           this.dataSubject.next(response);
+          console.log(response.data.user.id + " asdasdadsasdasd")
+          this.initializeForm(response.data.user)
           return { dataState: DataState.LOADED, appData: response }
         }),
 
-        startWith({ dataState: DataState.LOADING, isUsingMfa: false}),
+        startWith({ dataState: DataState.LOADING }),
 
         catchError((error: string) => {
           return of({ dataState: DataState.ERROR, isUsingMfa: false, loginSuccess: false, error: error})
         })
       )
+
+
+    this.profileForm.markAsPristine();
+
+    this.profileForm
+      .get('county')
+      .valueChanges.pipe(
+      debounceTime(0),
+      distinctUntilChanged(),
+      tap(() => this.profileForm.get('city').setValue('')),
+      tap((county) => this.handleCountyChange(county)),
+      switchMap((value) => this.filterCounties(value)),
+      tap((counties) => (this.counties = counties))
+    )
+      .subscribe();
+
+    this.profileForm
+      .get('city')
+      .valueChanges.pipe(
+      debounceTime(0),
+      distinctUntilChanged(),
+      switchMap((value) => this.filterCities(value)),
+      tap((cities) => (this.cities = cities)),
+      filter(() => false)
+    )
+      .subscribe();
   }
 
-  updateProfile(profileForm: NgForm): void {
+  private initializeForm(user: User): void {
+    this.profileForm = this.formBuilder.group({
+      id: [user.id],
+      firstName: [user.firstName, [Validators.required, Validators.minLength(3)]],
+      lastName: [user.lastName, [Validators.required, Validators.minLength(3)]],
+      email: [user.email, [Validators.required, Validators.email]],
+      county: [user.county, [Validators.required]],
+      city: [ user.city, [Validators.required]],
+      phone: [user.phone],
+      bio: [user.bio]
+    });
+
+    this.loadCitiesForCounty(user.county)
+  }
+
+  updateProfile(): void {
+    const formData = this.profileForm.value
+    console.log(formData.userId + " " + formData.firstName + " " + formData.bio)
     this.isLoadingSubject.next(true);
-    this.profileState$ = this.userService.updateUser$(profileForm.value)
+    this.profileState$ = this.userService.updateUser$(formData)
       .pipe(
         map(response => {
           console.log(response);
           this.dataSubject.next({ ...response, data: response.data });
+          this.initializeForm(response.data.user)
           this.isLoadingSubject.next(false);
+          this.profileForm.markAsPristine()
           return { dataState: DataState.LOADED, appData: this.dataSubject.value };
         }),
 
-        startWith({ dataState: DataState.LOADED, appData: this.dataSubject.value }),
+        startWith({ dataState: DataState.LOADING, appData: this.dataSubject.value }),
 
         catchError((error: string) => {
           this.isLoadingSubject.next(false);
           return of({ dataState: DataState.LOADED, appData: this.dataSubject.value, error: error })
         })
       )
+
   }
 
   updatePassword(updatePasswordForm: NgForm): void {
@@ -199,10 +266,55 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  onSelectCounty(event: TypeaheadMatch): void {
+    this.profileForm.get('city').setValue('');
+    this.loadCitiesForCounty(event.value)
+  }
+
+
+  filterCounties(value: string): Observable<string[]> {
+    const filterValue = value.toLowerCase();
+    return of(this.counties.filter((county) => county.toLowerCase().includes(filterValue)));
+  }
+
+  private loadCitiesForCounty(county: string): void {
+    this.profileForm.get('city').enable();
+    this.cities = this.locationService.getCitiesForCounty(county);
+  }
+
+  filterCities(value: string): Observable<string[]> {
+    const filterValue = value.toLowerCase();
+    const selectedCounty = this.profileForm.get('county').value;
+    const citiesForCounty = this.locationService.getCitiesForCounty(selectedCounty);
+
+    if (!filterValue) {
+      return of(citiesForCounty);
+    }
+
+    return of(citiesForCounty.filter((city) => city.toLowerCase().includes(filterValue)));
+  }
+
+  private handleCountyChange(county: string): void {
+    const cityControl = this.profileForm.get('city');
+
+    if (this.locationService.isValidCounty(county)) {
+      cityControl.enable();
+      cityControl.setValue(null)
+      this.loadCitiesForCounty(county);
+    } else {
+      cityControl.disable();
+      cityControl.setValue('');
+    }
+  }
+
+
 
   private getFormData(image: File): FormData {
     const formData = new FormData();
     formData.append('image', image);
     return formData;
+  }
+
+  onSelectCity($event: TypeaheadMatch) {
   }
 }

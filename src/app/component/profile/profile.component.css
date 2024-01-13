@@ -64,7 +64,7 @@ a#notification.nav-link.active {
 .right-position {
   position: absolute;
   bottom: 30px;
-  color: #0D5EFD;
+  color: #A01540;
   left: 70px;
   top: 35px;
   border-radius: 4px;
@@ -114,47 +114,37 @@ a#notification.nav-link.active {
   position: absolute;
   bottom: 10px;
   right: 10px;
-  color: #0D5EFD;
+  color: #A01540FF;
   font-size: 20px;
   cursor: pointer;
 }
 
-/* Profile Content Styles */
 .profile-content {
   flex: 1;
 }
 
-/* Breadcrumb Styles */
 .breadcrumb {
   background-color: #F5F5F5;
   border-radius: 8px;
 }
 
-/* Nav Pills Styles */
 .nav-pills a.nav-link {
   padding: 15px 20px;
   border-radius: 0;
   color: #333;
 }
 
-/* Updated styling for active nav-link */
 .nav-pills a.nav-link.active {
   background-color: #A01540;
   color: white;
 }
 
-.img-circle img {
-  height: 100px;
-  width: 100px;
-  border-radius: 50%;
-  border: 5px solid #fff;
-}
 
 .right-position {
   position: absolute;
   bottom: 5px;
   right: 5px;
-  color: #0D5EFD;
+  color: #A01540FF;
   font-size: 23px;
   cursor: pointer;
 }
@@ -164,28 +154,11 @@ a#notification.nav-link.active {
   color: white;
 }
 
-
-.profile-container {
-  border-radius: 8px;
-}
-
 .profile-image img {
   height: 100px;
   width: 100px;
   border-radius: 50%;
   border: 5px solid #fff;
-}
-
-.profile-tab-nav {
-  min-width: 250px;
-}
-
-.tab-content {
-  flex: 1;
-}
-
-.form-group {
-  margin-bottom: 1.5rem;
 }
 
 .nav-pills a.nav-link {
@@ -202,20 +175,11 @@ a#notification.nav-link.active {
 
 .nav-pills a.nav-link.active {
   color: #fff;
-  background-color: #A01540; /* Active tab background color */
+  background-color: #A01540;
 }
 
-.profile-container {
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-}
 
-.profile-image img {
-  height: 100px;
-  width: 100px;
-  border-radius: 50%;
-  border: 5px solid #fff;
-}
+
 
 .profile-tab-nav {
   min-width: 250px;
@@ -232,10 +196,10 @@ a#notification.nav-link.active {
 .nav-pills a.nav-link {
   padding: 15px 20px;
   border-bottom: 1px solid #ddd;
-  border-radius: 12px;
+  border-radius: 1px;
   color: #333;
   background-color: #fff;
-  transition: background-color 0.3s ease; /* Smooth transition for background color */
+  transition: background-color 0.2s ease;
 }
 
 .nav-pills a.nav-link i {
@@ -244,20 +208,42 @@ a#notification.nav-link.active {
 
 .nav-pills a.nav-link.active {
   color: #fff;
-  background-color: #60ad5e; /* Active tab background color with recycling theme */
+  background-color: #A01540;
 }
 
 .btn-primary {
-  background-color: #60ad5e; /* Green color for primary buttons */
-  border-color: #60ad5e; /* Matching border color */
+  background-color: #28a745;
+  border-color: #60ad5e;
 }
 
 .btn-primary:hover {
-  background-color: #4e964f; /* Darker green on hover */
+  background-color: #3cbd5a;
   border-color: #4e964f;
 }
 
 .btn-primary:focus,
 .btn-primary.focus {
-  box-shadow: 0 0 0 0.2rem rgba(96, 173, 94, 0.5); /* Override Bootstrap blue shadow */
+  box-shadow: 0 0 0 0.2rem rgba(112, 194, 110, 0.5);
 }
+
+
+
+/* Add white border and shadow to profile image */
+.profile-img {
+  position: relative;
+  border: 5px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Adjust the camera icon position */
+.bi-camera-fill {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: #A01540FF;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+
