@@ -27,6 +27,14 @@ export class CenterService {
         catchError(this.handleError)
       );
 
+  update$ = (center: NgForm) => <Observable<CustomHttpResponse<CenterDetailsResponse>>>
+    this.http.post<CustomHttpResponse<CenterDetailsResponse>>
+    (`${this.server}/centers/update`, center)
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
+
   centers$ = (page: number = 0): Observable<CustomHttpResponse<CentersPageResponse>> =>
     this.http.get<CustomHttpResponse<CentersPageResponse>>
     (`${this.server}/centers/list-all?page=${page}`)
