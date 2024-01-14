@@ -110,6 +110,7 @@
                         [typeaheadWaitMs]="0"
                         [typeahead]="counties"
                         class="form-control"
+                        [contentEditable]="false"
                         formControlName="county"
                         placeholder="Select County"
                       />
@@ -126,6 +127,7 @@
                         [typeaheadWaitMs]="0"
                         [typeahead]="cities"
                         class="form-control"
+                        [contentEditable]="false"
                         formControlName="city"
                         placeholder="Select City"
                       />
@@ -141,7 +143,7 @@
                   </div>
                 </div>
                 <div>
-                  <button [disabled]="state?.appData?.data?.user?.roleName === 'ROLE_USER' || profileForm.invalid || profileForm.pristine ||  (isLoading$ | async)"
+                  <button [disabled]="state?.appData?.data?.user?.roleName === 'ROLE_USER' || profileForm.invalid || profileForm.pristine || !isSelectedCountyValid() || !isSelectedCityValid() ||  (isLoading$ | async)"
                           class="btn btn-primary" type="submit">
                     <span *ngIf="isLoading$ | async" aria-hidden="true" class="spinner-border spinner-border-sm"
                           role="status" style="margin-right: 5px;"></span>

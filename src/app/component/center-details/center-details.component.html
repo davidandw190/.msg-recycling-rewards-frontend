@@ -151,58 +151,108 @@
             <div class="card border rounded-3 mb-3">
               <div class="card-body">
                 <h5 class="card-title">Profile Details</h5>
-                <form #updateCenterForm="ngForm">
-                  <input type="hidden" [ngModel]="state?.appData?.data?.center?.centerId" name="id" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)">
-                  <input type="hidden" [ngModel]="state?.appData?.data?.center?.createdAt" name="createdAt" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)">
+                <form [formGroup]="updateCenterForm" (ngSubmit)="updateCenter()">
+
+                  <input formControlName="centerId" type="hidden" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)">
+
                   <div class="row mb-3">
                     <label class="col-sm-3 col-form-label">Center Name</label>
                     <div class="col-sm-9">
-                      <input type="text" [ngModel]="state?.appData?.data?.center?.name" name="name" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
+                      <input formControlName="name" type="text" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
                     </div>
                   </div>
                   <div class="row mb-3">
                     <label class="col-sm-3 col-form-label">Contact</label>
                     <div class="col-sm-9">
-                      <input type="text" [ngModel]="state?.appData?.data?.center?.contact" name="contact" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
+                      <input formControlName="contact" type="text" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label class="col-sm-3 col-form-label">County</label>
                     <div class="col-sm-9">
-                      <input type="text" [ngModel]="state?.appData?.data?.center?.county" name="county" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
+                      <input type="text"
+                             formControlName="county"
+                             class="form-control"
+                             [typeahead]="counties"
+                             [minLength]="0"
+                             [typeaheadWaitMs]="10"
+                             [contentEditable]="false"
+                             placeholder="Select County"
+                             [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)"
+                             (typeaheadOnSelect)="onSelectCounty($event)" />
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label class="col-sm-3 col-form-label">City</label>
                     <div class="col-sm-9">
-                      <input type="text" [ngModel]="state?.appData?.data?.center?.city" name="phone" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
+                      <input type="text"
+                             formControlName="city"
+                             class="form-control"
+                             [typeahead]="cities"
+                             [minLength]="0"
+                             [typeaheadWaitMs]="10"
+                             [contentEditable]="false"
+                             placeholder="Select City"
+                             [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)"
+                             (typeaheadOnSelect)="onSelectCity($event)" />
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label class="col-sm-3 col-form-label">Address</label>
                     <div class="col-sm-9">
-                      <input type="text" [ngModel]="state?.appData?.data?.center?.address" name="address" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
+                      <input formControlName="address" type="text" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label class="col-sm-3 col-form-label">Opening Hour</label>
+                    <label class="col-sm-3 col-form-label">Accepted Materials</label>
                     <div class="col-sm-9">
-                      <input type="text" [ngModel]="state?.appData?.data?.center?.openingHour" name="county" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
+                      <input formControlName="materials"
+                             [typeahead]="availableMaterials"
+                             [minLength]="0"
+                             [typeaheadWaitMs]="10"
+                             [contentEditable]="false"
+                             placeholder="Accepted Materials"
+                             class="form-control"
+                             (typeaheadOnSelect)="onSelectMaterials($event)" />
                     </div>
                   </div>
 
-                  <div class="row mb-3">
-                    <label class="col-sm-3 col-form-label">Closing Hour</label>
-                    <div class="col-sm-9">
-                      <input type="text" [ngModel]="state?.appData?.data?.center?.closingHour" name="county" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
-                    </div>
+                  <div class="col-md-6 mb-3">
+                    <mat-slide-toggle formControlName="alwaysOpen"> <span style="margin-left: 8px">Always Open</span></mat-slide-toggle>
+                    <i class="fa-solid fa-circle-info" style="margin-left: 10px"></i>
                   </div>
 
-                  <button [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" type="submit" class="btn btn-primary float-end">
+                  <ng-container *ngIf="!updateCenterForm.get('alwaysOpen').value">
+                    <div class="col-md-6 mb-3">
+                      <label>Opening Time</label>
+                      <ngb-timepicker formControlName="openingTime" [seconds]="false" [spinners]="false"></ngb-timepicker>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <label>Closing Time</label>
+                      <ngb-timepicker formControlName="closingTime" [seconds]="false" [spinners]="false"></ngb-timepicker>
+                    </div>
+                  </ng-container>
+
+                  <ng-container *ngIf="selectedMaterials.length > 0">
+                    <mat-chip-grid #chipGrid aria-label="Enter keywords">
+                      <div *ngFor="let material of selectedMaterials">
+                        <mat-chip-row (removed)="onRemoveMaterial(material)">
+                          {{ material }}
+                          <button matChipRemove aria-label="Remove" (click)="onRemoveMaterial(material)">
+                            <mat-icon>cancel</mat-icon>
+                          </button>
+                        </mat-chip-row>
+                      </div>
+                    </mat-chip-grid>
+                  </ng-container>
+
+
+                  <button [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || updateCenterForm.pristine || !isSelectedCountyValid() || !isSelectedCityValid() ||  (isLoading$ | async)" type="submit" class="btn btn-primary float-end">
                     <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
                     <span *ngIf="isLoading$ | async">Loading...</span>
                     <span *ngIf="!(isLoading$ | async)">Update</span>

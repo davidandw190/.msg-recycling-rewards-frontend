@@ -1,5 +1,15 @@
 import {ChangeDetectionStrategy, Component, inject, OnInit, TemplateRef} from '@angular/core';
-import {BehaviorSubject, catchError, map, Observable, of, startWith, switchMap} from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  debounceTime,
+  distinctUntilChanged, filter,
+  map,
+  Observable,
+  of,
+  startWith,
+  switchMap, tap
+} from 'rxjs';
 import {AppState} from '../../interface/app-state';
 import {CustomHttpResponse} from '../../interface/custom-http-response';
 import {DataState} from '../../enum/data-state.enum';
@@ -9,9 +19,12 @@ import {CenterService} from '../../service/center.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RecyclableMaterial} from '../../interface/recyclable-material';
 import {UnitMeasure} from '../../interface/unit-measure';
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbTimeStruct} from "@ng-bootstrap/ng-bootstrap";
 import {SustainabilityIndexPipe} from "../../pipes/sustainability-index.pipe";
 import {RewardPointsPipe} from "../../pipes/reward-points.pipe";
+import {LocationService} from "../../service/location.service";
+import {TypeaheadMatch} from "ngx-bootstrap/typeahead";
+import {RecyclingCenter} from "../../interface/recycling-center";
 
 @Component({
   selector: 'app-center-details',
@@ -31,6 +44,8 @@ export class CenterDetailsComponent implements OnInit {
 
   private modalService: NgbModal = inject(NgbModal);
 
+  updateCenterForm: FormGroup;
+
   recyclingForm: FormGroup;
   earnedRewardPoints: number | null = null;
   earnedSustainabilityIndex: number | null = null;
@@ -40,6 +55,14 @@ export class CenterDetailsComponent implements OnInit {
   centerId: number;
 
   userId: number;
+
+  availableMaterials: string[] = ['GLASS', 'PLASTIC', 'PAPER', 'ALUMINIUM', 'METALS', 'ELECTRONICS'];
+  selectedMaterials: string[] = []
+  openingTime: NgbTimeStruct;
+  closingTime: NgbTimeStruct;
+
+  counties: string[] = this.locationService.getAllCounties();
+  cities: string[] = [];
 
   acceptedMaterials: RecyclableMaterial[] = [];
 
@@ -97,6 +120,7 @@ export class CenterDetailsComponent implements OnInit {
     private centerService: CenterService,
     private formBuilder: FormBuilder,
     private rewardPointsPipe: RewardPointsPipe,
+    private locationService: LocationService,
     private sustainabilityIndexPipe: SustainabilityIndexPipe
   ) {}
 
@@ -105,10 +129,46 @@ export class CenterDetailsComponent implements OnInit {
       switchMap((params: ParamMap) => this.loadCenterDetails(+params.get(this.CENTER_ID)))
     );
 
-    this.centerDetailsState$.subscribe(() => { this.initializeForm() });
+    this.centerDetailsState$.subscribe((response) => {
+      this.initializeContributeForm();
+      this.initializeCenterUpdateForm(response.appData.data.center)
+    });
+
+
+    this.updateCenterForm
+      .get('county')
+      .valueChanges.pipe(
+      debounceTime(0),
+      distinctUntilChanged(),
+      tap(() => this.updateCenterForm.get('city').setValue('')),
+      tap((county) => this.handleCountyChange(county)),
+      switchMap((value) => this.filterCounties(value)),
+      tap((counties) => (this.counties = counties))
+    )
+      .subscribe();
+
+    this.updateCenterForm
+      .get('city')
+      .valueChanges.pipe(
+      debounceTime(0),
+      distinctUntilChanged(),
+      switchMap((value) => this.filterCities(value)),
+      tap((cities) => (this.cities = cities)),
+      filter(() => false)
+    )
+      .subscribe();
+
+    this.updateCenterForm
+      .get('materials').valueChanges
+      .pipe(
+        debounceTime(100),
+        distinctUntilChanged(),
+        tap((material) => this.onSelectMaterials(material)),
+        filter(() => false)
+      )
   }
 
-  private initializeForm(): void {
+  private initializeContributeForm(): void {
     const defaultMaterialType = this.acceptedMaterials.length > 0 ? this.acceptedMaterials[0].name : '';
     const defaultUnitMeasure = this.materialUnitMeasures.get(defaultMaterialType)?.[0]?.value || '';
 
@@ -123,6 +183,28 @@ export class CenterDetailsComponent implements OnInit {
     this.recyclingForm.valueChanges.subscribe(() => {
       this.computeAddedValue();
     });
+  }
+
+  private initializeCenterUpdateForm(center: RecyclingCenter): void {
+
+    const materialNames: string[] = center.acceptedMaterials.map(material => material.name);
+
+    this.updateCenterForm = this.formBuilder.group({
+      name: [center.name, Validators.required],
+      county: [center.county, Validators.required],
+      contact: [center.contact, Validators.required],
+      city: [center.city, Validators.required],
+      address: [center.address, Validators.required],
+      materials: [''],
+      openingTime: [this.parseTime(center.openingHour)],
+      closingTime: [this.parseTime(center.closingHour)],
+      alwaysOpen: [center.alwaysOpen],
+    });
+
+    this.selectedMaterials = materialNames;
+    this.loadCitiesForCounty(center.county)
+
+    this.updateCenterForm.markAsPristine();
   }
 
   private updateUnitMeasures(materialType: string): void {
@@ -214,7 +296,9 @@ export class CenterDetailsComponent implements OnInit {
         this.centerId = response.data.center.centerId;
         this.userId = response.data.user.id;
         this.acceptedMaterials = [...response.data.center.acceptedMaterials] || [];
-        this.initializeForm();
+        this.initializeContributeForm();
+        this.initializeCenterUpdateForm(response.data.center)
+        this.updateCenterForm.markAsPristine();
         this.isLoadingSubject.next(false);
         return { dataState: DataState.LOADED, appData: response };
       }),
@@ -247,6 +331,99 @@ export class CenterDetailsComponent implements OnInit {
       centered: true,
       size: 'lg'
     });
+  }
+
+  onSelectCounty(event: TypeaheadMatch): void {
+    this.updateCenterForm.get('city').setValue('');
+    this.loadCitiesForCounty(event.value)
+  }
+
+
+  filterCounties(value: string): Observable<string[]> {
+    const filterValue = value.toLowerCase();
+    return of(this.counties.filter((county) => county.toLowerCase().includes(filterValue)));
+  }
+
+  private loadCitiesForCounty(county: string): void {
+    this.updateCenterForm.get('city').enable();
+    this.cities = this.locationService.getCitiesForCounty(county);
+  }
+
+  filterCities(value: string): Observable<string[]> {
+    const filterValue = value.toLowerCase();
+    const selectedCounty = this.updateCenterForm.get('county').value;
+    const citiesForCounty = this.locationService.getCitiesForCounty(selectedCounty);
+
+    if (!filterValue) {
+      return of(citiesForCounty);
+    }
+
+    return of(citiesForCounty.filter((city) => city.toLowerCase().includes(filterValue)));
+  }
+
+  private handleCountyChange(county: string): void {
+    const cityControl = this.updateCenterForm.get('city');
+
+    if (this.locationService.isValidCounty(county)) {
+      cityControl.enable();
+      cityControl.setValue(null)
+      this.loadCitiesForCounty(county);
+    } else {
+      cityControl.disable();
+      cityControl.setValue('');
+    }
+  }
+
+  updateCenter() {
+
+    this.updateCenterForm.markAsPristine()
+  }
+
+  onSelectCity($event: TypeaheadMatch) {
+
+  }
+
+  onSelectMaterials(event: TypeaheadMatch): void {
+    const selectedMaterial = event.item;
+
+    if (!this.selectedMaterials.includes(selectedMaterial)) {
+      this.selectedMaterials.push(selectedMaterial);
+    }
+
+    this.updateCenterForm.get("materials").reset()
+
+    console.log(this.selectedMaterials.length);
+  }
+
+  onRemoveMaterial(material: string): void {
+    this.selectedMaterials = this.selectedMaterials.filter((m) => m !== material);
+  }
+
+  private formatTime(time: NgbTimeStruct): string {
+    return `${time.hour}:${time.minute}`;
+  }
+
+  private parseTime(timeString: string): NgbTimeStruct | null {
+    const timeArray = timeString.split(':');
+
+    if (timeArray.length === 2) {
+      const hour = parseInt(timeArray[0], 10);
+      const minute = parseInt(timeArray[1], 10);
+
+      if (!isNaN(hour) && !isNaN(minute) && hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59) {
+        return { hour, minute, second: 0 }; // Assuming seconds are always 0
+      }
+    }
+
+    return null;
+  }
+
+  public isSelectedCountyValid(): boolean {
+    return this.counties.includes(this.updateCenterForm.get("county").value)
+  }
+
+  public isSelectedCityValid(): boolean {
+    return this.cities.includes(this.updateCenterForm.get("city").value)
   }
 
 }

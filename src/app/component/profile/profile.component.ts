@@ -307,7 +307,13 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  public isSelectedCountyValid(): boolean {
+    return this.counties.includes(this.profileForm.get("county").value)
+  }
 
+  public isSelectedCityValid(): boolean {
+    return this.cities.includes(this.profileForm.get("city").value)
+  }
 
   private getFormData(image: File): FormData {
     const formData = new FormData();
