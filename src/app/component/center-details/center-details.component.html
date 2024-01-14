@@ -214,7 +214,6 @@
                              [typeahead]="availableMaterials"
                              [minLength]="0"
                              [typeaheadWaitMs]="10"
-                             [contentEditable]="false"
                              placeholder="Accepted Materials"
                              class="form-control"
                              (typeaheadOnSelect)="onSelectMaterials($event)" />
@@ -239,7 +238,7 @@
                   </ng-container>
 
                   <ng-container *ngIf="selectedMaterials.length > 0">
-                    <mat-chip-grid #chipGrid aria-label="Enter keywords">
+                    <mat-chip-grid aria-label="Enter keywords">
                       <div *ngFor="let material of selectedMaterials">
                         <mat-chip-row (removed)="onRemoveMaterial(material)">
                           {{ material }}
@@ -252,7 +251,7 @@
                   </ng-container>
 
 
-                  <button [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || updateCenterForm.pristine || !isSelectedCountyValid() || !isSelectedCityValid() ||  (isLoading$ | async)" type="submit" class="btn btn-primary float-end">
+                  <button [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || !isCenterDetailsUpdated() || !isSelectedCountyValid() || !isSelectedCityValid() || (isLoading$ | async)" type="submit" class="btn btn-primary float-end">
                     <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
                     <span *ngIf="isLoading$ | async">Loading...</span>
                     <span *ngIf="!(isLoading$ | async)">Update</span>

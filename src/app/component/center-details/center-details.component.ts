@@ -50,6 +50,8 @@ export class CenterDetailsComponent implements OnInit {
   earnedRewardPoints: number | null = null;
   earnedSustainabilityIndex: number | null = null;
 
+  initialAcceptedMaterials: string[];
+
   userSustainabilityIndex: number;
 
   centerId: number;
@@ -132,6 +134,9 @@ export class CenterDetailsComponent implements OnInit {
     this.centerDetailsState$.subscribe((response) => {
       this.initializeContributeForm();
       this.initializeCenterUpdateForm(response.appData.data.center)
+      this.initialAcceptedMaterials = response.appData.data.center.acceptedMaterials
+        ? response.appData.data.center.acceptedMaterials.map(material => material.name)
+        : [];
     });
 
 
@@ -190,6 +195,7 @@ export class CenterDetailsComponent implements OnInit {
     const materialNames: string[] = center.acceptedMaterials.map(material => material.name);
 
     this.updateCenterForm = this.formBuilder.group({
+      centerId: [center.centerId, Validators.required],
       name: [center.name, Validators.required],
       county: [center.county, Validators.required],
       contact: [center.contact, Validators.required],
@@ -221,6 +227,7 @@ export class CenterDetailsComponent implements OnInit {
         this.centerId = response.data.center.centerId;
         this.userId = response.data.user.id;
         this.acceptedMaterials = [...response.data.center.acceptedMaterials] || [];
+
         this.userSustainabilityIndex = this.sustainabilityIndexPipe.transform(response.data.rewardPoints.valueOf());
         return {dataState: DataState.LOADED, appData: response};
       }),
@@ -374,9 +381,29 @@ export class CenterDetailsComponent implements OnInit {
     }
   }
 
-  updateCenter() {
+  updateCenter(): void {
+    const formData =  {
+      ...this.updateCenterForm.value,
+      materials: this.selectedMaterials
+    }
+    this.centerDetailsState$ = this.centerService.update$(formData)
+      .pipe(
+        map(response => {
+          console.log(response);
+          this.dataSubject.next({ ...response, data: response.data });
+          this.initializeCenterUpdateForm(response.data.center);
+          this.isLoadingSubject.next(false);
+          return { dataState: DataState.LOADED, appData: this.dataSubject.value };
+        }),
 
-    this.updateCenterForm.markAsPristine()
+        startWith({ dataState: DataState.LOADING, appData: this.dataSubject.value }),
+
+        catchError((error: string) => {
+          this.isLoadingSubject.next(false);
+          return of({ dataState: DataState.LOADED, appData: this.dataSubject.value, error: error })
+        })
+      )
+
   }
 
   onSelectCity($event: TypeaheadMatch) {
@@ -426,4 +453,28 @@ export class CenterDetailsComponent implements OnInit {
     return this.cities.includes(this.updateCenterForm.get("city").value)
   }
 
+  public isCenterDetailsUpdated() {
+    if (this.isMaterialsModified()) {
+      return true;
+    }
+
+    return !this.updateCenterForm.pristine;
+  }
+
+  private isMaterialsModified(): boolean {
+    if (this.initialAcceptedMaterials.length != this.selectedMaterials.length) {
+      return true;
+    }
+
+    const sortedInitialMaterials = [...this.initialAcceptedMaterials].sort();
+    const sortedSelectedMaterials = [...this.selectedMaterials].sort();
+
+    for (let i = 0; i < sortedInitialMaterials.length; i++) {
+      if (sortedInitialMaterials[i] !== sortedSelectedMaterials[i]) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 }

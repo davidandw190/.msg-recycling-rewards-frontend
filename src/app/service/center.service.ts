@@ -28,7 +28,7 @@ export class CenterService {
       );
 
   update$ = (center: NgForm) => <Observable<CustomHttpResponse<CenterDetailsResponse>>>
-    this.http.post<CustomHttpResponse<CenterDetailsResponse>>
+    this.http.put<CustomHttpResponse<CenterDetailsResponse>>
     (`${this.server}/centers/update`, center)
       .pipe(
         tap(console.log),
