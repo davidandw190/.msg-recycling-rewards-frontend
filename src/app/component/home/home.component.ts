@@ -11,7 +11,7 @@ import {
   map,
   Observable,
   of,
-  startWith,
+  startWith, switchMap,
   tap
 } from "rxjs";
 import {Router} from "@angular/router";
@@ -24,7 +24,7 @@ import {FormBuilder, FormGroup} from "@angular/forms";
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit {
   homeState$: Observable<AppState<CustomHttpResponse<HomePageResponse>>>;
@@ -61,9 +61,10 @@ export class HomeComponent implements OnInit {
 
     this.tableFilterForm.valueChanges
       .pipe(
-        debounceTime(300),
+        debounceTime(100),
         distinctUntilChanged(),
-        tap(() => this.isLoadingSubject.next(true))
+        tap(() => this.isLoadingSubject.next(true)),
+        switchMap(() => of(this.searchCenters()))
       )
       .subscribe();
 
@@ -91,6 +92,7 @@ export class HomeComponent implements OnInit {
         tap((response) => {
           this.dataSubject.next(response);
         }),
+        startWith({dataState: DataState.LOADING }),
         catchError((error: string) => of({ dataState: DataState.ERROR, error }))
       )
       .subscribe();
@@ -148,4 +150,7 @@ export class HomeComponent implements OnInit {
     return this.centerService.isCenterOpen(center);
   }
 
+  trackByCenter(index: number, center: RecyclingCenter): number {
+    return center.centerId;
+  }
 }

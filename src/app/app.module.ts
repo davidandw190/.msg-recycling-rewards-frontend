@@ -43,6 +43,7 @@ import {ClipboardModule} from "ngx-clipboard";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatDialogModule} from "@angular/material/dialog";
 import { VoucherGuidelinesComponent } from './component/voucher-guidelines/voucher-guidelines.component';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
@@ -64,37 +65,38 @@ import { VoucherGuidelinesComponent } from './component/voucher-guidelines/vouch
     VoucherGuidelinesComponent,
 
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    NgOptimizedImage,
-    NgbModule,
-    ReactiveFormsModule,
-    TypeaheadModule,
-    MatInputModule,
-    MatSelectModule,
-    NgMultiSelectDropDownModule,
-    AcceptedMaterialsPipe,
-    NgbTimepickerModule,
-    MatButtonModule,
-    MatSortModule,
-    MatChipsModule,
-    ClipboardModule,
-    MatIconModule,
-    MatSlideToggleModule,
-    MatBadgeModule,
-    RewardPointsPipe,
-    SustainabilityIndexPipe,
-    UnitConversionPipe,
-    NgbNavModule,
-    MatTabsModule,
-    VoucherStatusPipe,
-    MatTooltipModule,
-    MatDialogModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        NgOptimizedImage,
+        NgbModule,
+        ReactiveFormsModule,
+        TypeaheadModule,
+        MatInputModule,
+        MatSelectModule,
+        NgMultiSelectDropDownModule,
+        AcceptedMaterialsPipe,
+        NgbTimepickerModule,
+        MatButtonModule,
+        MatSortModule,
+        MatChipsModule,
+        ClipboardModule,
+        MatIconModule,
+        MatSlideToggleModule,
+        MatBadgeModule,
+        RewardPointsPipe,
+        SustainabilityIndexPipe,
+        UnitConversionPipe,
+        NgbNavModule,
+        MatTabsModule,
+        VoucherStatusPipe,
+        MatTooltipModule,
+        MatDialogModule,
+        MatProgressSpinnerModule
+    ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     // { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },

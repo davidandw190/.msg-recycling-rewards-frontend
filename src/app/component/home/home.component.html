@@ -1,47 +1,49 @@
-<ng-container *ngIf="(homeState$ | async) as state">
+<ng-container *ngIf="(homeState$ | async) as state" [ngSwitch]="state.dataState">
+
   <!-- Main Content -->
   <section class="main-section">
     <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
 
     <div style="margin-top: 90px"></div>
-<!--    <ng-container *ngIf="state?.appData?.data?.appStats">-->
-<!--    </ng-container>-->
 
-    <app-stats
-      [activeRecyclers]="state?.appData?.data?.appStats?.activeRecyclersNumber || 0"
-      [userRewardPoints]="state?.appData?.data?.userRewardPoints || 0"
-      [recyclersRewardPoints]="state?.appData?.data?.appStats?.monthlyRewardPoints || 0"
-    ></app-stats>
 
-    <div class="container mt-3">
-      <div class="row">
-        <div class="col">
-          <h4 class="fw-bold text-start">Recycling Centers in <span style="color: #A01540FF">{{state?.appData?.data?.user?.county}}</span> ({{ state?.appData?.data?.page?.totalElements }})</h4>
+    <ng-container *ngSwitchCase="DataState.LOADED">
+
+      <app-stats
+        [activeRecyclers]="state?.appData?.data?.appStats?.activeRecyclersNumber || 0"
+        [userRewardPoints]="state?.appData?.data?.userRewardPoints || 0"
+        [recyclersRewardPoints]="state?.appData?.data?.appStats?.monthlyRewardPoints || 0"
+      ></app-stats>
+
+      <div class="container mt-3">
+        <div class="row">
+          <div class="col">
+            <h4 class="fw-bold text-start">Recycling Centers in <span style="color: #A01540FF">{{state?.appData?.data?.user?.county}}</span> ({{ state?.appData?.data?.page?.totalElements }})</h4>
+          </div>
+          <div class="col text-end">
+            <button
+              mat-flat-button
+              [matTooltipShowDelay]="500"
+              [matTooltipHideDelay]="500"
+              matTooltip="Create a New Recycling Center with which users can intercat with."
+              (click)="navigateToCreateCenter()"
+              style="background-color: #28a745; color: white; margin-right: 10px"
+              class="m-lg-2-2"
+            >
+              <i class="fa-regular fa-square-plus"></i> New Center
+            </button>
+
+            <button
+              mat-flat-button
+              [matTooltipShowDelay]="500"
+              [matTooltipHideDelay]="500"
+              matTooltip="View All Recycling Centers"
+              (click)="navigateToCentersView()"
+              style="background-color: #A01540FF; color: white"
+            >
+              <i class="fa-solid fa-list-ul"></i> More</button>
+          </div>
         </div>
-        <div class="col text-end">
-          <button
-            mat-flat-button
-            [matTooltipShowDelay]="500"
-            [matTooltipHideDelay]="500"
-            matTooltip="Create a New Recycling Center with which users can intercat with."
-            (click)="navigateToCreateCenter()"
-            style="background-color: #28a745; color: white; margin-right: 10px"
-            class="m-lg-2-2"
-          >
-            <i class="fa-regular fa-square-plus"></i> New Center
-          </button>
-
-          <button
-            mat-flat-button
-            [matTooltipShowDelay]="500"
-            [matTooltipHideDelay]="500"
-            matTooltip="View All Recycling Centers"
-            (click)="navigateToCentersView()"
-            style="background-color: #A01540FF; color: white"
-          >
-            <i class="fa-solid fa-list-ul"></i> More</button>
-        </div>
-      </div>
 
         <div *ngIf="false" [formGroup]="tableFilterForm" (ngSubmit)="searchCenters()" class="invisible-form">
           <select formControlName="sortBy" class="form-control">
@@ -78,7 +80,7 @@
             </tr>
             </thead>
             <!-- Table Body -->
-            <tbody *ngFor="let center of state?.appData?.data?.page?.content" class="table-body">
+            <tbody *ngFor="let center of state?.appData?.data?.page?.content; trackBy: trackByCenter" class="table-body">
             <tr class="cell-1">
               <td  class="text-center"><img
                 [src]="center.imageUrl || 'https://ui-avatars.com/api/?background=random&name=' + (center.name || '')"
@@ -139,32 +141,44 @@
             <ng-template ngbPaginationNext>Next <i class="fa-solid fa-angle-right"></i></ng-template>
           </ngb-pagination>
         </nav>
-    </div>
+      </div>
 
-    <div class="container mt-3">
-      <div class="row">
-        <div class="col-md-6 col-xl-6">
-          <div class="card bg-c-blue order-card">
-            <div class="card-block" [routerLink]="['/vouchers']">
-              <h5 class="m-b-10"><i class="fa-solid fa-ticket"></i> My Vouchers</h5>
-<!--              <h2 class="text-right"><span>486</span></h2>-->
-              <p class="m-b-0">I need <span style="font-size: 18px"><strong>245</strong></span> more reward Points Needed Until I A Voucher</p>
-              <p class="m-b-0"><span class="f-right">View More</span></p>
+      <div class="container mt-3">
+        <div class="row">
+          <div class="col-md-6 col-xl-6">
+            <div class="card bg-c-blue order-card">
+              <div class="card-block" [routerLink]="['/vouchers']">
+                <h5 class="m-b-10"><i class="fa-solid fa-ticket"></i> My Vouchers</h5>
+                <!--              <h2 class="text-right"><span>486</span></h2>-->
+                <p class="m-b-0">I need <span style="font-size: 18px"><strong>245</strong></span> more reward Points Needed Until I A Voucher</p>
+                <p class="m-b-0"><span class="f-right">View More</span></p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="col-md-6 col-xl-6">
-          <div class="card bg-c-green order-card">
-            <div class="card-block" [routerLink]="['/ecolearn']">
-              <h5 class="m-b-20"><i class="fa-solid fa-lightbulb"></i> Eco Learn Daily</h5>
-              <span class="text-right"><p>{{ state?.appData?.data?.ecoTip }}</p></span>
-              <p class="m-b-0"><span class="f-right">View More</span></p>
+          <div class="col-md-6 col-xl-6">
+            <div class="card bg-c-green order-card">
+              <div class="card-block" [routerLink]="['/ecolearn']">
+                <h5 class="m-b-20"><i class="fa-solid fa-lightbulb"></i> Eco Learn Daily</h5>
+                <span class="text-right"><p>{{ state?.appData?.data?.ecoTip }}</p></span>
+                <p class="m-b-0"><span class="f-right">View More</span></p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+
+    </ng-container>
+
+    <ng-container *ngSwitchCase="DataState.LOADING">
+      <mat-spinner></mat-spinner>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="DataState.ERROR">
+      <ngb-alert [dismissible]="false" type="danger">
+        <strong>An unexpected error occurred. </strong> Please try again later.
+      </ngb-alert>
+    </ng-container>
 
 
   </section>
