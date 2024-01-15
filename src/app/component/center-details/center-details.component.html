@@ -147,24 +147,23 @@
           </div>
           <div class="col-xl-8">
 
-
             <div class="card border rounded-3 mb-3">
               <div class="card-body">
                 <h5 class="card-title">Profile Details</h5>
                 <form [formGroup]="updateCenterForm" (ngSubmit)="updateCenter()">
 
-                  <input formControlName="centerId" type="hidden" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)">
+                  <input formControlName="centerId" type="hidden">
 
                   <div class="row mb-3">
                     <label class="col-sm-3 col-form-label">Center Name</label>
                     <div class="col-sm-9">
-                      <input formControlName="name" type="text" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
+                      <input formControlName="name" type="text" class="form-control">
                     </div>
                   </div>
                   <div class="row mb-3">
                     <label class="col-sm-3 col-form-label">Contact</label>
                     <div class="col-sm-9">
-                      <input formControlName="contact" type="text" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
+                      <input formControlName="contact" type="text" class="form-control">
                     </div>
                   </div>
 
@@ -179,7 +178,6 @@
                              [typeaheadWaitMs]="10"
                              [contentEditable]="false"
                              placeholder="Select County"
-                             [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)"
                              (typeaheadOnSelect)="onSelectCounty($event)" />
                     </div>
                   </div>
@@ -195,7 +193,6 @@
                              [typeaheadWaitMs]="10"
                              [contentEditable]="false"
                              placeholder="Select City"
-                             [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)"
                              (typeaheadOnSelect)="onSelectCity($event)" />
                     </div>
                   </div>
@@ -203,59 +200,62 @@
                   <div class="row mb-3">
                     <label class="col-sm-3 col-form-label">Address</label>
                     <div class="col-sm-9">
-                      <input formControlName="address" type="text" [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || (isLoading$ | async)" class="form-control">
+                      <input formControlName="address" type="text" class="form-control">
                     </div>
                   </div>
 
-                  <div class="row mb-3">
-                    <label class="col-sm-3 col-form-label">Accepted Materials</label>
-                    <div class="col-sm-9">
-                      <input formControlName="materials"
-                             [typeahead]="availableMaterials"
-                             [minLength]="0"
-                             [typeaheadWaitMs]="10"
-                             placeholder="Accepted Materials"
-                             class="form-control"
-                             (typeaheadOnSelect)="onSelectMaterials($event)" />
-                    </div>
-                  </div>
-
-                  <div class="col-md-6 mb-3">
-                    <mat-slide-toggle formControlName="alwaysOpen"> <span style="margin-left: 8px">Always Open</span></mat-slide-toggle>
-                    <i class="fa-solid fa-circle-info" style="margin-left: 10px"></i>
-                  </div>
-
-                  <ng-container *ngIf="!updateCenterForm.get('alwaysOpen').value">
-                    <div class="col-md-6 mb-3">
-                      <label>Opening Time</label>
-                      <ngb-timepicker formControlName="openingTime" [seconds]="false" [spinners]="false"></ngb-timepicker>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                      <label>Closing Time</label>
-                      <ngb-timepicker formControlName="closingTime" [seconds]="false" [spinners]="false"></ngb-timepicker>
-                    </div>
-                  </ng-container>
-
-                  <ng-container *ngIf="selectedMaterials.length > 0">
-                    <mat-chip-grid aria-label="Enter keywords">
-                      <div *ngFor="let material of selectedMaterials">
-                        <mat-chip-row (removed)="onRemoveMaterial(material)">
-                          {{ material }}
-                          <button matChipRemove aria-label="Remove" (click)="onRemoveMaterial(material)">
-                            <mat-icon>cancel</mat-icon>
-                          </button>
-                        </mat-chip-row>
+                  <ng-container *ngIf="state?.appData?.data?.user?.roleName === 'ROLE_ADMIN' || state?.appData?.data?.user?.roleName === 'ROLE_SYSADMIN'">
+                    <div class="row mb-3">
+                      <label class="col-sm-3 col-form-label">Accepted Materials</label>
+                      <div class="col-sm-9">
+                        <input formControlName="materials"
+                               [typeahead]="availableMaterials"
+                               [minLength]="0"
+                               [typeaheadWaitMs]="10"
+                               placeholder="Accepted Materials"
+                               class="form-control"
+                               (typeaheadOnSelect)="onSelectMaterials($event)" />
                       </div>
-                    </mat-chip-grid>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <mat-slide-toggle formControlName="alwaysOpen"> <span style="margin-left: 8px">Always Open</span></mat-slide-toggle>
+                      <i class="fa-solid fa-circle-info" style="margin-left: 10px"></i>
+                    </div>
+
+                    <ng-container *ngIf="!updateCenterForm.get('alwaysOpen').value">
+                      <div class="col-md-6 mb-3">
+                        <label>Opening Time</label>
+                        <ngb-timepicker formControlName="openingTime" [seconds]="false" [spinners]="false"></ngb-timepicker>
+                      </div>
+
+                      <div class="col-md-6 mb-3">
+                        <label>Closing Time</label>
+                        <ngb-timepicker formControlName="closingTime" [seconds]="false" [spinners]="false"></ngb-timepicker>
+                      </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="selectedMaterials.length > 0">
+                      <mat-chip-grid aria-label="Enter keywords">
+                        <div *ngFor="let material of selectedMaterials">
+                          <mat-chip-row (removed)="onRemoveMaterial(material)">
+                            {{ material }}
+                            <button matChipRemove aria-label="Remove" (click)="onRemoveMaterial(material)">
+                              <mat-icon>cancel</mat-icon>
+                            </button>
+                          </mat-chip-row>
+                        </div>
+                      </mat-chip-grid>
+                    </ng-container>
+
+                    <button [disabled]="state?.appData?.data?.user.roleName == 'ROLE_USER' || !isCenterDetailsUpdated() || !isSelectedCountyValid() || !isSelectedCityValid() || (isLoading$ | async)" type="submit" class="btn btn-primary float-end">
+                      <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
+                      <span *ngIf="isLoading$ | async">Loading...</span>
+                      <span *ngIf="!(isLoading$ | async)">Update</span>
+                    </button>
                   </ng-container>
 
 
-                  <button [disabled]="state?.appData?.data?.user.roleName === 'ROLE_USER' || !isCenterDetailsUpdated() || !isSelectedCountyValid() || !isSelectedCityValid() || (isLoading$ | async)" type="submit" class="btn btn-primary float-end">
-                    <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
-                    <span *ngIf="isLoading$ | async">Loading...</span>
-                    <span *ngIf="!(isLoading$ | async)">Update</span>
-                  </button>
                 </form>
               </div>
             </div>
@@ -278,7 +278,7 @@
                     <div class="col-md-4 mb-3">
                       <label class="form-label">Preferred Unit Measure</label>
                       <select formControlName="unitMeasure" class="form-select">
-                        <option *ngFor="let unit of unitMeasuresMap[recycledMaterialTypeValue]" [value]="unit.value">{{ unit.label }}</option>
+                        <option *ngFor="let unit of this.materialUnitMeasures.get(recycledMaterialTypeValue)" [value]="unit.value">{{ unit.label }}</option>
                       </select>
                     </div>
 

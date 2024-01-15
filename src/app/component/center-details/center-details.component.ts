@@ -25,12 +25,13 @@ import {RewardPointsPipe} from "../../pipes/reward-points.pipe";
 import {LocationService} from "../../service/location.service";
 import {TypeaheadMatch} from "ngx-bootstrap/typeahead";
 import {RecyclingCenter} from "../../interface/recycling-center";
+import {User} from "../../interface/user";
 
 @Component({
   selector: 'app-center-details',
   templateUrl: './center-details.component.html',
   styleUrls: ['./center-details.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class CenterDetailsComponent implements OnInit {
   centerDetailsState$: Observable<AppState<CustomHttpResponse<CenterDetailsResponse>>>;
@@ -105,10 +106,9 @@ export class CenterDetailsComponent implements OnInit {
       this.unitMeasuresMap.get('1L'),
     ]],
 
-    ['ALUMINUM', [
+    ['ALUMINIUM', [
       this.unitMeasuresMap.get('KG'),
-      this.unitMeasuresMap.get('0.5L'),
-      this.unitMeasuresMap.get('1L'),
+      this.unitMeasuresMap.get('PIECE'),
       this.unitMeasuresMap.get('CAN'),
     ]],
 
@@ -131,12 +131,16 @@ export class CenterDetailsComponent implements OnInit {
       switchMap((params: ParamMap) => this.loadCenterDetails(+params.get(this.CENTER_ID)))
     );
 
+
+
     this.centerDetailsState$.subscribe((response) => {
       this.initializeContributeForm();
       this.initializeCenterUpdateForm(response.appData.data.center)
       this.initialAcceptedMaterials = response.appData.data.center.acceptedMaterials
         ? response.appData.data.center.acceptedMaterials.map(material => material.name)
         : [];
+      console.log(">>>>>>>>>>>>>>>>>>>>>>>>> " + response.appData.data.user.roleName)
+      this.updateCenterFormControlsState(response.appData.data.user.roleName)
     });
 
 
@@ -211,6 +215,7 @@ export class CenterDetailsComponent implements OnInit {
     this.loadCitiesForCounty(center.county)
 
     this.updateCenterForm.markAsPristine();
+
   }
 
   private updateUnitMeasures(materialType: string): void {
@@ -240,6 +245,10 @@ export class CenterDetailsComponent implements OnInit {
     const materialType = this.recyclingForm.value.recycledMaterialType;
     const unitMeasure = this.recyclingForm.value.unitMeasure;
     const amount = this.recyclingForm.value.amount;
+
+
+    console.log("CHOSEN MATERIAL TYPE IS:" + materialType)
+    console.log("UNIT MEANSURES: " + this.materialUnitMeasures[materialType])
 
     if (!materialType || !unitMeasure || amount === null) {
       this.earnedRewardPoints = null;
@@ -280,6 +289,7 @@ export class CenterDetailsComponent implements OnInit {
     const unitRatio = this.materialUnitMeasures.get(recycledMaterialType)?.find(unit => unit.value === unitMeasure)?.ratio || 1;
     const recycledAmount = this.recyclingForm.get('amount').value;
 
+
     const selectedMaterialId = this.getMaterialIdByName(recycledMaterialType);
 
     if (selectedMaterialId === null || this.earnedRewardPoints === null) {
@@ -303,10 +313,11 @@ export class CenterDetailsComponent implements OnInit {
         this.centerId = response.data.center.centerId;
         this.userId = response.data.user.id;
         this.acceptedMaterials = [...response.data.center.acceptedMaterials] || [];
-        this.initializeContributeForm();
         this.initializeCenterUpdateForm(response.data.center)
+        this.initializeContributeForm();
         this.updateCenterForm.markAsPristine();
         this.isLoadingSubject.next(false);
+        this.updateCenterFormControlsState(response.data.user.roleName)
         return { dataState: DataState.LOADED, appData: response };
       }),
       catchError((error: string) => {
@@ -324,13 +335,6 @@ export class CenterDetailsComponent implements OnInit {
 
   get recycledMaterialTypeValue(): string {
     return this.recyclingForm.get('recycledMaterialType').value;
-  }
-
-  openScrollableContent(longContent: TemplateRef<any>) {
-    this.modalService.open(longContent, {
-      scrollable: true,
-      size: "lg"
-    });
   }
 
   openStatsModal(content: TemplateRef<any>) {
@@ -393,6 +397,7 @@ export class CenterDetailsComponent implements OnInit {
           this.dataSubject.next({ ...response, data: response.data });
           this.initializeCenterUpdateForm(response.data.center);
           this.isLoadingSubject.next(false);
+          this.updateCenterFormControlsState(response.data.user.roleName)
           return { dataState: DataState.LOADED, appData: this.dataSubject.value };
         }),
 
@@ -459,6 +464,17 @@ export class CenterDetailsComponent implements OnInit {
     }
 
     return !this.updateCenterForm.pristine;
+  }
+
+  private updateCenterFormControlsState(role: string): void {
+    console.log(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + role)
+    if (role != "ROLE_ADMIN" && role != "ROLE_SYSADMIN") {
+      this.updateCenterForm.disable();
+
+      console.log(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DISABLED")
+    } else {
+      this.updateCenterForm.enable();
+    }
   }
 
   private isMaterialsModified(): boolean {
