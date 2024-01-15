@@ -1,7 +1,9 @@
 <ng-container *ngIf="(centerDetailsState$ | async) as state" [ngSwitch]="state.dataState">
+
+  <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
+  <div style="margin-top: 90px"> </div>
+
   <ng-container *ngSwitchCase="DataState.LOADED">
-    <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
-    <div style="margin-top: 90px"> </div>
     <section>
       <div class="container center-details">
         <nav aria-label="breadcrumb" style="margin-top: 20px;">
@@ -69,7 +71,7 @@
                   </li>
                 </ul>
 
-<!--                <div class="view-more-tab justify-content-center" >View More</div>-->
+                <!--                <div class="view-more-tab justify-content-center" >View More</div>-->
               </div>
 
 
@@ -146,7 +148,6 @@
             </div>
           </div>
           <div class="col-xl-8">
-
             <div class="card border rounded-3 mb-3">
               <div class="card-body">
                 <h5 class="card-title">Profile Details</h5>
@@ -327,7 +328,7 @@
                     <th scope="col">Amount</th>
                     <th scope="col">Status</th>
                     <th scope="col">Date</th>
-<!--                                        <th scope="col">Action</th>-->
+                    <!--                                        <th scope="col">Action</th>-->
                   </tr>
                   </thead>
                   <tbody>
@@ -398,4 +399,15 @@
       </ng-template>
     </section>
   </ng-container>
+
+  <ng-container *ngSwitchCase="DataState.LOADING">
+    <mat-spinner></mat-spinner>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="DataState.ERROR">
+    <ngb-alert [dismissible]="false" type="danger">
+      <strong>An unexpected error occurred. </strong> Please try again later.
+    </ngb-alert>
+  </ng-container>
+
 </ng-container>

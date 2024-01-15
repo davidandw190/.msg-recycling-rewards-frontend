@@ -3,12 +3,12 @@ import {
   BehaviorSubject,
   catchError,
   debounceTime,
-  distinctUntilChanged, filter,
+  distinctUntilChanged, filter, forkJoin,
   map,
   Observable,
   of,
-  startWith,
-  switchMap, tap
+  startWith, Subject,
+  switchMap, takeUntil, tap
 } from 'rxjs';
 import {AppState} from '../../interface/app-state';
 import {CustomHttpResponse} from '../../interface/custom-http-response';
@@ -25,7 +25,7 @@ import {RewardPointsPipe} from "../../pipes/reward-points.pipe";
 import {LocationService} from "../../service/location.service";
 import {TypeaheadMatch} from "ngx-bootstrap/typeahead";
 import {RecyclingCenter} from "../../interface/recycling-center";
-import {User} from "../../interface/user";
+
 
 @Component({
   selector: 'app-center-details',
@@ -34,6 +34,8 @@ import {User} from "../../interface/user";
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class CenterDetailsComponent implements OnInit {
+  private destroy$ = new Subject<void>();
+
   centerDetailsState$: Observable<AppState<CustomHttpResponse<CenterDetailsResponse>>>;
   private dataSubject = new BehaviorSubject<CustomHttpResponse<CenterDetailsResponse>>(null);
   private isLoadingSubject = new BehaviorSubject<boolean>(false);
@@ -42,8 +44,6 @@ export class CenterDetailsComponent implements OnInit {
   readonly DataState = DataState;
 
   private readonly CENTER_ID: string = 'id';
-
-  private modalService: NgbModal = inject(NgbModal);
 
   updateCenterForm: FormGroup;
 
@@ -123,7 +123,8 @@ export class CenterDetailsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private rewardPointsPipe: RewardPointsPipe,
     private locationService: LocationService,
-    private sustainabilityIndexPipe: SustainabilityIndexPipe
+    private sustainabilityIndexPipe: SustainabilityIndexPipe,
+    private modalService: NgbModal,
   ) {}
 
   ngOnInit(): void {
@@ -131,18 +132,15 @@ export class CenterDetailsComponent implements OnInit {
       switchMap((params: ParamMap) => this.loadCenterDetails(+params.get(this.CENTER_ID)))
     );
 
-
-
     this.centerDetailsState$.subscribe((response) => {
-      this.initializeContributeForm();
       this.initializeCenterUpdateForm(response.appData.data.center)
+      this.initializeContributeForm();
       this.initialAcceptedMaterials = response.appData.data.center.acceptedMaterials
         ? response.appData.data.center.acceptedMaterials.map(material => material.name)
         : [];
       console.log(">>>>>>>>>>>>>>>>>>>>>>>>> " + response.appData.data.user.roleName)
       this.updateCenterFormControlsState(response.appData.data.user.roleName)
     });
-
 
     this.updateCenterForm
       .get('county')
@@ -175,6 +173,11 @@ export class CenterDetailsComponent implements OnInit {
         tap((material) => this.onSelectMaterials(material)),
         filter(() => false)
       )
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private initializeContributeForm(): void {
@@ -386,29 +389,40 @@ export class CenterDetailsComponent implements OnInit {
   }
 
   updateCenter(): void {
-    const formData =  {
+    const formData = {
       ...this.updateCenterForm.value,
-      materials: this.selectedMaterials
-    }
-    this.centerDetailsState$ = this.centerService.update$(formData)
+      materials: this.selectedMaterials,
+    };
+
+    this.isLoadingSubject.next(true);
+
+    this.centerService
+      .update$(formData)
       .pipe(
-        map(response => {
+        debounceTime(500),
+        distinctUntilChanged(),
+        switchMap(() =>
+          forkJoin([
+            this.centerService.centerDetails$(this.centerId),
+            of(null).pipe(debounceTime(0)),
+          ])
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(
+        ([response, _]) => {
           console.log(response);
           this.dataSubject.next({ ...response, data: response.data });
           this.initializeCenterUpdateForm(response.data.center);
           this.isLoadingSubject.next(false);
-          this.updateCenterFormControlsState(response.data.user.roleName)
-          return { dataState: DataState.LOADED, appData: this.dataSubject.value };
-        }),
-
-        startWith({ dataState: DataState.LOADING, appData: this.dataSubject.value }),
-
-        catchError((error: string) => {
+          this.updateCenterForm.markAsPristine()
+          this.updateCenterFormControlsState(response.data.user.roleName);
+        },
+        (error: string) => {
           this.isLoadingSubject.next(false);
-          return of({ dataState: DataState.LOADED, appData: this.dataSubject.value, error: error })
-        })
-      )
-
+          console.error(error);
+        }
+      );
   }
 
   onSelectCity($event: TypeaheadMatch) {
@@ -493,4 +507,8 @@ export class CenterDetailsComponent implements OnInit {
 
     return false;
   }
+
+  // private isFormDataChanged(newFormData: any): boolean {
+  //   return JSON.stringify(newFormData) !== JSON.stringify(this.lastSubmittedData);
+  // }
 }
