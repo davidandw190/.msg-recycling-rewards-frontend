@@ -2,3 +2,8 @@
   height: 32px;
   width: 32px;
 }
+
+.submenu {
+  position: absolute;
+  z-index: 1000; /* Ensure a higher z-index than the navbar */
+}

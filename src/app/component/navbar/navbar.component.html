@@ -5,60 +5,55 @@
       <span class="brand-name"><i class="fa-solid fa-leaf"></i> .msgRecyclingRewards</span>
     </a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" mat-button (click)="isNavbarOpen = !isNavbarOpen">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse" [ngClass]="{'show': isNavbarOpen}" (click)="isNavbarOpen = false">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Centers</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" [routerLink]="['/centers/all']"><i class="bi bi-person-plus-fill"></i> All Centers</a></li>
-            <li><a class="dropdown-item" [routerLink]="['/centers/all']"><i class="bi bi-people-fill"></i> My Favourites </a></li>
-          </ul>
+        <li class="nav-item" [routerLinkActive]="['active']" [matMenuTriggerFor]="centersMenu">
+          <a class="nav-link">Centers</a>
         </li>
-
-<!--        <li class="nav-item dropdown">-->
-<!--          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Vouchers</a>-->
-<!--          <ul class="dropdown-menu">-->
-<!--            <li><a class="dropdown-item" [routerLink]="['/centers/all']"><i class="bi bi-person-plus-fill"></i> All Centers</a></li>-->
-<!--            <li><a class="dropdown-item" [routerLink]="['/centers/all']"><i class="bi bi-people-fill"></i> My Favourites </a></li>-->
-<!--          </ul>-->
-<!--        </li>-->
 
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/vouchers']">Vouchers</a>
         </li>
 
-
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/leaderboard']">Leaderboard</a>
         </li>
 
-
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Challenges</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" [routerLink]="['/challenges/all']"><i class="bi bi-person-plus-fill"></i> All Challenges</a></li>
-            <li><a class="dropdown-item" [routerLink]="['/challenges/']"><i class="bi bi-people-fill"></i> My Challenges</a></li>
-          </ul>
+        <li class="nav-item" [matMenuTriggerFor]="challengesMenu">
+          <a class="nav-link">Challenges</a>
         </li>
 
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/ecolearn']">EcoLearn</a>
         </li>
 
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <li class="nav-item" [matMenuTriggerFor]="userMenu">
+          <a class="nav-link">
             <img [src]="user?.imageUrl || 'https://img.freepik.com/free-icon/user_318-159711.jpg'" alt="User Avatar" class="user-avatar-md rounded-circle" style="width: 28px; height: 28px;">
           </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" [routerLink]="['/profile']"><i class="fa-solid fa-user"></i> {{ user?.firstName }} {{ user?.lastName }}</a></li>
-            <li style="cursor: pointer;"><a class="dropdown-item" (click)="logOut()"><i class="bi bi-box-arrow-in-right"></i> Logout</a></li>
-          </ul>
         </li>
       </ul>
+
+      <!-- Dropdown Menus -->
+      <mat-menu #centersMenu="matMenu" class="submenu">
+        <a mat-menu-item [routerLink]="['/centers/all']"><i class="bi bi-person-plus-fill"></i> All Centers</a>
+        <a mat-menu-item [routerLink]="['/centers/all']"><i class="bi bi-people-fill"></i> My Favourites</a>
+      </mat-menu>
+
+
+      <mat-menu #challengesMenu="matMenu" class="submenu">
+        <a mat-menu-item [routerLink]="['/challenges/all']"><i class="bi bi-person-plus-fill"></i> All Challenges</a>
+        <a mat-menu-item [routerLink]="['/challenges/']"><i class="bi bi-people-fill"></i> My Challenges</a>
+      </mat-menu>
+
+      <mat-menu #userMenu="matMenu" class="submenu">
+        <a mat-menu-item [routerLink]="['/profile']"><i style="padding-right: 8px;" class="bi bi-person-circle"></i>{{ user?.firstName }} {{ user?.lastName }}</a>
+        <a mat-menu-item (click)="logOut()"><i style="padding-right: 8px;" class="bi bi-box-arrow-in-right"></i>Logout</a>
+      </mat-menu>
     </div>
   </div>
 </nav>
