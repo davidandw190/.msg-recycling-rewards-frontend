@@ -12,6 +12,7 @@ import {CenterDetailsComponent} from "./component/center-details/center-details.
 import {CenterAllComponent} from "./component/center-all/center-all.component";
 import {VouchersComponent} from "./component/vouchers/vouchers.component";
 import {VoucherDetailsComponent} from "./component/voucher-details/voucher-details.component";
+import {LeaderboardComponent} from "./component/leaderboard/leaderboard.component";
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -29,6 +30,8 @@ const routes: Routes = [
 
   { path: 'vouchers', component: VouchersComponent, canActivate: [AuthenticationGuard] },
   { path: 'vouchers/:code', component: VoucherDetailsComponent, canActivate: [AuthenticationGuard] },
+
+  { path: 'leaderboard', component: LeaderboardComponent, canActivate: [AuthenticationGuard] },
 
   { path: '', component: HomeComponent, canActivate: [AuthenticationGuard] },
   { path: '', redirectTo: '/', pathMatch: 'full' },

@@ -45,6 +45,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { VoucherGuidelinesComponent } from './component/voucher-guidelines/voucher-guidelines.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatMenuModule} from "@angular/material/menu";
+import { LeaderboardComponent } from './component/leaderboard/leaderboard.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import {MatMenuModule} from "@angular/material/menu";
     VouchersComponent,
     VoucherDetailsComponent,
     VoucherGuidelinesComponent,
+    LeaderboardComponent,
 
   ],
   imports: [
