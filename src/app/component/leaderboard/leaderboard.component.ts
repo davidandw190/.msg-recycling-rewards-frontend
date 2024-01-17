@@ -18,6 +18,7 @@ import {AppState} from "../../interface/app-state";
 import {CustomHttpResponse} from "../../interface/custom-http-response";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {DataState} from '../../enum/data-state.enum';
+import {SustainabilityIndexPipe} from "../../pipes/sustainability-index.pipe";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Sort} from "@angular/material/sort";
 import {Voucher} from "../../interface/voucher";
@@ -32,7 +33,7 @@ import {LeaderboardService} from "../../service/leaderboard.service";
 export class LeaderboardComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
 
-  vouchersState$: Observable<AppState<CustomHttpResponse<LeaderboardPageResponse>>>;
+  leaderboardState$: Observable<AppState<CustomHttpResponse<LeaderboardPageResponse>>>;
   private dataSubject = new BehaviorSubject<CustomHttpResponse<LeaderboardPageResponse>>(null);
   private isLoadingSubject = new BehaviorSubject<boolean>(false);
   isLoading$ = this.isLoadingSubject.asObservable();
@@ -49,6 +50,7 @@ export class LeaderboardComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
+    private sustainabilityIndexPipe: SustainabilityIndexPipe,
     private leaderboardService: LeaderboardService,
     private formBuilder: FormBuilder
   ) {}
@@ -63,31 +65,6 @@ export class LeaderboardComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  updateActiveTab(activeTab: string): void {
-    let redeemed: boolean | null = null;
-    let expired: boolean | null = null;
-
-    switch (activeTab) {
-      case 'Redeemed':
-        redeemed = true;
-        break;
-      case 'Expired':
-        expired = true;
-        break;
-      case 'Available':
-        redeemed = false;
-        expired = false;
-        break;
-      case 'All Vouchers':
-        break;
-
-      default:
-        break;
-    }
-
-    this.getResults();
   }
 
   getResults(): void {
@@ -143,7 +120,7 @@ export class LeaderboardComponent implements OnInit, OnDestroy {
   }
 
   private initializeSearch(): void {
-    this.vouchersState$ = this.dataSubject.pipe(
+    this.leaderboardState$ = this.dataSubject.pipe(
       map((response) => ({ dataState: DataState.LOADED, appData: response })),
       startWith({ dataState: DataState.LOADING }),
       catchError((error: string) => of({ dataState: DataState.ERROR, error }))

@@ -1,0 +1,105 @@
+<ng-container *ngIf="(leaderboardState$ | async) as state" [ngSwitch]="state.dataState"
+              xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+  <ng-container *ngSwitchCase="DataState.LOADED">
+    <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
+    <div style="margin-top: 90px"></div>
+    <section class="container mt-4">
+      <nav aria-label="breadcrumb" style="margin-top: 8px;">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"> <a [routerLink]="['/']">Home</a> </li>
+          <li class="breadcrumb-item active"> Vouchers </li>
+        </ol>
+      </nav>
+      <div class="row">
+        <div class="col">
+          <h4 class="fw-bold text-start">Earned Vouchers</h4>
+        </div>
+
+        <!-- Search Form -->
+        <form [formGroup]="searchForm" (ngSubmit)="getResults()" class="d-flex justify-content-end">
+          <div class="d-flex align-items-center">
+            <label class="visually-hidden">County</label>
+            <input type="text" formControlName="county" class="form-control mt-3" style="margin-bottom: -8px" placeholder="Filter By County" />
+          </div>
+
+          <select formControlName="sortBy" class="invisible-form">
+            <option value="createdAt">Created At</option>
+            <option value="createdAt">Expires At</option>
+            <option value="code">Voucher Code</option>
+            <option value="type">Voucher Type</option>
+          </select>
+
+          <select formControlName="sortOrder" class="invisible-form">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+
+        </form>
+      </div>
+
+      <div class="table-responsive mt-3">
+        <table matSort (matSortChange)="sort($event)" class="table table-bordered table-hover">
+          <!-- Table Header -->
+          <thead class="bg-gradient text-white">
+          <tr>
+            <th class="text-center" scope="col" style="width: 6%;">Photo</th>
+            <th scope="col" mat-sort-header="firstName" style="width: 15%;">First Name</th>
+            <th scope="col" mat-sort-header="lastName" style="width: 15%;">Last Name</th>
+            <th scope="col" mat-sort-header="email" style="width: 15%;">Email</th>
+            <th scope="col" mat-sort-header="county" style="width: 10%;">County</th>
+            <th scope="col" mat-sort-header="city" style="width: 10%;">City</th>
+            <th scope="col" mat-sort-header="rewardPoints" class="text-center" style="width: 12%;">Reward Points</th>
+            <th scope="col" class="text-center" style="width: 12%;">Sustainability Index</th>
+          </tr>
+          </thead>
+          <!-- Table Body -->
+          <tbody *ngFor="let entry of state?.appData?.data?.page.content" class="table-body">
+          <tr class="cell-1">
+            <td  class="text-center">
+              <img
+                [src]="entry?.imageUrl || 'https://img.freepik.com/free-icon/user_318-159711.jpg'"
+                alt=""
+                width="42" height="42" class="rounded-circle"
+              ></td>
+            <td> {{ entry?.firstName }}</td>
+            <td>{{ entry?.lastName }}</td>
+            <td>{{ entry?.email }}</td>
+            <td>{{ entry?.county }}</td>
+            <td>{{ entry?.city }}</td>
+            <td>{{ entry?.rewardPoints }}</td>
+            <td>{{ entry?.rewardPoints | sustainabilityIndex }}%</td>
+          </tr>
+          </tbody>
+
+        </table>
+
+<!--        <ngb-alert *ngIf="state?.appData?.data?.page?.content.length === 0 && numEnabledFilters !== 0" style="margin-top: 0;" type="info" [dismissible]="false">-->
+<!--          No recycling centers found by your criteria. Try changing your search criteria.-->
+<!--        </ngb-alert>-->
+
+        <ngb-alert *ngIf="state?.appData?.data?.page?.content.length === 0" style="margin-top: 0;" type="info" [dismissible]="false">
+          No recycling centers available at the moment. Check back later.
+        </ngb-alert>
+
+
+      </div>
+
+      <!-- Pagination -->
+      <nav *ngIf="state?.appData?.data?.page?.totalPages > 0" class="pagination-container">
+        <ngb-pagination
+          [(page)]="currentPage"
+          [collectionSize]="state?.appData?.data?.page.totalElements"
+          [maxSize]="3"
+          [rotate]="true"
+          [boundaryLinks]="false"
+          [ellipses]="true"
+          (pageChange)="goToPage($event)"
+          class="pagination justify-content-end"
+        >
+          <ng-template ngbPaginationPrevious><i class="fa-solid fa-angle-left"></i> Prev</ng-template>
+          <ng-template ngbPaginationNext>Next <i class="fa-solid fa-angle-right"></i></ng-template>
+        </ngb-pagination>
+      </nav>
+    </section>
+  </ng-container>
+</ng-container>

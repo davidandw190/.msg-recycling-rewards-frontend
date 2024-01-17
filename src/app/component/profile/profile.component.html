@@ -219,12 +219,7 @@
                       <select [disabled]="(isLoading$ | async)" [ngModel]="state?.appData?.data?.user?.roleName"
                               class="form-control select-cl" name="roleName"
                               required>
-                        <!--                      <select name="roleName" class="form-control select-cl" [ngModel]="state?.appData?.data?.user?.roleName" [disabled]="!(state?.appData?.data?.user?.roleName === 'ROLE_SYSADMIN' || state?.appData?.data?.user?.roleName === 'ROLE_ADMIN') || (isLoading$ | async)" required>-->
-                        <!--                        <option *ngFor="let role of state?.appData?.data?.roles"-->
-                        <!--                                [selected]="state?.appData?.data?.user?.roleName === role.name"-->
-                        <!--                                [disabled]="!(state?.appData?.data?.user?.roleName === 'ROLE_SYSADMIN' || state?.appData?.data?.user?.roleName === 'ROLE_ADMIN') || (isLoading$ | async)"-->
-                        <!--                                [ngValue]="role.name"-->
-                        <!--                                class="select-cl">{{ role.name }}</option>-->
+
                         <option *ngFor="let role of state?.appData?.data?.roles"
                                 [disabled]="(isLoading$ | async)"
                                 [ngValue]="role.name"
@@ -244,12 +239,6 @@
                   </div>
                 </div>
                 <div>
-                  <!--                  <button [disabled]="!(state?.appData?.data?.user?.roleName === 'ROLE_SYSADMIN' || state?.appData?.data?.user?.roleName === 'ROLE_ADMIN') || (isLoading$ | async)" type="submit" class="btn btn-primary">-->
-                  <!--                    <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>-->
-                  <!--                    <span *ngIf="isLoading$ | async">Loading...</span>-->
-                  <!--                    <span *ngIf="!(isLoading$ | async)">Update</span>-->
-                  <!--                  </button>-->
-
                   <button [disabled]="(isLoading$ | async)" class="btn btn-primary" type="submit">
                     <span *ngIf="isLoading$ | async" aria-hidden="true" class="spinner-border spinner-border-sm"
                           role="status" style="margin-right: 5px;"></span>
