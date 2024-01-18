@@ -119,7 +119,7 @@ export class CenterAllComponent implements OnInit, OnDestroy {
         tap(() => this.searchForm.get('city').setValue('')),
         tap((county) => this.handleCountyChange(county)),
 
-        // filter(() => false)
+        filter(() => false)
       )
       .subscribe();
 
@@ -129,7 +129,7 @@ export class CenterAllComponent implements OnInit, OnDestroy {
         distinctUntilChanged(),
         switchMap((value) => this.filterCities(value)),
         tap((cities) => (this.cities = cities)),
-        // filter(() => false)
+        filter(() => false)
       )
       .subscribe();
 
@@ -138,22 +138,23 @@ export class CenterAllComponent implements OnInit, OnDestroy {
         debounceTime(100),
         distinctUntilChanged(),
         tap((material) => this.onSelectMaterials(material)),
-        filter(() => false) // Prevent reactive changes
+        filter(() => false)
       )
 
     this.searchCenters();
 
     this.searchForm.valueChanges
       .pipe(
-        debounceTime(300),
+        debounceTime(100),
         distinctUntilChanged(),
         tap(() => this.isLoadingSubject.next(true))
       )
       .subscribe();
 
+
     this.searchForm.get('name').valueChanges
       .pipe(
-        debounceTime(300),
+        debounceTime(100),
         distinctUntilChanged(),
         tap(() => this.isLoadingSubject.next(true)),
         switchMap(() =>
@@ -205,6 +206,7 @@ export class CenterAllComponent implements OnInit, OnDestroy {
   onSelectCounty(event: TypeaheadMatch): void {
     this.searchForm.get('city').setValue('');
     this.searchForm.get('city').enable();
+    this.handleCountyChange(this.searchForm.get('county').value)
   }
 
   onSelectCity(event: TypeaheadMatch): void {
@@ -298,7 +300,7 @@ export class CenterAllComponent implements OnInit, OnDestroy {
 
     if (this.isValidCounty(county)) {
       cityControl.enable();
-      this.locationService.getCitiesForCounty(county);
+      this.cities = this.locationService.getCitiesForCounty(county);
     } else {
       cityControl.disable();
       cityControl.setValue('');
@@ -309,10 +311,12 @@ export class CenterAllComponent implements OnInit, OnDestroy {
     this.searchForm.get('city').disable()
 
     this.isLoadingSubject.next(true)
-    this.searchCenters();
     this.searchForm.reset()
+    this.searchCenters();
     this.cities = [];
     this.selectedMaterials = [];
+    this.initializeForm()
+    this.initializeSearch();
 
   }
 
@@ -330,11 +334,11 @@ export class CenterAllComponent implements OnInit, OnDestroy {
   private updateEnabledFilters(): void {
     // Count the number of enabled filters excluding "createdAt", "asc", and "materials"
     this.numEnabledFilters = Object.entries(this.searchForm.controls)
-      .filter(([key, control]) => key !== 'sortBy' || control.value !== 'createdAt')
-      .filter(([key, control]) => key !== 'sortOrder' || control.value !== 'asc')
-      .filter(([key, control]) => key !== 'materials') // Exclude materials
-      .filter(([key, control]) => control.value !== null && control.value !== '')
-      .length
+        .filter(([key, control]) => key !== 'sortBy' || control.value !== 'createdAt')
+        .filter(([key, control]) => key !== 'sortOrder' || control.value !== 'asc')
+        .filter(([key, control]) => key !== 'materials') // Exclude materials
+        .filter(([key, control]) => control.value !== null && control.value !== '')
+        .length
       + this.selectedMaterials.length;
   }
 

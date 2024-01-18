@@ -12,21 +12,35 @@
       </nav>
       <div class="row">
         <div class="col">
-          <h4 class="fw-bold text-start">Earned Vouchers</h4>
+          <ng-container *ngIf="countyFilterApplied">
+            <h4 class="fw-bold text-start">Leaderboard for <strong style="color: #A01540FF">{{ this.chosenCountyForFilter}}</strong></h4>
+          </ng-container>
+          <ng-container *ngIf="!countyFilterApplied">
+            <h4 class="fw-bold text-start">Global Leaderboard</h4>
+          </ng-container>
+
         </div>
 
         <!-- Search Form -->
         <form [formGroup]="searchForm" (ngSubmit)="getResults()" class="d-flex justify-content-end">
           <div class="d-flex align-items-center">
             <label class="visually-hidden">County</label>
-            <input type="text" formControlName="county" class="form-control mt-3" style="margin-bottom: -8px" placeholder="Filter By County" />
+            <input
+              formControlName="county"
+              [typeahead]="counties"
+              [minLength]="0"
+              [typeaheadWaitMs]="0"
+              placeholder="Filter By County"
+              class="form-control"
+            />
           </div>
 
           <select formControlName="sortBy" class="invisible-form">
-            <option value="createdAt">Created At</option>
-            <option value="createdAt">Expires At</option>
-            <option value="code">Voucher Code</option>
-            <option value="type">Voucher Type</option>
+            <option value="county">County</option>
+            <option value="firstName">First Name</option>
+            <option value="lastName">Last Name</option>
+            <option value="email">Email</option>
+            <option value="rewardPoints">Reward Points</option>
           </select>
 
           <select formControlName="sortOrder" class="invisible-form">
@@ -42,9 +56,10 @@
           <!-- Table Header -->
           <thead class="bg-gradient text-white">
           <tr>
-            <th class="text-center" scope="col" style="width: 6%;">Photo</th>
-            <th scope="col" mat-sort-header="firstName" style="width: 15%;">First Name</th>
-            <th scope="col" mat-sort-header="lastName" style="width: 15%;">Last Name</th>
+            <th class="text-center" scope="col" style="width: 3%;">Rank</th>
+            <th class="text-center" scope="col" style="width: 5%;">Photo</th>
+            <th scope="col" mat-sort-header="firstName" style="width: 12%;">First Name</th>
+            <th scope="col" mat-sort-header="lastName" style="width: 12%;">Last Name</th>
             <th scope="col" mat-sort-header="email" style="width: 15%;">Email</th>
             <th scope="col" mat-sort-header="county" style="width: 10%;">County</th>
             <th scope="col" mat-sort-header="city" style="width: 10%;">City</th>
@@ -52,24 +67,61 @@
             <th scope="col" class="text-center" style="width: 12%;">Sustainability Index</th>
           </tr>
           </thead>
-          <!-- Table Body -->
-          <tbody *ngFor="let entry of state?.appData?.data?.page.content" class="table-body">
-          <tr class="cell-1">
-            <td  class="text-center">
-              <img
-                [src]="entry?.imageUrl || 'https://img.freepik.com/free-icon/user_318-159711.jpg'"
-                alt=""
-                width="42" height="42" class="rounded-circle"
-              ></td>
-            <td> {{ entry?.firstName }}</td>
-            <td>{{ entry?.lastName }}</td>
-            <td>{{ entry?.email }}</td>
-            <td>{{ entry?.county }}</td>
-            <td>{{ entry?.city }}</td>
-            <td>{{ entry?.rewardPoints }}</td>
-            <td>{{ entry?.rewardPoints | sustainabilityIndex }}%</td>
-          </tr>
-          </tbody>
+
+          <ng-container *ngIf="!countyFilterApplied">
+            <!-- Table Body -->
+            <tbody *ngFor="let entry of state?.appData?.data?.page.content" class="table-body">
+
+            <ng-container *ngIf="!entry.administration">
+              <tr class="cell-1">
+
+                <td class="text-center text-muted"> <strong>#{{ entry.rank }}</strong></td>
+
+                <td class="text-center">
+                  <img
+                    [src]="entry?.imageUrl || 'https://img.freepik.com/free-icon/user_318-159711.jpg'"
+                    alt=""
+                    width="42" height="42" class="rounded-circle"
+                  ></td>
+                <td>{{ entry?.firstName }}</td>
+                <td>{{ entry?.lastName }}</td>
+                <td>{{ entry?.email }}</td>
+                <td>{{ entry?.county }}</td>
+                <td>{{ entry?.city }}</td>
+                <td class="text-center"><strong style="color: #A01540FF">{{ entry?.rewardPoints }}</strong></td>
+                <td class="text-center"><strong style="color:#218838">{{ entry?.rewardPoints | sustainabilityIndex }}%</strong></td>
+              </tr>
+            </ng-container>
+
+            </tbody>
+          </ng-container>
+
+          <ng-container *ngIf="countyFilterApplied">
+            <!-- Table Body -->
+            <tbody *ngFor="let entry of state?.appData?.data?.page.content;  let index = index" class="table-body">
+
+            <ng-container *ngIf="!entry.administration">
+              <tr class="cell-1">
+                <td class="text-center text-muted"> <strong>#{{ index + 1 }}</strong></td>
+
+                <td class="text-center">
+                  <img
+                    [src]="entry?.imageUrl || 'https://img.freepik.com/free-icon/user_318-159711.jpg'"
+                    alt=""
+                    width="42" height="42" class="rounded-circle"
+                  ></td>
+                <td>{{ entry?.firstName }}</td>
+                <td>{{ entry?.lastName }}</td>
+                <td>{{ entry?.email }}</td>
+                <td>{{ entry?.county }}</td>
+                <td>{{ entry?.city }}</td>
+                <td><strong style="color: #A01540FF">{{ entry?.rewardPoints }}</strong></td>
+                <td class="text-center"><strong style="color:#218838">{{ entry?.rewardPoints | sustainabilityIndex }}%</strong></td>
+              </tr>
+            </ng-container>
+
+            </tbody>
+          </ng-container>
 
         </table>
 

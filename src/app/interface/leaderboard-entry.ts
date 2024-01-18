@@ -7,4 +7,6 @@ export interface LeaderboardEntry{
   city: string;
   imageUrl: string;
   rewardPoints: number;
+  administration?: boolean;
+  rank?: number;
 }

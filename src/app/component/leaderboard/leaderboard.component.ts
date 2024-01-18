@@ -5,6 +5,7 @@ import {
   combineLatest,
   debounceTime,
   distinctUntilChanged,
+  filter,
   map,
   Observable,
   of,
@@ -18,12 +19,11 @@ import {AppState} from "../../interface/app-state";
 import {CustomHttpResponse} from "../../interface/custom-http-response";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {DataState} from '../../enum/data-state.enum';
-import {SustainabilityIndexPipe} from "../../pipes/sustainability-index.pipe";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Sort} from "@angular/material/sort";
-import {Voucher} from "../../interface/voucher";
 import {LeaderboardPageResponse} from "../../interface/leaderboard-page-response";
 import {LeaderboardService} from "../../service/leaderboard.service";
+import {LocationService} from "../../service/location.service";
 
 @Component({
   selector: 'app-leaderboard',
@@ -45,12 +45,18 @@ export class LeaderboardComponent implements OnInit, OnDestroy {
 
   readonly DataState = DataState;
 
+  counties: string[] = this.locationService.getAllCounties();
+
+  countyFilterApplied: boolean = false;
+
+  chosenCountyForFilter: string;
+
   searchForm: FormGroup;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private sustainabilityIndexPipe: SustainabilityIndexPipe,
+    private locationService: LocationService,
     private leaderboardService: LeaderboardService,
     private formBuilder: FormBuilder
   ) {}
@@ -133,14 +139,31 @@ export class LeaderboardComponent implements OnInit, OnDestroy {
         debounceTime(100),
         distinctUntilChanged(),
         tap(() => this.isLoadingSubject.next(true)),
-        switchMap(() =>
-          this.leaderboardService.leaderboard$(
-            this.searchForm.get('county').value,
-            this.searchForm.get('sortBy').value,
-            this.searchForm.get('sortOrder').value,
-            0,
-          )
-        ),
+        switchMap((selectedCounty) => {
+          // to check if the selectedCounty is a valid county from the options
+          if (this.counties.includes(selectedCounty)) {
+            return this.leaderboardService.leaderboard$(
+              selectedCounty,
+              this.searchForm.get('sortBy').value,
+              this.searchForm.get('sortOrder').value,
+              0,
+            );
+
+          }  else if (!selectedCounty) {
+            // If county field is empty, trigger search with an empty county
+            return this.leaderboardService.leaderboard$(
+              '',  // Pass an empty county to trigger the search
+              this.searchForm.get('sortBy').value,
+              this.searchForm.get('sortOrder').value,
+              0,
+            );
+
+          } else {
+            // if not a valid county, we return an empty observable
+            return of(null);
+          }
+        }),
+        filter(response => response !== null), // to filter out the null response
         catchError((error: string) => {
           console.error(error);
           return of({ dataState: DataState.ERROR, error });
@@ -168,7 +191,16 @@ export class LeaderboardComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe((response) => this.handleSearch(response));
+
+    this.route.queryParams
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((queryParams) => {
+        this.countyFilterApplied = queryParams['county'] && this.counties.includes(queryParams['county']);
+        this.chosenCountyForFilter = queryParams['county'];
+      });
   }
+
+
 
 
   private handleSearch(response: any): void {
@@ -176,15 +208,10 @@ export class LeaderboardComponent implements OnInit, OnDestroy {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        code: this.searchForm.get('code').value,
-        redeemed: this.searchForm.get('redeemed').value,
-        expired: this.searchForm.get('expired').value,
+        county: this.searchForm.get('county').value
       },
       queryParamsHandling: 'merge',
     });
   }
 
-  isVoucherRedeemable(voucher: Voucher): boolean {
-    return !voucher.redeemed && (!voucher.expiresAt || new Date(voucher.expiresAt) >= new Date());
-  }
 }
