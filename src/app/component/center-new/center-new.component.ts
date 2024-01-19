@@ -119,8 +119,9 @@ export class CenterNewComponent implements OnInit {
   }
 
 
+  createCenter(event: Event): void {
+    event.preventDefault();
 
-  createCenter(): void {
     this.isLoadingSubject.next(true);
 
     if (this.newCenterForm.get('alwaysOpen').value) {

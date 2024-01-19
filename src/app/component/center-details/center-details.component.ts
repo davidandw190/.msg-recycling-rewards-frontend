@@ -284,7 +284,8 @@ export class CenterDetailsComponent implements OnInit {
     return material ? material.materialId : null;
   }
 
-  contribute(): void {
+  contribute(event: Event): void {
+    event.preventDefault();
     this.isLoadingSubject.next(true);
 
     const recycledMaterialType = this.recyclingForm.get('recycledMaterialType').value;
@@ -388,7 +389,9 @@ export class CenterDetailsComponent implements OnInit {
     }
   }
 
-  updateCenter(): void {
+  updateCenter(event: Event): void {
+    event.preventDefault();
+
     const formData = {
       ...this.updateCenterForm.value,
       materials: this.selectedMaterials,
@@ -399,7 +402,7 @@ export class CenterDetailsComponent implements OnInit {
     this.centerService
       .update$(formData)
       .pipe(
-        debounceTime(500),
+        debounceTime(100),
         distinctUntilChanged(),
         switchMap(() =>
           forkJoin([
@@ -415,6 +418,7 @@ export class CenterDetailsComponent implements OnInit {
           this.dataSubject.next({ ...response, data: response.data });
           this.initializeCenterUpdateForm(response.data.center);
           this.isLoadingSubject.next(false);
+          this.acceptedMaterials = [...response.data.center.acceptedMaterials] || [];
           this.updateCenterForm.markAsPristine()
           this.updateCenterFormControlsState(response.data.user.roleName);
         },

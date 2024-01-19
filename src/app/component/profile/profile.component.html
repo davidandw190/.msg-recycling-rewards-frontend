@@ -67,7 +67,7 @@
             <div aria-labelledby="profile" class="tab-pane fade show active" id="profile-tab" role="tabpanel"
                  style="min-height: 510px;">
               <h3 class="mb-4">Profile Settings</h3>
-              <form (ngSubmit)="updateProfile()" [formGroup]="profileForm">
+              <form (ngSubmit)="updateProfile($event)" [formGroup]="profileForm">
                 <div class="row">
                   <input formControlName="id" type="hidden">
                   <div class="col-md-6">

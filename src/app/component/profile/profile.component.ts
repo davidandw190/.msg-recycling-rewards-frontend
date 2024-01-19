@@ -106,9 +106,10 @@ export class ProfileComponent implements OnInit {
     this.loadCitiesForCounty(user.county)
   }
 
-  updateProfile(): void {
+  updateProfile(event: Event): void {
+    event.preventDefault();
+
     const formData = this.profileForm.value
-    console.log(formData.userId + " " + formData.firstName + " " + formData.bio)
     this.isLoadingSubject.next(true);
     this.profileState$ = this.userService.updateUser$(formData)
       .pipe(
