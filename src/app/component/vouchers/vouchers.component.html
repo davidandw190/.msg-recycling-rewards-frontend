@@ -43,8 +43,8 @@
 
 
 
-      <nav ngbNav #nav="ngbNav" class="nav-pills mb-4" style="margin-top: -30px;">
-        <ng-container ngbNavItem *ngFor="let tab of ['Available', 'Redeemed', 'Expired', 'All Vouchers']">
+      <nav ngbNav [animation]="false" #nav="ngbNav" class="nav-pills mb-4" style="margin-top: -30px;">
+        <ng-container ngbNavItem *ngFor="let tab of ['Available', 'Redeemed', 'Expired', 'All Vouchers']" >
           <button ngbNavLink mat-button class="nav-cell me-2" (click)="updateActiveTab(tab)">{{ tab }}</button>
           <ng-template ngbNavContent>
             <div class="col-xm-12">

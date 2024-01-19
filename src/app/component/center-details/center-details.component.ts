@@ -64,6 +64,8 @@ export class CenterDetailsComponent implements OnInit {
   openingTime: NgbTimeStruct;
   closingTime: NgbTimeStruct;
 
+  isRecyclingActivitiesCollapsed: boolean = false;
+
   counties: string[] = this.locationService.getAllCounties();
   cities: string[] = [];
 

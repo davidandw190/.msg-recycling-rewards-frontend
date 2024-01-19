@@ -311,29 +311,33 @@
             </div>
           </div>
         </div>
-
         <div class="row">
           <div class="col-xl-12">
             <div class="card border rounded-3 mt-3">
-              <div class="card-body">
+              <div class="card-body"
+                   (click)="recyclingActivities.toggle()"
+                   [attr.aria-expanded]="!isRecyclingActivitiesCollapsed"
+                   style="cursor: pointer;">
                 <h5 class="card-title">My Activities At {{ state?.appData?.data?.center?.name }}</h5>
                 <h6 class="card-subtitle mb-2 text-muted"></h6>
                 <table class="table">
-                  <thead style="color: white; background-color: #A01540" class="table-responsive">
+                  <thead style="color: white; background-color: #A01540">
                   <tr>
                     <th scope="col">Activity ID</th>
                     <th scope="col">Recycled Material</th>
-                    <th scope="col">Amount</th>
+                    <th scope="col">Reward Points Earned</th>
+                    <th scope="col">Sustainability Index Increase</th>
                     <th scope="col">Status</th>
                     <th scope="col">Date</th>
-                    <!--                                        <th scope="col">Action</th>-->
                   </tr>
                   </thead>
-                  <tbody>
+                  <tbody #recyclingActivities="ngbCollapse" [(ngbCollapse)]="isRecyclingActivitiesCollapsed">
+
                   <tr *ngFor="let activity of state?.appData?.data?.activities">
                     <td>{{ activity.activityId }}</td>
-                    <td>{{ activity.recycledMaterial }}</td>
-                    <td>${{ activity.amount }}</td>
+                    <td>{{ activity?.recycledMaterial?.name }}</td>
+                    <td>{{ activity?.amount * activity?.recycledMaterial?.rewardPoints }}</td>
+                    <td>{{ (activity?.amount * activity?.recycledMaterial?.rewardPoints) | sustainabilityIndex }}%</td>
                     <td>
                       RECEIVED
                     </td>
