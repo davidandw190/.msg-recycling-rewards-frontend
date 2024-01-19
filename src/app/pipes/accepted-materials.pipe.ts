@@ -4,12 +4,22 @@ import {RecyclableMaterial} from "../interface/recyclable-material";
 
 @Pipe({
   name: 'acceptedMaterials',
-  standalone: true
+  standalone: true,
+  pure: false
 })
 export class AcceptedMaterialsPipe implements PipeTransform {
-  transform(center: RecyclingCenter): { name: string; badgeClass: string }[] {
-    if (center && center.acceptedMaterials && center.acceptedMaterials.length > 0) {
-      return center.acceptedMaterials.map((material: RecyclableMaterial)  => {
+  transform(input: RecyclingCenter | RecyclableMaterial[]): { name: string; badgeClass: string }[] {
+    if (Array.isArray(input) && input.length > 0) {
+      // CASE: Array of RecyclableMaterial
+      return input.map((material: RecyclableMaterial)  => {
+        return {
+          name: material.name,
+          badgeClass: this.getBadgeClass(material.name),
+        };
+      });
+    } else if (!Array.isArray(input) && input && input.acceptedMaterials && input.acceptedMaterials.length > 0) {
+      // CASE: RecyclingCenter
+      return input.acceptedMaterials.map((material: RecyclableMaterial)  => {
         return {
           name: material.name,
           badgeClass: this.getBadgeClass(material.name),
@@ -31,7 +41,7 @@ export class AcceptedMaterialsPipe implements PipeTransform {
       case 'METALS':
         return 'badge-soft-metals';
       case 'ALUMINIUM':
-        return 'badge-soft-aluminum';
+        return 'badge-soft-aluminium';
       case 'ELECTRONICS':
         return 'badge-soft-ewaste';
       default:

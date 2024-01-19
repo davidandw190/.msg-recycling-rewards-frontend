@@ -28,7 +28,7 @@
                     <h4 class="my-0">{{ state?.appData?.data?.center?.name }}</h4>
                     <p class="text-muted" style="font-size: 18px;"> {{ state?.appData?.data?.center?.contact }}</p>
                     <div class="accepted-materials">
-                      <ng-container *ngFor="let material of state?.appData?.data?.center | acceptedMaterials">
+                      <ng-container *ngFor="let material of this.acceptedMaterials | acceptedMaterials">
                         <span class="badge mb-0" [ngClass]="material.badgeClass">{{ material.name }}</span>
                       </ng-container>
                     </div>
@@ -149,7 +149,7 @@
             <div class="card border rounded-3 mb-3">
               <div class="card-body">
                 <h5 class="card-title">Profile Details</h5>
-                <form [formGroup]="updateCenterForm" (ngSubmit)="updateCenter()">
+                <form [formGroup]="updateCenterForm" (ngSubmit)="updateCenter($event)">
 
                   <input formControlName="centerId" type="hidden">
 
@@ -263,7 +263,7 @@
               <div class="card-body">
                 <h5 class="card-title">New Recycling Activity</h5>
 
-                <form [formGroup]="recyclingForm" (ngSubmit)="contribute()">
+                <form [formGroup]="recyclingForm" (ngSubmit)="contribute($event)">
                   <div class="row">
                     <!-- Column 1: Recycled Material Type -->
                     <div class="col-md-4 mb-3">
