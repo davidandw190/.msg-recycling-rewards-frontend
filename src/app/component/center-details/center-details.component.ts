@@ -61,8 +61,13 @@ export class CenterDetailsComponent implements OnInit {
 
   availableMaterials: string[] = ['GLASS', 'PLASTIC', 'PAPER', 'ALUMINIUM', 'METALS', 'ELECTRONICS'];
   selectedMaterials: string[] = []
-  openingTime: NgbTimeStruct;
-  closingTime: NgbTimeStruct;
+  // defaultOpeningTime: NgbTimeStruct;
+  // defaultClosingHour: NgbTimeStruct;
+
+
+  currentOpeningTime: NgbTimeStruct;
+  currentClosingHour: NgbTimeStruct;
+
 
   isRecyclingActivitiesCollapsed: boolean = false;
 
@@ -210,9 +215,9 @@ export class CenterDetailsComponent implements OnInit {
       contact: [center.contact, Validators.required],
       city: [center.city, Validators.required],
       address: [center.address, Validators.required],
-      materials: [''],
-      openingTime: [this.parseTime(center.openingHour)],
-      closingTime: [this.parseTime(center.closingHour)],
+      materials: [],
+      openingHour: [this.convertTimeStringToNgbTimeStruct(center.openingHour)],
+      closingHour: [this.convertTimeStringToNgbTimeStruct(center.closingHour)],
       alwaysOpen: [center.alwaysOpen],
     });
 
@@ -397,7 +402,22 @@ export class CenterDetailsComponent implements OnInit {
     const formData = {
       ...this.updateCenterForm.value,
       materials: this.selectedMaterials,
+      openingHour: this.formatTime(this.updateCenterForm.get('openingHour').value),
+      closingHour: this.formatTime(this.updateCenterForm.get('closingHour').value)
     };
+
+    if (this.updateCenterForm.get('alwaysOpen').value) {
+      this.updateCenterForm.get('openingHour').setValue(null);
+      this.updateCenterForm.get('closingHour').setValue(null);
+    } else {
+      const openingTime = this.updateCenterForm.get('openingHour').value;
+      const closingTime = this.updateCenterForm.get('closingHour').value;
+
+      if (openingTime && closingTime) {
+        this.updateCenterForm.get('openingHour').setValue(this.formatTime(openingTime));
+        this.updateCenterForm.get('closingHour').setValue(this.formatTime(closingTime));
+      }
+    }
 
     this.isLoadingSubject.next(true);
 
@@ -449,10 +469,6 @@ export class CenterDetailsComponent implements OnInit {
 
   onRemoveMaterial(material: string): void {
     this.selectedMaterials = this.selectedMaterials.filter((m) => m !== material);
-  }
-
-  private formatTime(time: NgbTimeStruct): string {
-    return `${time.hour}:${time.minute}`;
   }
 
   private parseTime(timeString: string): NgbTimeStruct | null {
@@ -512,6 +528,36 @@ export class CenterDetailsComponent implements OnInit {
     }
 
     return false;
+  }
+
+  private formatTime(time: NgbTimeStruct): string {
+
+    if (typeof time === 'string') {
+      return time;
+    }
+
+    if (!time || typeof time.hour === 'undefined' || typeof time.minute === 'undefined') {
+      console.error('Invalid time object:', time);
+      return '00:00:00';
+    }
+
+    const formattedTime = `${String(time.hour).padStart(2, '0')}:${String(time.minute).padStart(2, '0')}:00`;
+    console.log('Formatted Time:', formattedTime);
+    return formattedTime;
+  }
+
+  private convertTimeStringToNgbTimeStruct(timeString: string): NgbTimeStruct {
+    const [hourStr, minuteStr] = timeString.split(':');
+
+    const hour = parseInt(hourStr, 10);
+    const minute = parseInt(minuteStr, 10);
+
+    if (isNaN(hour) || isNaN(minute)) {
+      console.error('Invalid time string:', timeString);
+      return { hour: 0, minute: 0, second: 0 };
+    }
+
+    return { hour, minute, second: 0 };
   }
 
   // private isFormDataChanged(newFormData: any): boolean {

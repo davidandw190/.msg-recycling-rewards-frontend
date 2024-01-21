@@ -1,39 +1,20 @@
 .accepted-materials {
   display: flex;
-  gap: 5px; /* Adjust the spacing between badges as needed */
+  gap: 5px;
 }
 
 .statsModalContent {
-  font-size: 16px;
-  max-width: 500px;
+  font-size: 12px;
+  max-width: 450px;
   margin: auto;
-  padding: 20px;
+  padding: 15px;
 }
 
 .statsModalContent h2 {
-  font-size: 24px;
+  font-size: 14px;
   color: #333;
 }
 
-.statsTable {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-.statsTable th, .statsTable td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-.statsTable th {
-  background-color: #f2f2f2;
-}
-
-.statsTable tr:hover {
-  background-color: #f5f5f5;
-}
 
 .modal-badge {
   display: inline-block;
@@ -49,3 +30,67 @@
 .statsModalContent .badge + .badge {
   margin-left: 10px !important;
 }
+
+
+.d-flex.align-items-center.justify-content-between {
+  margin-bottom: 15px;
+}
+
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: none;
+}
+
+.list-group-item:not(:last-child) {
+  border-bottom: 1px solid #ddd;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding: 15px 20px;
+}
+
+.modal-title {
+  font-size: 24px;
+  color: #333;
+  margin: 0;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid #ddd;
+  padding: 5px 10px;
+}
+
+.statsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.statsTable th, .statsTable td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.statsTable th {
+  font-size: 10px;
+  background-color: #f2f2f2;
+}
+
+.statsTable tr:hover {
+  background-color: #f5f5f5;
+}
+
+

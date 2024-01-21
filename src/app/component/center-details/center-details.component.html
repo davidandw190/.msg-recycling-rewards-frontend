@@ -114,7 +114,7 @@
             <!-- Sustainability Index Card -->
             <div class="card border rounded-3 mt-3">
               <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between mb-3">
+                <div class="d-flex align-items-center justify-content-between mb-1">
                   <div>
                     <h5 class="card-title mb-0">My Sustainability Index for May</h5>
                     <h6 class="card-subtitle mb-2 text-muted">Your contribution to a greener planet</h6>
@@ -210,8 +210,8 @@
                         <input formControlName="materials"
                                [typeahead]="availableMaterials"
                                [minLength]="0"
-                               [typeaheadWaitMs]="10"
-                               placeholder="Accepted Materials"
+                               [typeaheadWaitMs]="0"
+                               placeholder="Add More Accepted Materials"
                                class="form-control"
                                (typeaheadOnSelect)="onSelectMaterials($event)" />
                       </div>
@@ -223,19 +223,24 @@
                     </div>
 
                     <ng-container *ngIf="!updateCenterForm.get('alwaysOpen').value">
-                      <div class="col-md-6 mb-3">
-                        <label>Opening Time</label>
-                        <ngb-timepicker formControlName="openingTime" [seconds]="false" [spinners]="false"></ngb-timepicker>
+
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label>Opening Time</label>
+                          <ngb-timepicker formControlName="openingHour" [seconds]="false" [spinners]="false"></ngb-timepicker>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                          <label>Closing Time</label>
+                          <ngb-timepicker formControlName="closingHour" [seconds]="false" [spinners]="false"></ngb-timepicker>
+                        </div>
                       </div>
 
-                      <div class="col-md-6 mb-3">
-                        <label>Closing Time</label>
-                        <ngb-timepicker formControlName="closingTime" [seconds]="false" [spinners]="false"></ngb-timepicker>
-                      </div>
                     </ng-container>
 
-                    <ng-container *ngIf="selectedMaterials.length > 0">
-                      <mat-chip-grid aria-label="Enter keywords">
+                    <ng-container *ngIf="selectedMaterials.length > 0" class="mt-4">
+                      <label class="mt-3">Currently Accepted Recycling Materials:</label>
+                      <mat-chip-grid>
                         <div *ngFor="let material of selectedMaterials">
                           <mat-chip-row (removed)="onRemoveMaterial(material)">
                             {{ material }}
@@ -247,7 +252,8 @@
                       </mat-chip-grid>
                     </ng-container>
 
-                    <button [disabled]="state?.appData?.data?.user.roleName == 'ROLE_USER' || !isCenterDetailsUpdated() || !isSelectedCountyValid() || !isSelectedCityValid() || (isLoading$ | async)" type="submit" class="btn btn-primary float-end">
+                    <button mat-flat-button style="background-color: #A01540FF; color: white" [disabled]="state?.appData?.data?.user.roleName == 'ROLE_USER'
+                    || !isCenterDetailsUpdated() || !isSelectedCountyValid() || !isSelectedCityValid() || (isLoading$ | async)" type="submit" class="btn btn-primary float-end">
                       <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
                       <span *ngIf="isLoading$ | async">Loading...</span>
                       <span *ngIf="!(isLoading$ | async)">Update</span>
@@ -293,7 +299,7 @@
                     <div class="alert alert-success" role="alert">
                       + {{ earnedRewardPoints }} Reward Points for recycling
                       <br>
-                      + {{ earnedSustainabilityIndex }} Sustainability Impact earned
+                      + {{ earnedSustainabilityIndex }}% Sustainability Impact earned
                     </div>
                   </div>
 
@@ -336,10 +342,10 @@
                   <tr *ngFor="let activity of state?.appData?.data?.activities">
                     <td>{{ activity.activityId }}</td>
                     <td>{{ activity?.recycledMaterial?.name }}</td>
-                    <td>{{ activity?.amount * activity?.recycledMaterial?.rewardPoints }}</td>
-                    <td>{{ (activity?.amount * activity?.recycledMaterial?.rewardPoints) | sustainabilityIndex }}%</td>
+                    <td><strong style="color:#a01540">+{{ activity?.amount * activity?.recycledMaterial?.rewardPoints }}</strong></td>
+                    <td><strong style="color: #218838">+{{ (activity?.amount * activity?.recycledMaterial?.rewardPoints) | sustainabilityIndex }}%</strong></td>
                     <td>
-                      RECEIVED
+                      <strong style="color: #218838">RECEIVED</strong>
                     </td>
                     <td>{{ activity.createdAt | date: 'mediumDate' }}</td>
 
