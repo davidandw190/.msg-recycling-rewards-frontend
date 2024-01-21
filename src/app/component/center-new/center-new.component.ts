@@ -44,8 +44,8 @@ export class CenterNewComponent implements OnInit {
 
   availableMaterials: string[] = ['GLASS', 'PLASTIC', 'PAPER', 'ALUMINIUM', 'METALS', 'ELECTRONICS'];
   selectedMaterials: string[] = []
-  openingTime: NgbTimeStruct;
-  closingTime: NgbTimeStruct;
+  defaultOpeningHour: NgbTimeStruct;
+  defaultClosingHour: NgbTimeStruct;
 
   constructor(
     private router: Router,
@@ -53,8 +53,8 @@ export class CenterNewComponent implements OnInit {
     private locationService: LocationService,
     private formBuilder: FormBuilder
   ) {
-    this.openingTime = { hour: 8, minute: 0, second: 0 };
-    this.closingTime = { hour: 20, minute: 0, second: 0 };
+    this.defaultOpeningHour = { hour: 8, minute: 0, second: 0 };
+    this.defaultClosingHour = { hour: 20, minute: 0, second: 0 };
 
     this.newCenterForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -63,8 +63,8 @@ export class CenterNewComponent implements OnInit {
       city: ['', Validators.required],
       address: ['', Validators.required],
       materials: [''],
-      openingTime: [''],
-      closingTime: [''],
+      openingHour: [this.defaultOpeningHour],
+      closingHour: [this.defaultClosingHour],
       alwaysOpen: [false],
     });
 
@@ -125,19 +125,26 @@ export class CenterNewComponent implements OnInit {
     this.isLoadingSubject.next(true);
 
     if (this.newCenterForm.get('alwaysOpen').value) {
-      this.newCenterForm.get('openingTime').setValue(null);
-      this.newCenterForm.get('closingTime').setValue(null);
+      this.newCenterForm.get('openingHour').setValue(null);
+      this.newCenterForm.get('closingHour').setValue(null);
     } else {
-      const openingTime = this.formatTime(this.newCenterForm.get('openingTime').value);
-      const closingTime = this.formatTime(this.newCenterForm.get('closingTime').value);
+      const openingTime = this.newCenterForm.get('openingHour').value;
+      const closingTime = this.newCenterForm.get('closingHour').value;
 
-      this.newCenterForm.get('openingTime').setValue(openingTime);
-      this.newCenterForm.get('closingTime').setValue(closingTime);
+      if (openingTime && closingTime) {
+        this.newCenterForm.get('openingHour').setValue(this.formatTime(openingTime));
+        this.newCenterForm.get('closingHour').setValue(this.formatTime(closingTime));
+      }
     }
 
-    const formData = { ...this.newCenterForm.value, materials: this.selectedMaterials };
+    const formData = {
+      ...this.newCenterForm.value,
+      materials: this.selectedMaterials
+    };
 
-    console.log(formData)
+    console.log('Opening Time:', this.newCenterForm.get('openingHour').value);
+    console.log('Closing Time:', this.newCenterForm.get('closingHour').value);
+    console.log('Form Data:', formData);
 
     this.centerService.create$(formData).pipe(
       map((response) => {
@@ -215,7 +222,25 @@ export class CenterNewComponent implements OnInit {
   }
 
   private formatTime(time: NgbTimeStruct): string {
-    return `${time.hour}:${time.minute}`;
+
+    if (typeof time === 'string') {
+      return time;
+    }
+
+    if (!time || typeof time.hour === 'undefined' || typeof time.minute === 'undefined') {
+      console.error('Invalid time object:', time);
+      return '00:00:00';
+    }
+
+    const formattedTime = `${String(time.hour).padStart(2, '0')}:${String(time.minute).padStart(2, '0')}:00`;
+    console.log('Formatted Time:', formattedTime);
+    return formattedTime;
   }
+
+  protected isAcceptedMaterialsChosen(): boolean {
+    return this.selectedMaterials.length >= 1;
+  }
+
+
 }
 
