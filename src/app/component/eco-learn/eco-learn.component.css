@@ -1,0 +1,94 @@
+.eco-learn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 90px;
+  padding: 20px;
+}
+
+.posts-container {
+  max-width: 1000px; /* Medium-like width */
+}
+
+.post-card {
+  background-color: #fff;
+  margin-bottom: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.post-card:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.post-header, .post-body, .post-footer {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.post-header {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.post-title {
+  margin: 0 0 10px;
+  font-size: 24px;
+  color: #333;
+}
+
+.post-details {
+  /*margin-top: 5px;*/
+  font-size: 18px;
+  color: #666;
+}
+
+.post-body {
+  padding: 20px;
+}
+
+.post-text {
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Limit to 3 lines */
+  -webkit-box-orient: vertical;
+}
+.view-more {
+  color: #007bff;
+  cursor: pointer;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.post-media {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.post-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px 20px;
+  border-top: 1px solid #eee;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 20px;
+  color: #A01540FF;
+  transition: color 0.2s;
+}
+
+.icon-btn:hover {
+  color: #28a745;
+}

@@ -46,6 +46,7 @@ import { VoucherGuidelinesComponent } from './component/voucher-guidelines/vouch
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatMenuModule} from "@angular/material/menu";
 import { LeaderboardComponent } from './component/leaderboard/leaderboard.component';
+import { EcoLearnComponent } from './component/eco-learn/eco-learn.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { LeaderboardComponent } from './component/leaderboard/leaderboard.compon
     VoucherDetailsComponent,
     VoucherGuidelinesComponent,
     LeaderboardComponent,
+    EcoLearnComponent,
 
   ],
   imports: [

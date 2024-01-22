@@ -167,6 +167,13 @@ export class UserService {
         catchError(this.handleError)
       );
 
+  resetPasswordExternally$ = (form: { userId: number, password: string, confirmPassword: string }) => <Observable<CustomHttpResponse<Profile>>>
+    this.http.put<CustomHttpResponse<Profile>>
+    (`${this.server}/user/new/password`, form)
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
   /**
    * Handles HTTP errors and logs them. Converts the error into an observable with an error message.
    * @param {HttpErrorResponse} error - HTTP error response.
@@ -188,12 +195,4 @@ export class UserService {
     }
     return throwError(() => errorMessage);
   }
-
-  resetPasswordExternally$ = (form: { userId: number, password: string, confirmPassword: string }) => <Observable<CustomHttpResponse<Profile>>>
-    this.http.put<CustomHttpResponse<Profile>>
-    (`${this.server}/user/new/password`, form)
-      .pipe(
-        tap(console.log),
-        catchError(this.handleError)
-      );
 }

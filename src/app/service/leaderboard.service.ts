@@ -26,6 +26,8 @@ export class LeaderboardService {
       .set('sortOrder', sortOrder)
       .set('page', page.toString());
 
+    console.log(params)
+
     return this.http.get<CustomHttpResponse<LeaderboardPageResponse>>
     (`${this.server}/leaderboard`, {params})
       .pipe(

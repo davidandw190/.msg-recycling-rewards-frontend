@@ -13,6 +13,7 @@ import {CenterAllComponent} from "./component/center-all/center-all.component";
 import {VouchersComponent} from "./component/vouchers/vouchers.component";
 import {VoucherDetailsComponent} from "./component/voucher-details/voucher-details.component";
 import {LeaderboardComponent} from "./component/leaderboard/leaderboard.component";
+import {EcoLearnComponent} from "./component/eco-learn/eco-learn.component";
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -32,6 +33,9 @@ const routes: Routes = [
   { path: 'vouchers/:code', component: VoucherDetailsComponent, canActivate: [AuthenticationGuard] },
 
   { path: 'leaderboard', component: LeaderboardComponent, canActivate: [AuthenticationGuard] },
+
+
+  { path: 'eco-learn', component: EcoLearnComponent, canActivate: [AuthenticationGuard] },
 
   { path: '', component: HomeComponent, canActivate: [AuthenticationGuard] },
   { path: '', redirectTo: '/', pathMatch: 'full' },
