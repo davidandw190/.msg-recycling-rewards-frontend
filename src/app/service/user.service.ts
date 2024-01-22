@@ -65,6 +65,13 @@ export class UserService {
         catchError(this.handleError)
       );
 
+  requestPasswordReset$ = (email: string) => <Observable<CustomHttpResponse<Profile>>>
+    this.http.get<CustomHttpResponse<Profile>>
+    (`${this.server}/user/reset-pass/${email}`)
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
 
   /**
    * Verifies a user's code by sending a GET request to the server with email and code parameters.
@@ -181,4 +188,12 @@ export class UserService {
     }
     return throwError(() => errorMessage);
   }
+
+  resetPasswordExternally$ = (form: { userId: number, password: string, confirmPassword: string }) => <Observable<CustomHttpResponse<Profile>>>
+    this.http.put<CustomHttpResponse<Profile>>
+    (`${this.server}/user/new/password`, form)
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
 }

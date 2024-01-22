@@ -66,6 +66,19 @@ export class VerifyComponent implements OnInit {
   }
 
   renewPassword(resetPasswordForm: NgForm) {
-
+    this.isLoadingSubject.next(true);
+    this.verifyState$ = this.userService.resetPasswordExternally$({ userId: this.userSubject.value.id, password: resetPasswordForm.value.password, confirmPassword: resetPasswordForm.value.confirmPassword })
+      .pipe(
+        map(response => {
+          console.log(response);
+          this.isLoadingSubject.next(false);
+          return { type: 'account' as AccountType, title: 'Success', dataState: DataState.LOADED, message: response.message, verifySuccess: true };
+        }),
+        startWith({ type: 'password' as AccountType, title: 'Verified!', dataState: DataState.LOADED, verifySuccess: false }),
+        catchError((error: string) => {
+          this.isLoadingSubject.next(false);
+          return of({ type: 'password' as AccountType, title: 'Verified!', dataState: DataState.LOADED, error, verifySuccess: true })
+        })
+      )
   }
 }
