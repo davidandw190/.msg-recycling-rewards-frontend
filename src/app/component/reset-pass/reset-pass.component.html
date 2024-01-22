@@ -1,1 +1,67 @@
-<p>reset-pass works!</p>
+<section *ngIf="(resetPasswordState$ | async) as state" [ngSwitch]="state.dataState">
+  <div *ngIf="!state.registerSuccess" class="container">
+    <div class="row justify-content-center my-5">
+      <div class="col-md-6" style="margin-top: 50px;">
+        <div class="card">
+          <div class="card-body">
+            <div class="text-center">
+              <h2><i class="fa-solid fa-leaf"></i> msgRecyclingRewards</h2>
+              <h5 class="card-title mt-4 mb-5">Reset Password</h5>
+            </div>
+            <div *ngIf="state.dataState === DataState.ERROR" class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert">
+              {{ state.error }}
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <form #resetPasswordForm="ngForm" (ngSubmit)="resetPassword(resetPasswordForm)">
+              <div class="form-outline mb-4">
+                <label class="form-label">Email Address</label>
+                <input type="text" [disabled]="state.dataState === DataState.LOADING" ngModel name="email" class="form-control" required minlength="2">
+              </div>
+              <div class="d-flex justify-content-center mb-4 btn-msg-color">
+                <button [disabled]="state.dataState === DataState.LOADING || resetPasswordForm.invalid || resetPasswordForm.pristine" type="submit" class="btn btn-primary">
+                  <span *ngIf="state.dataState === DataState.LOADING" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
+                  <span *ngIf="state.dataState === DataState.LOADING">Loading...</span>
+                  <span *ngIf="!(state.dataState === DataState.LOADING)">Reset Password</span>
+                </button>
+              </div>
+            </form>
+            <div class="row mb-4">
+              <div class="col d-flex justify-content-center">
+                <a [ngStyle]="{'pointer-events' : state.dataState === DataState.LOADING ? 'none' : 'auto'}" [routerLink]="['/login']">Account Login</a>
+              </div>
+              <div class="col">
+                <a [ngStyle]="{'pointer-events' : state.dataState === DataState.LOADING ? 'none' : 'auto'}" [routerLink]="['/register']">Become a Recycler</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success screen -->
+  <div *ngIf="state.registerSuccess" class="container">
+    <div class="row justify-content-center my-5">
+      <div class="col-md-6" style="margin-top: 50px;">
+        <div class="card">
+          <div class="card-body">
+            <div class="text-center">
+              <h2><i class="fa-solid fa-leaf"></i> msgRecyclingRewards</h2>
+              <h5 class="card-title mt-4 mb-4">Reset Password</h5>
+              <i class="bi bi-check-circle-fill" style="font-size: 80px;color: green;"></i>
+              <p class="mt-2" style="font-size: 20px;">{{ state.message }}</p>
+            </div>
+            <div class="row mb-4">
+              <div class="col d-flex justify-content-center">
+                <a [routerLink]="['/login']">Account Login</a>
+              </div>
+              <div class="col">
+                <a [routerLink]="['/register']"> Become a Recycler </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

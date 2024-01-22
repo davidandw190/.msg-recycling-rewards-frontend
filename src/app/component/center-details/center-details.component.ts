@@ -503,11 +503,9 @@ export class CenterDetailsComponent implements OnInit {
   }
 
   private updateCenterFormControlsState(role: string): void {
-    console.log(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + role)
     if (role != "ROLE_ADMIN" && role != "ROLE_SYSADMIN") {
       this.updateCenterForm.disable();
 
-      console.log(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DISABLED")
     } else {
       this.updateCenterForm.enable();
     }
@@ -559,8 +557,4 @@ export class CenterDetailsComponent implements OnInit {
 
     return { hour, minute, second: 0 };
   }
-
-  // private isFormDataChanged(newFormData: any): boolean {
-  //   return JSON.stringify(newFormData) !== JSON.stringify(this.lastSubmittedData);
-  // }
 }

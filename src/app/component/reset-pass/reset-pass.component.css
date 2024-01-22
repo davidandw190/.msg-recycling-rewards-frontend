@@ -1,0 +1,67 @@
+
+.section {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px;
+}
+
+.card-title {
+  color: #333;
+}
+
+.form-label {
+  color: #2d2c2c;
+}
+
+.btn-msg-color {
+  background-color: #A01540;
+  color: #fff;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.btn-purple:hover {
+  color: #fff;
+  background-color: #b92355;
+}
+
+.link {
+  color: #0D6EFD;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.link:hover {
+  text-decoration: underline;
+  color: #004085;
+}
+
+.alert {
+  border-radius: 10px;
+  position: relative;
+}
+
+.btn-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.row.justify-content-center.align-items-center {
+  min-height: 100vh;
+}
+
+body {
+  margin-top: 20px;
+  background: #eee;
+}
