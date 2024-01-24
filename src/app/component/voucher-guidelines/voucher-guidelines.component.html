@@ -1,57 +1,55 @@
-<h2 mat-dialog-title class="mb-3 mt-3">Recycling Rewards Voucher Redemption Guidelines</h2>
+<h2 mat-dialog-title class="mb-3 mt-3">Recycling Rewards: Voucher Redemption Guidelines</h2>
 
 <mat-dialog-content class="mat-typography">
-  <div style="max-width: 700px; margin: 0 auto;">
-    <div>
-      <h3><strong>Earning Vouchers</strong></h3>
-      <p>Participate actively in our eco-friendly initiatives to accumulate reward points. Your commitment to recycling contributes to a sustainable environment and earns you reward points that unlock a world of exciting vouchers.</p>
-      <p>Be sure to check our app regularly for special promotions and bonus point opportunities, allowing you to fast-track your voucher earnings.</p>
-    </div>
+  <div style="max-width: 800px; margin: 0 auto;">
+    <section>
+      <h3><strong>Accumulating Reward Points</strong></h3>
+      <p>Engage with our environmental initiatives to collect reward points. Your dedication to recycling not only aids in conserving our planet but also opens up opportunities to obtain valuable vouchers.</p>
+      <p>Regularly visit our application to stay updated on exclusive promotions and opportunities for additional points, accelerating your journey towards earning vouchers.</p>
+    </section>
     <hr>
 
-    <div>
-      <h3><strong>Redeeming Vouchers</strong></h3>
-      <p>Redeeming your hard-earned points for vouchers is a simple and rewarding process. Navigate to the Redeem section in the app, select your desired voucher, and follow the intuitive steps to claim your reward.</p>
-      <p>Our user-friendly interface ensures a seamless redemption experience. If you encounter any issues, our dedicated support team is ready to assist you promptly.</p>
-    </div>
+    <section>
+      <h3><strong>Voucher Redemption Process</strong></h3>
+      <p>To redeem your vouchers, simply go to the 'Redeem' section within the app. Choose the voucher you wish to redeem and follow the provided steps to claim your reward seamlessly.</p>
+      <p>Should you encounter difficulties, our dedicated customer support team is on standby to offer prompt assistance.</p>
+    </section>
 
-    <div>
+    <section>
       <h3><strong>Voucher Redemption Policy</strong></h3>
-      <p>Before redeeming your vouchers, familiarize yourself with our Voucher Redemption Policy to ensure a smooth and informed experience:</p>
-
+      <p>Understanding our Voucher Redemption Policy is essential for a hassle-free redemption experience:</p>
       <ul>
-        <li><strong>Expiration Dates:</strong> Vouchers have specific expiration dates. It's crucial to redeem them before the specified date to fully enjoy the benefits.</li>
-        <li><strong>Terms and Conditions:</strong> Each voucher type may come with unique terms and conditions. Take the time to understand these conditions to make informed choices.</li>
-        <li><strong>Irreversibility:</strong> Once a voucher is redeemed, the process is irreversible. Please choose your vouchers carefully as they cannot be reversed or exchanged for cash.</li>
-        <li><strong>Misuse Warning:</strong> Any attempt to manipulate or misuse the redemption process may result in the suspension of your account. Please use the vouchers responsibly.</li>
-        <li><strong>Additional Information:</strong> For more detailed information, refer to the complete Voucher Policy available at . If you have further questions, don't hesitate to contact our support team.</li>
+        <li><strong>Expiration:</strong> Vouchers are subject to expiration dates. Redeem your vouchers promptly to benefit from their full value.</li>
+        <li><strong>Terms and Conditions:</strong> Specific terms apply to each voucher. We encourage you to review these terms to ensure they meet your expectations.</li>
+        <li><strong>Finality of Redemption:</strong> Redemption is final. Select carefully, as vouchers cannot be returned, exchanged, or refunded once redeemed.</li>
+        <li><strong>Usage Policy:</strong> Attempts to exploit or circumvent the redemption process may lead to account suspension. We urge you to utilize your vouchers within the spirit of fairness.</li>
+        <li><strong>Further Assistance:</strong> Should you require additional information, please consult the full Voucher Policy or contact our support team directly.</li>
       </ul>
+      <p>Adherence to these policies ensures you maximize the benefits received from our Recycling Rewards program.</p>
+    </section>
 
-      <p>By adhering to our policy, you can make the most of your vouchers and fully appreciate the benefits of our Recycling Rewards program.</p>
-    </div>
-
-    <div>
-      <h3><strong>Contact Information</strong></h3>
-      <p>Your satisfaction is our priority. If you have inquiries, feedback, or require assistance, please do not hesitate to reach out to our support team.</p>
-      <p><strong>Email:</strong> recycing.rewards@msg.com</p>
+    <section>
+      <h3><strong>Support and Inquiries</strong></h3>
+      <p>We prioritize your satisfaction. For any questions, feedback, or assistance, our support team is eager to help:</p>
+      <p><strong>Email:</strong> recycling.rewards@msg.com</p>
       <p><strong>Phone:</strong> +1-800-123-4567</p>
-      <p>Our team is available during business hours to ensure a swift and helpful response to your needs.</p>
-    </div>
+      <p>Contact us during business hours for prompt and efficient support.</p>
+    </section>
 
     <hr>
 
-    <h3><strong>Voucher Types</strong></h3>
-
-    <ng-container *ngIf="data">
-      <div *ngFor="let voucherType of data.voucherTypes">
-        <h4>{{ voucherType.name }}</h4>
-        <p><strong>Threshold Points:</strong> {{ voucherType.thresholdPoints }}</p>
-        <!-- Add other details based on your backend response -->
-      </div>
-    </ng-container>
+    <section>
+      <h3><strong>Available Voucher Types</strong></h3>
+      <ng-container *ngIf="data">
+        <div *ngFor="let voucherType of data?.voucherTypes">
+          <h4>{{ voucherType.name }}</h4>
+          <p><strong>Required Points:</strong> {{ voucherType?.thresholdPoints }}</p>
+        </div>
+      </ng-container>
+    </section>
   </div>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>I understood</button>
+  <button mat-button mat-dialog-close>Understood</button>
 </mat-dialog-actions>
