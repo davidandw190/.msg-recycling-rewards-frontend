@@ -94,3 +94,15 @@
 }
 
 
+.info-icon {
+  font-size: 20px;
+
+  margin-bottom: -8px;
+}
+
+.info-icon-button:hover {
+  background-color: transparent;
+  color: inherit;
+}
+
+

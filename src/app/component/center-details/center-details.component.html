@@ -102,7 +102,10 @@
                   </div>
                   <div>
                     <!-- Redeem Button -->
-                    <button mat-flat-button style="background-color: #A01540FF; color: white" [disabled]="isLoading$ | async">
+                    <button mat-flat-button
+                            style="background-color: #A01540FF; color: white"
+                            [disabled]="isLoading$ | async"
+                    >
                       <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                       <span *ngIf="!(isLoading$ | async)">Redeem</span>
                     </button>
@@ -136,7 +139,10 @@
                   </div>
                   <div>
                     <!-- Learn More Button -->
-                    <button mat-flat-button style="background-color: #A01540FF; color: white" [disabled]="isLoading$ | async">
+                    <button mat-flat-button
+                            style="background-color: #A01540FF; color: white"
+                            [disabled]="isLoading$ | async"
+                            (click) = "openRecyclingGuidelines()">
                       <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                       <span *ngIf="!(isLoading$ | async)">Learn More</span>
                     </button>
@@ -217,25 +223,25 @@
                       </div>
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                      <mat-slide-toggle formControlName="alwaysOpen"> <span style="margin-left: 8px">Always Open</span></mat-slide-toggle>
-                      <i class="fa-solid fa-circle-info" style="margin-left: 10px"></i>
+                    <div class="row mb-3">
+                      <label class="col-sm-3 col-form-label">Always Open</label>
+                      <div class="col-sm-9 d-flex align-items-center">
+                        <mat-slide-toggle formControlName="alwaysOpen"></mat-slide-toggle>
+                        <mat-icon class="ms-2" style="color: #a01540; cursor: pointer;" matTooltip="Select if the center operates 24/7">info</mat-icon>
+                      </div>
                     </div>
 
                     <ng-container *ngIf="!updateCenterForm.get('alwaysOpen').value">
-
-                      <div class="row">
-                        <div class="col-md-6 mb-3">
+                      <div class="row mb-3">
+                        <div class="col-md-6">
                           <label>Opening Time</label>
                           <ngb-timepicker formControlName="openingHour" [seconds]="false" [spinners]="false"></ngb-timepicker>
                         </div>
-
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-6">
                           <label>Closing Time</label>
                           <ngb-timepicker formControlName="closingHour" [seconds]="false" [spinners]="false"></ngb-timepicker>
                         </div>
                       </div>
-
                     </ng-container>
 
                     <ng-container *ngIf="selectedMaterials.length > 0" class="mt-4">
@@ -267,7 +273,17 @@
 
             <div class="card border rounded-3 mb-3">
               <div class="card-body">
-                <h5 class="card-title">New Recycling Activity</h5>
+                <h5 class="card-title">
+                  New Recycling Activity
+                  <a
+                    [matTooltipShowDelay]="500"
+                    [matTooltipHideDelay]="500"
+                    matTooltip="Voucher Earning & Redemption Guidelines"
+                    (click)="openRecyclingGuidelines()"
+                  >
+                    <mat-icon class="info-icon" style="color: #a01540;">info</mat-icon>
+                  </a>
+                </h5>
 
                 <form [formGroup]="recyclingForm" (ngSubmit)="contribute($event)">
                   <div class="row">
@@ -325,6 +341,7 @@
                    [attr.aria-expanded]="!isRecyclingActivitiesCollapsed"
                    style="cursor: pointer;">
                 <h5 class="card-title">My Activities At {{ state?.appData?.data?.center?.name }}</h5>
+
                 <h6 class="card-subtitle mb-2 text-muted"></h6>
                 <table class="table">
                   <thead style="color: white; background-color: #A01540">

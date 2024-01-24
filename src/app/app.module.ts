@@ -47,6 +47,8 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatMenuModule} from "@angular/material/menu";
 import { LeaderboardComponent } from './component/leaderboard/leaderboard.component';
 import { EcoLearnComponent } from './component/eco-learn/eco-learn.component';
+import { RecyclingGuidelinesComponent } from './component/recycling-guidelines/recycling-guidelines.component';
+import { EcoLearnNewComponent } from './component/eco-learn-new/eco-learn-new.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +70,8 @@ import { EcoLearnComponent } from './component/eco-learn/eco-learn.component';
     VoucherGuidelinesComponent,
     LeaderboardComponent,
     EcoLearnComponent,
+    RecyclingGuidelinesComponent,
+    EcoLearnNewComponent,
 
   ],
   imports: [

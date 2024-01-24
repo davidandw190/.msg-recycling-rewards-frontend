@@ -96,6 +96,14 @@ export class UserService {
         catchError(this.handleError)
       );
 
+  user$ = () => <Observable<CustomHttpResponse<User>>>
+    this.http.get<CustomHttpResponse<User>>
+    (`${this.server}/user`)
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
+
   updateUser$ = (user: User) => <Observable<CustomHttpResponse<Profile>>>
     this.http.patch<CustomHttpResponse<Profile>>
     (`${this.server}/user/update`, user)
@@ -195,4 +203,5 @@ export class UserService {
     }
     return throwError(() => errorMessage);
   }
+
 }

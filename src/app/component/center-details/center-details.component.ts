@@ -25,6 +25,9 @@ import {RewardPointsPipe} from "../../pipes/reward-points.pipe";
 import {LocationService} from "../../service/location.service";
 import {TypeaheadMatch} from "ngx-bootstrap/typeahead";
 import {RecyclingCenter} from "../../interface/recycling-center";
+import {VoucherGuidelinesComponent} from "../voucher-guidelines/voucher-guidelines.component";
+import {MatDialog} from "@angular/material/dialog";
+import {RecyclingGuidelinesComponent} from "../recycling-guidelines/recycling-guidelines.component";
 
 
 @Component({
@@ -132,6 +135,7 @@ export class CenterDetailsComponent implements OnInit {
     private locationService: LocationService,
     private sustainabilityIndexPipe: SustainabilityIndexPipe,
     private modalService: NgbModal,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -556,5 +560,10 @@ export class CenterDetailsComponent implements OnInit {
     }
 
     return { hour, minute, second: 0 };
+  }
+
+  openRecyclingGuidelines() {
+
+    this.dialog.open(RecyclingGuidelinesComponent );
   }
 }

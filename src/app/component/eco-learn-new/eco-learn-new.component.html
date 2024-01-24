@@ -1,0 +1,90 @@
+
+<ng-container *ngIf="(newResourceState$ | async) as state" [ngSwitch]="state.dataState">
+  <ng-container *ngSwitchCase="DataState.LOADED">
+    <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
+    <div style="margin-top: 100px"> </div>
+    <section>
+      <div class="container mt-4">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
+            <li class="breadcrumb-item"><a [routerLink]="['/eco-learn']">EcoLearn</a></li>
+            <li class="breadcrumb-item active" aria-current="page">New</li>
+          </ol>
+        </nav>
+
+        <div class="row justify-content-center">
+          <div class="col-md-8">
+            <div class="card">
+              <div class="card-body">
+                <div class="text-center mb-4">
+                  <h2><i class="fa-solid fa-recycle" style="margin-right: 5px;"></i> New EcoLearn Post</h2>
+                </div>
+
+                <div *ngIf="state.error" class="alert alert-danger mt-3" role="alert">
+                  {{ state.error }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <form (ngSubmit)="createResource($event)" [formGroup]="newResourceForm" class="mb-4">
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <div class="form-group">
+                        <label>Post Title</label>
+                        <input type="text" formControlName="title" class="form-control" id="title" placeholder="Ex. Top 10 Recycling Tips" required>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <div class="form-group">
+                        <label>Content</label>
+                        <input  type="text"  formControlName="content" class="form-control" id="content" placeholder="Ex. " required>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <div class="form-group">
+                        <label>Content Type</label>
+                        <input type="text"
+                               formControlName="contentType"
+                               class="form-control"
+                               [typeahead]="availableContentTypes"
+                               [minLength]="0"
+                               [typeaheadWaitMs]="10"
+                               placeholder="Select Post Content Type"/>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <div class="form-group">
+                        <label>Post Categories</label>
+                        <input type="text"
+                               formControlName="categories"
+                               class="form-control"
+                               [typeahead]="availableCategories"
+                               [minLength]="0"
+                               [typeaheadWaitMs]="10"
+                               placeholder="Select Category"
+                               (typeaheadOnSelect)="onSelectCategory($event)" />
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="mt-4 d-flex justify-content-end">
+                    <button [disabled]="state.dataState === DataState.LOADING || newResourceForm.invalid || newResourceForm.pristine ||
+                            !isCategoryChosen() || (isLoading$ | async)"
+                            type="submit" class="btn btn-success me-2">
+                      <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      <span *ngIf="isLoading$ | async">Saving...</span>
+                      <span *ngIf="!(isLoading$ | async)">Create Center</span>
+                    </button>
+
+                    <!--                    <button type="button" class="btn btn-secondary" [routerLink]="['/customers']">Cancel</button>-->
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </ng-container>
+</ng-container>

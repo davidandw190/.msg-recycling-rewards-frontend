@@ -86,35 +86,33 @@
                              (typeaheadOnSelect)="onSelectMaterials($event)" />
                     </div>
 
-<!--                    <div>-->
-<!--                      <div class="form-group">-->
-<!--                        <label for="contact">Description</label>-->
-<!--                        <input  type="text"  formControlName="description" name="contact" class="form-control" id="description" placeholder="About you">-->
-<!--                      </div>-->
-<!--                    </div>-->
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <!-- Always Open Toggle -->
+                        <label class="form-label d-flex align-items-center mb-3" >
+                          <mat-slide-toggle formControlName="alwaysOpen" class="me-2"></mat-slide-toggle>
+                          Always Open
+                          <i class="fa-solid fa-circle-info ms-2" style="cursor: pointer;"
+                             matTooltip="Indicates if the center is operational 24/7"></i>
+                        </label>
+                      </div>
 
-                    <div class="col-md-6 mb-3">
-                      <mat-slide-toggle formControlName="alwaysOpen"> <span style="margin-left: 8px">Always Open</span></mat-slide-toggle>
-                      <i class="fa-solid fa-circle-info" style="margin-left: 10px"></i>
+                      <div></div>
+
+                      <!-- Conditional Timepickers -->
+                      <ng-container *ngIf="!newCenterForm.get('alwaysOpen').value">
+                        <div class="col-md-6 mt-3">
+                          <label>Opening Time</label>
+                          <ngb-timepicker formControlName="openingHour" [seconds]="false" [spinners]="false"></ngb-timepicker>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                          <label>Closing Time</label>
+                          <ngb-timepicker formControlName="closingHour" [seconds]="false" [spinners]="false"></ngb-timepicker>
+                        </div>
+                      </ng-container>
                     </div>
 
 
-
-                    <div></div>
-
-
-
-                    <ng-container *ngIf="!newCenterForm.get('alwaysOpen').value">
-                      <div class="col-md-6 mb-3">
-                        <label>Opening Time</label>
-                        <ngb-timepicker formControlName="openingHour" [seconds]="false" [spinners]="false"></ngb-timepicker>
-                      </div>
-
-                      <div class="col-md-6 mb-3">
-                        <label>Closing Time</label>
-                        <ngb-timepicker formControlName="closingHour" [seconds]="false" [spinners]="false"></ngb-timepicker>
-                      </div>
-                    </ng-container>
 
 
                     <ng-container *ngIf="selectedMaterials.length > 0">
