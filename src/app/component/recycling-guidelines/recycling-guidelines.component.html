@@ -1,0 +1,71 @@
+<h2 mat-dialog-title class="mb-3 mt-3">Recycling Guidelines</h2>
+
+<mat-dialog-content class="mat-typography">
+  <div style="max-width: 800px; margin: 0 auto;">
+    <div>
+      <h3><strong>Understanding Reward Points</strong></h3>
+      <p>Earn points by recycling materials. The number of points you earn depends on the type and quantity of materials recycled. Our system automatically calculates your reward points, providing real-time updates on your achievements.</p>
+    </div>
+    <hr>
+
+    <div>
+      <h3><strong>How Points Are Calculated</strong></h3>
+      <p>Points are awarded based on the weight or unit of the material recycled. Below are the points assigned for each material type and how they're calculated:</p>
+      <ul>
+        <li><strong>Plastic:</strong> 10 points per unit. For example, recycling 1kg of plastic (equivalent to 1000g) earns you 10 points.</li>
+        <li><strong>Aluminium:</strong> 6 points per unit. Recycling a can (considered as 1 unit) earns you 6 points.</li>
+        <li><strong>Metals:</strong> 5 points per kilogram. Recycling 500g of metal earns you 2.5 points, rounded up to the nearest whole number.</li>
+        <li><strong>Glass:</strong> 6 points per kilogram. For example, recycling two 500ml bottles (considered as 1kg if using kg as the measure unit) earns you 6 points.</li>
+        <li><strong>Paper:</strong> 10 points per kilogram. Recycling 500g of paper earns you 5 points.</li>
+        <li><strong>Electronics:</strong> 12 points per kilogram. For example, recycling 1kg of electronic waste earns you 12 points.</li>
+      </ul>
+      <p>* The unit ratio varies based on the chosen measure unit (e.g., kg, piece). Points are rounded up to the nearest whole number.</p>
+
+      <h3><strong>Conversion to Units Based on Measure</strong></h3>
+      <p>The system converts the amount of recycled material into "units" based on your chosen measure (e.g., kg, piece). Here's how units are calculated for common measures:</p>
+      <ul>
+        <li><strong>Kilograms (kg):</strong> For materials measured by weight, 1 kg equals 1 unit. Amounts less than 1 kg are proportionally calculated into units.</li>
+        <li><strong>Pieces:</strong> Items counted individually (e.g., cans, bottles) are considered as 1 unit per item, regardless of their size or weight.</li>
+        <li><strong>Liters for bottles (0.5L, 1L, etc.):</strong> Bottles are converted into units based on their volume. For example, a 0.5L bottle counts as 1 unit, and a 1L bottle also counts as 1 unit, emphasizing the importance of recycling larger items.</li>
+        <li><strong>Can:</strong> Each can, regardless of size, is considered as 1 unit due to the standardization in recycling processes.</li>
+      </ul>
+      <p>This conversion ensures that your recycling efforts are accurately reflected in the reward points earned, encouraging the recycling of a wider range of materials and sizes.</p>
+
+    </div>
+
+    <div>
+      <h3><strong>Material-Specific Guidelines</strong></h3>
+      <p>Each material type has specific guidelines for recycling. Please ensure to follow these to maximize your reward points and contribute effectively to environmental sustainability.</p>
+    </div>
+
+    <hr>
+
+    <div>
+      <h3><strong>Algorithm for Computing Reward Points</strong></h3>
+      <p>The reward points are computed as follows: <code>Points = Math.ceil(Material Amount / Unit Ratio) * Reward Points Per Unit</code>. This ensures that you are fairly rewarded for your recycling efforts.</p>
+    </div>
+
+    <hr>
+
+    <h3><strong>Understanding Your Environmental Impact</strong></h3>
+    <p>Our Recycling Rewards Program quantifies your contribution to environmental sustainability through the Sustainability Index, a metric that translates your recycling efforts into a tangible impact on the environment.</p>
+
+    <div>
+      <h4><strong>How the Sustainability Index is Computed</strong></h4>
+      <p>The Sustainability Index is calculated by applying a factor of 0.003 to your total reward points. This means for every 1,000 points earned from recycling, your sustainability index increases by 3. This calculation reflects the positive environmental impact of your recycling activities, measuring factors such as reduced landfill use, conservation of natural resources, and decreased pollution.</p>
+      <p><strong>Example:</strong> If you earn 1,000 reward points, your Sustainability Index increases by 3, highlighting a significant contribution to environmental preservation.</p>
+    </div>
+
+    <div>
+      <h4><strong>Significance of the Sustainability Index</strong></h4>
+      <p>The Sustainability Index serves as a measure of the positive change each individual brings to the environment by participating in our recycling program. A higher index indicates a greater contribution to reducing carbon footprint, conserving resources, and supporting sustainability initiatives. It motivates and informs users about the broader implications of their recycling habits, encouraging continuous participation and improvement.</p>
+    </div>
+
+    <p>By engaging with our program, you not only earn rewards but also contribute to a healthier planet. The Sustainability Index is our way of showcasing the value of your efforts towards a sustainable future.</p>
+
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>I Understand</button>
+</mat-dialog-actions>
