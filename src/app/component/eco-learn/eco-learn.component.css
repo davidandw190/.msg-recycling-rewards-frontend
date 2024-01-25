@@ -1,13 +1,30 @@
 .eco-learn-container {
   display: flex;
-  justify-content: center;
-  margin-top: 90px;
-  padding: 20px;
+  justify-content: center; /* Center the main content */
+  align-items: flex-start; /* Align items at the start */
+  gap: 50px; /* Add some space between the posts and the aside */
+  padding: 15px;
 }
 
 .posts-container {
-  max-width: 1000px; /* Medium-like width */
+  flex: 1; /* Allow the container to grow, maintaining its central position */
+  max-width: 850px; /* Maximum width for the posts container */
 }
+
+.filter-sidebar {
+  width: 350px; /* Simplify by setting a fixed width */
+  padding: 20px;
+
+  margin-right: -250px;
+  box-shadow: none; /* Remove shadow for a simpler look */
+  position: sticky; /* Keep it sticky for better navigation */
+  top: 100px; /* Distance from the top */
+  /*border: 1px solid #860909; !* Add a light border for a clean, subtle separation *!*/
+  border-radius: 8px;
+  background-color: #fff; /* Light background for the sidebar */
+  height: fit-content;
+}
+
 
 .post-card {
   background-color: #fff;
@@ -23,12 +40,12 @@
 }
 
 .post-header, .post-body, .post-footer {
-  padding: 20px;
+  padding: 15px;
   border-bottom: 1px solid #eee;
 }
 
 .post-header {
-  padding: 20px;
+  padding: 15px;
   border-bottom: 1px solid #eee;
 }
 
@@ -40,12 +57,13 @@
 
 .post-details {
   /*margin-top: 5px;*/
+  margin-bottom: 0px;
   font-size: 18px;
   color: #666;
 }
 
 .post-body {
-  padding: 20px;
+  padding: 15px;
 }
 
 .post-text {
@@ -83,12 +101,127 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 10px;
-  font-size: 20px;
+  padding: 5px;
+  font-size: 15px;
   color: #A01540FF;
   transition: color 0.2s;
 }
 
 .icon-btn:hover {
   color: #28a745;
+}
+
+
+.post-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #eee;
+  padding: 15px 25px;
+}
+
+.left-icons, .right-icons {
+  display: flex;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  margin-right: 15px;
+  font-size: 25px;
+  color: #A01540FF;
+  transition: transform 0.2s ease-in-out;
+}
+
+.icon-btn:hover {
+  transform: scale(1.2);
+}
+
+.like-btn {
+  animation: likeAnimation 0.2s ease-in-out forwards;
+}
+
+.share-btn {
+  animation: shareAnimation 0.2s ease-in-out forwards;
+}
+
+@keyframes likeAnimation {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes shareAnimation {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.eco-learn-container {
+  display: flex;
+}
+
+
+.recommended-categories {
+  margin-top: 20px;
+}
+
+
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .eco-learn-container {
+    flex-direction: column;
+    align-items: center; /* Center items vertically for narrow screens */
+  }
+
+  .filter-sidebar {
+    order: -1; /* Sidebar above the posts on narrow screens */
+    flex-basis: 100%; /* Full width for the sidebar */
+    max-height: none;
+    position: static; /* Remove sticky positioning on smaller screens */
+    margin-bottom: 20px; /* Add some space below the sidebar */
+  }
+}
+
+
+/* Simplify button and form elements */
+input, select, button {
+  width: 100%; /* Full width for a clean, aligned look */
+  padding: 3px 5px; /* Sufficient padding for easy interaction */
+  margin-bottom: 10px; /* Space out elements */
+  /*border: 1px solid #ccc; !* Light border for definition *!*/
+  /*border-radius: 4px; !* Subtle rounding *!*/
+  /*background-color: white; !* Ensure background consistency *!*/
+}
+
+
+/* Keep the category chip styling simple and consistent with the form elements */
+.category-chip {
+  display: inline-block;
+  padding: 5px 15px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 20px; /* Rounded edges for a friendly, clickable appearance */
+  cursor: pointer;
+}
+
+
+/* Additional styles for category chips and form elements for cohesiveness */
+.category-chip {
+  margin: 5px;
+  padding: 5px 15px;
+  border-radius: 25px; /* More pronounced rounded corners for chips */
+  background-color: #17a2b8; /* A fresh, modern color */
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.category-chip:hover {
+  background-color: #138496; /* Slightly darker on hover */
 }

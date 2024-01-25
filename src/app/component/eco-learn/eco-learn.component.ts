@@ -25,7 +25,6 @@ import {EcoLearnPageResponse} from "../../interface/eco-learn-page-response";
 import {EcoLearnService} from "../../service/eco-learn.service";
 import {TypeaheadMatch} from "ngx-bootstrap/typeahead";
 import {MatDialog} from "@angular/material/dialog";
-import {EcoLearnResourceNewComponent} from "../eco-learn-resource-new/eco-learn-resource-new.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
@@ -59,7 +58,7 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
 
   selectedContentTypes: string[] = [];
 
-  private readonly collapseThreshold: number = 100; // Example threshold
+  private readonly collapseThreshold: number = 100;
 
   constructor(
     private router: Router,
@@ -121,7 +120,7 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
     this.isLoadingSubject.next(true);
 
     this.ecoLearnService
-      .searchEducationalResources$(title, sortBy, sortOrder, page)
+      .search$(title, sortBy, sortOrder, page)
       .pipe(
         tap((response) => this.dataSubject.next(response)),
         catchError((error: string) => of({ dataState: DataState.ERROR, error }))
@@ -138,30 +137,13 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
 
     this.isLoadingSubject.next(true);
 
-    // this.voucherService
-    //   .searchVouchers$(code, sortBy, sortOrder, page, redeemed, expired)
-    //   .pipe(
-    //     tap((response) => this.dataSubject.next(response)),
-    //     catchError((error: string) => of({ dataState: DataState.ERROR, error }))
-    //   )
-    //   .subscribe();
+
   }
 
   goToPage(pageNumber?: number): void {
     const { code, sortBy, sortOrder, redeemed, expired } = this.searchForm.value;
 
     this.isLoadingSubject.next(true);
-    //
-    // this.voucherService
-    //   .searchVouchers$(code, sortBy, sortOrder, pageNumber - 1, redeemed, expired)
-    //   .pipe(
-    //     tap((response) => {
-    //       this.dataSubject.next(response);
-    //       this.currentPageSubject.next(pageNumber - 1);
-    //     }),
-    //     catchError((error: string) => of({ dataState: DataState.ERROR, error }))
-    //   )
-    //   .subscribe();
   }
 
   redirectNewCenter() {
@@ -209,7 +191,7 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
         distinctUntilChanged(),
         tap(() => this.isLoadingSubject.next(true)),
         switchMap(() =>
-          this.ecoLearnService.searchEducationalResources$(
+          this.ecoLearnService.search$(
             this.searchForm.get('title').value,
             this.searchForm.get('sortBy').value,
             this.searchForm.get('sortOrder').value,
@@ -242,7 +224,7 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
       .pipe(
         tap(() => this.isLoadingSubject.next(true)),
         switchMap(([title, sortBy, sortOrder]) =>
-          this.ecoLearnService.searchEducationalResources$(title, sortBy, sortOrder, 0)
+          this.ecoLearnService.search$(title, sortBy, sortOrder, 0)
         ),
         catchError((error: string) => {
           console.error(error);
@@ -267,12 +249,11 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
     });
   }
 
-
   copyToClipboard(code: string) {
     this.clipboardService.copyFromContent(code);
   }
 
-  private onSelectCategory(event: TypeaheadMatch): void {
+  protected onSelectCategory(event: TypeaheadMatch): void {
     const selectedCategory = event.item;
     this.searchForm.get("categories").setValue("")
 
@@ -301,21 +282,5 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
   submitResource(): void {
     if (this.resourceForm.valid) {
     }
-  }
-
-  openCreateResourceDialog() {
-    const modalRef = this.modalService.open(EcoLearnResourceNewComponent, {
-      size: 'sm', // Large size
-    });
-
-    // modalRef.componentInstance.availableCategories = this.availableCategories;
-    // modalRef.componentInstance.availableContentTypes = this.availableContentTypes;
-
-    modalRef.result.then((result) => {
-      console.log(result);
-      // Handle the modal close result
-    }, (reason) => {
-      // Handle modal dismissal
-    });
   }
 }
