@@ -39,6 +39,8 @@ export class EcoLearnNewComponent implements OnInit {
   availableContentTypes: string[] = [];
   availableCategories: string[] = [];
 
+  mediaType: string = 'url';
+
   newResourceForm: FormGroup;
 
   selectedCategories: string[] = []
@@ -53,8 +55,7 @@ export class EcoLearnNewComponent implements OnInit {
       title: ['', Validators.required],
       content: ['', Validators.required],
       contentType: ['', Validators.required],
-      categories:  [''],
-      media: ['', Validators.required],
+      categories:  ['']
     });
 
   }
@@ -96,17 +97,21 @@ export class EcoLearnNewComponent implements OnInit {
   }
 
 
-  createResource(event: Event): void {
+  createResource(event: Event, fileInput: HTMLInputElement): void {
     event.preventDefault();
-
     this.isLoadingSubject.next(true);
 
-    const formData = {
-      ...this.newResourceForm.value,
-      categories: this.selectedCategories
-    };
+    const formData = new FormData();
+    formData.append('title', this.newResourceForm.value.title);
+    formData.append('content', this.newResourceForm.value.content);
+    formData.append('contentType', this.newResourceForm.value.contentType);
+    formData.append('categories', this.selectedCategories.join(","));
 
-    console.log('Form Data:', formData);
+
+    const file = fileInput.files ? fileInput.files[0] : null;
+    if (file) {
+      formData.append('file', file);
+    }
 
     this.ecoLearnService.create$(formData).pipe(
       map((response) => {
@@ -150,6 +155,8 @@ export class EcoLearnNewComponent implements OnInit {
   protected isCategoryChosen(): boolean {
     return this.selectedCategories.length >= 1;
   }
+
+
 
 }
 

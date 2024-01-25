@@ -1,4 +1,3 @@
-
 <ng-container *ngIf="(newResourceState$ | async) as state" [ngSwitch]="state.dataState">
   <ng-container *ngSwitchCase="DataState.LOADED">
     <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
@@ -26,58 +25,65 @@
                   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
 
-                <form (ngSubmit)="createResource($event)" [formGroup]="newResourceForm" class="mb-4">
+                <form (ngSubmit)="createResource($event, fileInput)" [formGroup]="newResourceForm" class="mb-3">
                   <div class="row">
-                    <div class="col-md-6 mb-3">
+                    <!-- Post Title -->
+                    <div class="col-12 mb-3">
                       <div class="form-group">
-                        <label>Post Title</label>
+                        <label for="title">Post Title</label>
                         <input type="text" formControlName="title" class="form-control" id="title" placeholder="Ex. Top 10 Recycling Tips" required>
                       </div>
                     </div>
+
+
                     <div class="col-md-6 mb-3">
+                      <label for="contentType">Content Type</label>
+                      <input type="text" formControlName="contentType" class="form-control" id="contentType" [typeahead]="availableContentTypes" [minLength]="0" [typeaheadWaitMs]="10" placeholder="Select Post Content Type">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <label for="categories">Post Categories</label>
+                      <input type="text" formControlName="categories" class="form-control" id="categories" [typeahead]="availableCategories" [minLength]="0" [typeaheadWaitMs]="10" placeholder="Select Category" (typeaheadOnSelect)="onSelectCategory($event)">
+                    </div>
+
+                    <div class="col-12 mb-3">
                       <div class="form-group">
-                        <label>Content</label>
-                        <input  type="text"  formControlName="content" class="form-control" id="content" placeholder="Ex. " required>
+                        <label for="content">Content</label>
+                        <input type="text" formControlName="content" class="form-control" id="content" placeholder="Ex. Your content here" required>
                       </div>
                     </div>
-                    <div class="col-md-6 mb-3">
-                      <div class="form-group">
-                        <label>Content Type</label>
-                        <input type="text"
-                               formControlName="contentType"
-                               class="form-control"
-                               [typeahead]="availableContentTypes"
-                               [minLength]="0"
-                               [typeaheadWaitMs]="10"
-                               placeholder="Select Post Content Type"/>
-                      </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                      <div class="form-group">
-                        <label>Post Categories</label>
-                        <input type="text"
-                               formControlName="categories"
-                               class="form-control"
-                               [typeahead]="availableCategories"
-                               [minLength]="0"
-                               [typeaheadWaitMs]="10"
-                               placeholder="Select Category"
-                               (typeaheadOnSelect)="onSelectCategory($event)" />
-                      </div>
+<!--                    <div class="col-md-6 mb-3"> &lt;!&ndash; Media field &ndash;&gt;-->
+<!--                      <label for="media">Media URL</label>-->
+<!--                      <input type="url" formControlName="media" class="form-control" id="media" placeholder="Ex. Image or article link">-->
+<!--                    </div>-->
+                  </div>
+
+                  <!-- Conditional Media URL Input -->
+<!--                  <div class="row mb-3" *ngIf="mediaType === 'url'">-->
+<!--                    <div class="col-12">-->
+<!--                      <label >Media URL</label>-->
+<!--                      <input type="url" formControlName="mediaUrl" class="form-control" placeholder="Ex. https://example.com or https://youtu.be/example">-->
+<!--                    </div>-->
+<!--                  </div>-->
+
+                  <!-- Conditional File Upload Input -->
+                  <div class="row mb-3" >
+                    <div class="col-12">
+                      <label for="mediaFile">Upload File</label>
+<!--                      <input type="file" class="form-control" id="mediaFile" (change)="onFileSelected($event)">-->
+                      <input accept="image/*" type="file" class="form-control" id="mediaFile" #fileInput>
                     </div>
                   </div>
 
 
                   <div class="mt-4 d-flex justify-content-end">
-                    <button [disabled]="state.dataState === DataState.LOADING || newResourceForm.invalid || newResourceForm.pristine ||
-                            !isCategoryChosen() || (isLoading$ | async)"
-                            type="submit" class="btn btn-success me-2">
+                    <button [disabled]="state.dataState === DataState.LOADING || newResourceForm.invalid || newResourceForm.pristine || !isCategoryChosen() || (isLoading$ | async)"
+                            (click)="createResource($event, fileInput)"
+                            type="submit" class="btn btn-primary">
                       <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                       <span *ngIf="isLoading$ | async">Saving...</span>
-                      <span *ngIf="!(isLoading$ | async)">Create Center</span>
+                      <span *ngIf="!(isLoading$ | async)">Create Resource</span>
                     </button>
-
-                    <!--                    <button type="button" class="btn btn-secondary" [routerLink]="['/customers']">Cancel</button>-->
                   </div>
                 </form>
               </div>

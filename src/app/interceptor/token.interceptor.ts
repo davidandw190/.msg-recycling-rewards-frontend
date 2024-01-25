@@ -86,7 +86,7 @@ export class TokenInterceptor implements HttpInterceptor {
    * @returns boolean - True if the URL is a non-secured route, otherwise false.
    */
   private isNonSecuredRoute(url: string): boolean {
-    const nonSecuredRoutes: string[] = ['/user/verify', '/user/login', '/user/register', '/user/refresh/token', '/user/reset-pass'];
+    const nonSecuredRoutes: string[] = ['/user/verify', '/user/login', '/user/register', '/user/refresh/token', '/user/reset-pass', 'eco-lean/resource/image'];
     return nonSecuredRoutes.some(route => url.includes(route));
   }
 

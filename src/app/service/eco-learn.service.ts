@@ -3,6 +3,10 @@ import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {catchError, Observable, tap, throwError} from "rxjs";
 import {CustomHttpResponse} from "../interface/custom-http-response";
 import {EcoLearnPageResponse} from "../interface/eco-learn-page-response";
+import {NgForm} from "@angular/forms";
+import {CenterNewResponse} from "../interface/center-new-response";
+import {User} from "../interface/user";
+import {ResourceNewPageResponse} from "../interface/resource-new-page-response";
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +52,23 @@ export class EcoLearnService {
     );
   }
 
+  create$ = (date: FormData) => <Observable<CustomHttpResponse<ResourceNewPageResponse>>>
+    this.http.post<CustomHttpResponse<ResourceNewPageResponse>>
+    (`${this.server}/eco-learn/create`, date)
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
+
+  fetchForCreate$ = () => <Observable<CustomHttpResponse<ResourceNewPageResponse>>>
+    this.http.get<CustomHttpResponse<ResourceNewPageResponse>>
+    (`${this.server}/eco-learn/create`)
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
+
+
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.log(error);
     let errorMessage: string;
@@ -63,4 +84,6 @@ export class EcoLearnService {
     }
     return throwError(() => errorMessage);
   }
+
+
 }
