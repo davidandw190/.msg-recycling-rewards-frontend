@@ -49,6 +49,10 @@ import { LeaderboardComponent } from './component/leaderboard/leaderboard.compon
 import { EcoLearnComponent } from './component/eco-learn/eco-learn.component';
 import { RecyclingGuidelinesComponent } from './component/recycling-guidelines/recycling-guidelines.component';
 import { EcoLearnNewComponent } from './component/eco-learn-new/eco-learn-new.component';
+import {VgCoreModule} from "@videogular/ngx-videogular/core";
+import {VgOverlayPlayModule} from "@videogular/ngx-videogular/overlay-play";
+import {VgBufferingModule} from "@videogular/ngx-videogular/buffering";
+import {VgControlsModule} from "@videogular/ngx-videogular/controls";
 
 @NgModule({
   declarations: [
@@ -105,7 +109,11 @@ import { EcoLearnNewComponent } from './component/eco-learn-new/eco-learn-new.co
     MatTooltipModule,
     MatDialogModule,
     MatProgressSpinnerModule,
-    MatMenuModule
+    MatMenuModule,
+    VgCoreModule,
+    VgOverlayPlayModule,
+    VgBufferingModule,
+    VgControlsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
