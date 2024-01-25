@@ -71,7 +71,8 @@
                     <div class="col-12">
                       <label for="mediaFile">Upload File</label>
 <!--                      <input type="file" class="form-control" id="mediaFile" (change)="onFileSelected($event)">-->
-                      <input accept="image/*" type="file" class="form-control" id="mediaFile" #fileInput>
+                      <input [accept]="newResourceForm.value.contentType === 'VIDEO' ? 'video/*' : 'image/*'" type="file" class="form-control" id="mediaFile" #fileInput>
+
                     </div>
                   </div>
 

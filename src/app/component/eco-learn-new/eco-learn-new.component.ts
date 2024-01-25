@@ -99,6 +99,11 @@ export class EcoLearnNewComponent implements OnInit {
 
   createResource(event: Event, fileInput: HTMLInputElement): void {
     event.preventDefault();
+    if (this.newResourceForm.invalid) {
+      alert('Please fill all required fields.');
+      return;
+    }
+
     this.isLoadingSubject.next(true);
 
     const formData = new FormData();
@@ -107,12 +112,10 @@ export class EcoLearnNewComponent implements OnInit {
     formData.append('contentType', this.newResourceForm.value.contentType);
     formData.append('categories', this.selectedCategories.join(","));
 
-
-    const file = fileInput.files ? fileInput.files[0] : null;
-    if (file) {
+    if (fileInput.files && fileInput.files.length) {
+      const file = fileInput.files[0];
       formData.append('file', file);
     }
-
     this.ecoLearnService.create$(formData).pipe(
       map((response) => {
         console.log(response);
