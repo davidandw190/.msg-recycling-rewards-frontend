@@ -53,15 +53,15 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
 
   resourceForm: FormGroup;
 
+  isExpanded: {[key: string]: boolean} = {};
+
   availableCategories: string[] = [];
 
   selectedCategories: string[] = [];
 
   availableContentTypes: string[] = [];
 
-  selectedContentTypes: string[] = [];
-
-  private readonly collapseThreshold: number = 100;
+  private readonly collapseThreshold: number = 300;
 
   constructor(
     private router: Router,
@@ -69,8 +69,7 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
     private ecoLearnService: EcoLearnService,
     private formBuilder: FormBuilder,
     private clipboardService: ClipboardService,
-    public dialog: MatDialog,
-    private modalService: NgbModal
+    public dialog: MatDialog
   ) {
   }
 
@@ -79,7 +78,7 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
     this.initializeSearch();
     this.fetchAuxiliaryData();
     this.searchEducationalResources();
-    this.setupReactiveSearch()
+    this.setupReactiveSearch();
 
   }
 
@@ -143,6 +142,9 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
           this.availableCategories = [...response.data.availableCategories] || []
           this.availableContentTypes = [...response.data.availableContentTypes] || []
           this.dataSubject.next(response)
+          response.data.page.content.forEach(resource => {
+            this.isExpanded[resource.resourceId] = false;
+          });
         }),
         catchError((error: string) => of({ dataState: DataState.ERROR, error }))
       )
@@ -199,6 +201,14 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
     console.log("LOADED")
   }
 
+  isContentTooLong(content: string): boolean {
+    return content.length > this.collapseThreshold;
+  }
+
+  toggleContent(resourceId: string): void {
+    this.isExpanded[resourceId] = !this.isExpanded[resourceId];
+  }
+
   private fetchAuxiliaryData(): void {
     forkJoin({
       availableCategories: this.ecoLearnService.fetchAvailableCategories$(),
@@ -214,6 +224,13 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe();
+  }
+
+  getDisplayedContent(resource: EducationalResource): string {
+    if (!this.isExpanded[resource.resourceId] && this.isContentTooLong(resource.content)) {
+      return `${resource.content.substring(0, this.collapseThreshold)}...`;
+    }
+    return resource.content;
   }
 
   private performSearch(): Observable<CustomHttpResponse<EcoLearnPageResponse>> {

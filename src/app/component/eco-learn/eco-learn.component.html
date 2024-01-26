@@ -58,8 +58,10 @@
                     </p>
                   </div>
                   <div class="post-body">
-                    <p class="post-text" [class.collapsed]="shouldCollapse(resource.content)">{{resource.content}}</p>
-                    <a *ngIf="shouldCollapse(resource.content)"  class="view-more">View More</a>
+                    <p class="post-text"  [class.expanded]="isExpanded[resource.resourceId]"  #postText>{{ getDisplayedContent(resource) }}</p>
+                    <a *ngIf="isContentTooLong(resource.content)" (click)="toggleContent(resource.resourceId.toString())" class="view-more">
+                      <span class="content-collapse-trigger">{{ isExpanded[resource.resourceId] ? 'View Less' : 'View More' }}</span>
+                    </a>
                     <ng-container  *ngIf="resource.contentType !== 'VIDEO'" >
 
                       <img [src]="resource.media" width="780px" height="480px" class="img-responsive post-media" alt="">

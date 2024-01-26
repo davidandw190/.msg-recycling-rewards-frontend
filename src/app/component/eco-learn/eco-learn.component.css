@@ -287,3 +287,21 @@ input, select, button {
   line-height: 10px;
 }
 
+.collapsed {
+  max-height: 3em;
+  overflow: hidden;
+}
+
+.content-collapse-trigger {
+  color: #4caf50;
+  font-weight: bold;
+  margin-top: -5px;
+}
+
+.post-text.expanded {
+  display: block;
+  overflow: visible;
+  -webkit-line-clamp: none;
+  max-height: none;
+}
+
