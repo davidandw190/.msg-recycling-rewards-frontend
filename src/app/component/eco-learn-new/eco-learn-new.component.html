@@ -48,8 +48,10 @@
 
                     <div class="col-12 mb-3">
                       <div class="form-group">
-                        <label for="content">Content</label>
-                        <input type="text" formControlName="content" class="form-control" id="content" placeholder="Ex. Your content here" required>
+
+                        <ckeditor [editor]="Editor" [config]="editorConfig" formControlName="content"></ckeditor>
+
+                        <!--                        <input type="text" formControlName="content" class="form-control" id="content" placeholder="Ex. Your content here" required>-->
                       </div>
                     </div>
 <!--                    <div class="col-md-6 mb-3"> &lt;!&ndash; Media field &ndash;&gt;-->

@@ -12,6 +12,7 @@ import {
   switchMap,
   tap
 } from 'rxjs';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms'; // Import Validators
 import {TypeaheadMatch} from 'ngx-bootstrap/typeahead';
@@ -33,6 +34,21 @@ export class EcoLearnNewComponent implements OnInit {
   private dataSubject = new BehaviorSubject<CustomHttpResponse<ResourceNewPageResponse>>(null);
   private isLoadingSubject = new BehaviorSubject<boolean>(false);
   isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
+
+  public Editor = ClassicEditor;
+  public editorConfig = {
+    toolbar: {
+      items: [
+        'heading', '|',
+        'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|',
+        'outdent', 'indent', '|',
+         'undo', 'redo', 'code', 'codeBlock'
+      ]
+    },
+    language: 'en',
+
+    // Additional configuration options...
+  };
 
   readonly DataState = DataState;
 

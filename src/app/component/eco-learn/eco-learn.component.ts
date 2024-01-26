@@ -27,6 +27,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {EducationalResource} from "../../interface/educational-resource";
 import {ShareResourceComponent} from "../share-resource/share-resource.component";
+import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-eco-learn',
@@ -69,8 +70,13 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
     private ecoLearnService: EcoLearnService,
     private formBuilder: FormBuilder,
     private clipboardService: ClipboardService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private sanitizer: DomSanitizer
   ) {
+  }
+
+  sanitizeHtml(htmlContent: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(htmlContent);
   }
 
   ngOnInit(): void {
@@ -374,8 +380,8 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
     resource.likedByUser = !resource.likedByUser;
 
     resource.likedByUser
-      ? resource.likesCount = resource.likesCount++
-      : resource.likesCount = resource.likesCount--;
+      ? resource.likesCount++
+      : resource.likesCount--;
 
     this.ecoLearnService.engage$(resource.resourceId, 'LIKE').pipe(
       takeUntil(this.destroy$),
@@ -387,8 +393,8 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
     resource.savedByUser = !resource.savedByUser
 
     resource.savedByUser
-      ? resource.savesCount = resource.savesCount++
-      : resource.savesCount = resource.savesCount--;
+      ? resource.savesCount++
+      : resource.savesCount--;
 
     this.ecoLearnService.engage$(resource.resourceId, 'SAVE').pipe(
       takeUntil(this.destroy$),

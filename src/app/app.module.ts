@@ -56,6 +56,7 @@ import {VgControlsModule} from "@videogular/ngx-videogular/controls";
 import {MatLegacyChipsModule} from "@angular/material/legacy-chips";
 import { ShareResourceComponent } from './component/share-resource/share-resource.component';
 import {MatExpansionModule} from "@angular/material/expansion";
+import {CKEditorModule} from "@ckeditor/ckeditor5-angular";
 
 @NgModule({
   declarations: [
@@ -119,7 +120,8 @@ import {MatExpansionModule} from "@angular/material/expansion";
     VgBufferingModule,
     VgControlsModule,
     MatLegacyChipsModule,
-    MatExpansionModule
+    MatExpansionModule,
+    CKEditorModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
