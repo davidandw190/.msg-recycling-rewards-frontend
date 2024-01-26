@@ -12,8 +12,8 @@
 }
 
 .filter-sidebar {
-  width: 350px; /* Simplify by setting a fixed width */
-  padding: 20px;
+  width: 400px; /* Simplify by setting a fixed width */
+  padding: 25px;
 
   margin-right: -250px;
   box-shadow: none; /* Remove shadow for a simpler look */
@@ -57,7 +57,7 @@
 
 .post-details {
   /*margin-top: 5px;*/
-  margin-bottom: 0px;
+  margin-bottom: 0;
   font-size: 18px;
   color: #666;
 }
@@ -163,12 +163,9 @@
   display: flex;
 }
 
-
 .recommended-categories {
   margin-top: 20px;
 }
-
-
 
 /* Responsive adjustments */
 @media (max-width: 992px) {
@@ -224,4 +221,66 @@ input, select, button {
 
 .category-chip:hover {
   background-color: #138496; /* Slightly darker on hover */
+}
+
+.nav-pills {
+  flex-direction: column;
+  padding-right: 20px;
+}
+
+.nav-link {
+  margin-bottom: 5px;
+  border-radius: 5px;
+  color: #495057;
+  /*background-color: #f8f9fa;*/
+  border: 1px solid #860909;
+}
+
+.nav-link.active {
+  color: #fff;
+  background-color: #860909;
+  border-color: #860909;
+}
+
+@media (max-width: 768px) {
+  .eco-learn-container {
+    flex-direction: column;
+  }
+
+  .nav-pills {
+    flex-direction: row;
+    overflow-x: auto;
+    white-space: nowrap;
+    margin-bottom: 20px;
+  }
+
+  .filter-sidebar {
+    order: -1; /* Move filters above content on small screens */
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}
+
+.invisible-form {
+  display: none;
+}
+
+.post-details {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.custom-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-left: 5px;
+}
+
+.custom-chip {
+  padding: 0 3px;
+  font-size: 0.25rem; /* Smaller text */
+  height: 10px; /* Smaller height */
+  line-height: 10px; /* Adjust line height to vertically center the text */
 }

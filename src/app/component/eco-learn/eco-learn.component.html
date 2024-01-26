@@ -14,75 +14,101 @@
         </nav>
 
         <div class="eco-learn-container">
+          <div class="d-flex">
+            <div ngbNav #nav="ngbNav"  class="nav-pills flex-column" orientation="vertical">
+              <ng-container ngbNavItem="all">
+                <button ngbNavLink (click)="updateActiveTab('all')">All Resources</button>
+                <ng-template ngbNavContent>
+                  <ng-container *ngTemplateOutlet="postsFeed"></ng-container>
+                </ng-template>
+              </ng-container>
+              <ng-container ngbNavItem="liked">
+                <button ngbNavLink (click)="updateActiveTab('liked')">My Favourites</button>
+                <ng-template ngbNavContent>
+                  <ng-container *ngTemplateOutlet="postsFeed"></ng-container>
+                </ng-template>
+              </ng-container>
+              <ng-container ngbNavItem="saved">
+                <button ngbNavLink (click)="updateActiveTab('saved')">Saved For Later</button>
+                <ng-template ngbNavContent>
+                  <ng-container *ngTemplateOutlet="postsFeed"></ng-container>
+                </ng-template>
+              </ng-container>
+            </div>
 
-          <ul class="nav nav-tabs" id="resourceTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="all-resources-tab" data-bs-toggle="tab" data-bs-target="#all-resources" type="button" role="tab" aria-controls="all-resources" aria-selected="true">All Resources</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="liked-resources-tab" data-bs-toggle="tab" data-bs-target="#liked-resources" type="button" role="tab" aria-controls="liked-resources" aria-selected="false">Liked</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="saved-resources-tab" data-bs-toggle="tab" data-bs-target="#saved-resources" type="button" role="tab" aria-controls="saved-resources" aria-selected="false">Saved</button>
-            </li>
-          </ul>
+            <div [ngbNavOutlet]="nav" class="flex-grow-1 ms-4"></div>
+          </div>
+
           <!-- New Resource Form -->
 
-          <div class="posts-container">
-            <ng-container *ngFor="let resource of state?.appData?.data?.page?.content">
-              <div class="post-card">
-                <div class="post-header">
-                  <h3 class="post-title">{{resource.title}}</h3>
-                  <p class="post-details">
-                    {{resource.createdAt | date: 'longDate'}} • {{resource.categories[0] }} • {{resource.contentType}}
-                  </p>
-                </div>
-                <div class="post-body">
-                  <p class="post-text" [class.collapsed]="shouldCollapse(resource.content)">{{resource.content}}</p>
-                  <a *ngIf="shouldCollapse(resource.content)"  class="view-more">View More</a>
-                  <ng-container  *ngIf="resource.contentType !== 'VIDEO'" >
+          <ng-template #postsFeed>
+            <div class="posts-container">
+              <ng-container *ngFor="let resource of state?.appData?.data?.page?.content">
+                <div class="post-card">
+                  <div class="post-header">
+                    <h3 class="post-title">{{resource.title}}</h3>
+                    <p class="post-details">
+                      {{resource.createdAt | date: 'longDate'}} •
+                      {{resource.contentType}} •
+                      <mat-chip-list class="custom-chip-list">
+                        <mat-chip *ngFor="let category of resource.categories" class="custom-chip" selected>
+                          {{category}}
+                        </mat-chip>
+                      </mat-chip-list>
 
-                    <img [src]="resource.media" width="1080" height="480" class="img-responsive post-media" alt="">
-                  </ng-container>
+                    </p>
+                  </div>
+                  <div class="post-body">
+                    <p class="post-text" [class.collapsed]="shouldCollapse(resource.content)">{{resource.content}}</p>
+                    <a *ngIf="shouldCollapse(resource.content)"  class="view-more">View More</a>
+                    <ng-container  *ngIf="resource.contentType !== 'VIDEO'" >
 
-                  <ng-container *ngIf="resource.contentType === 'VIDEO'">
+                      <img [src]="resource.media" width="1080" height="480" class="img-responsive post-media" alt="">
+                    </ng-container>
 
-                    <vg-player [style.width]="'780px'" [style.height]="'480px'">
-                                        <vg-overlay-play></vg-overlay-play>
-                                        <vg-buffering></vg-buffering>
-                                        <vg-scrub-bar>
-                                          <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
-                      <!--                    <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>-->
-                                        </vg-scrub-bar>
-                      <vg-controls>
-                        <vg-play-pause></vg-play-pause>
-                        <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
-                        <vg-scrub-bar style="pointer-events: none;"></vg-scrub-bar>
-                        <vg-track-selector></vg-track-selector>
-                        <vg-mute></vg-mute>
-                        <vg-volume></vg-volume>
-                        <vg-fullscreen></vg-fullscreen>
-                      </vg-controls>
-                      <vg-buffering></vg-buffering>
-                      <video  [vgMedia]="$any(media)" #media id="resourceVideo" preload="auto" crossorigin>
-                        <source [src]="resource.media" type="video/mp4">
-                      </video>
-                    </vg-player>
-                  </ng-container>
+                    <ng-container *ngIf="resource.contentType === 'VIDEO'">
+
+                      <vg-player [style.width]="'780px'" [style.height]="'480px'">
+                        <vg-overlay-play></vg-overlay-play>
+                        <vg-buffering></vg-buffering>
+                        <vg-scrub-bar>
+                          <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                          <!--                    <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>-->
+                        </vg-scrub-bar>
+                        <vg-controls>
+                          <vg-play-pause></vg-play-pause>
+                          <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+                          <vg-scrub-bar style="pointer-events: none;"></vg-scrub-bar>
+                          <vg-track-selector></vg-track-selector>
+                          <vg-mute></vg-mute>
+                          <vg-volume></vg-volume>
+                          <vg-fullscreen></vg-fullscreen>
+                        </vg-controls>
+                        <vg-buffering></vg-buffering>
+                        <video  [vgMedia]="$any(media)" #media id="resourceVideo" preload="auto" crossorigin>
+                          <source [src]="resource.media" type="video/mp4">
+                        </video>
+                      </vg-player>
+                    </ng-container>
+                  </div>
+                  <div class="post-footer">
+                    <button class="icon-btn"><i class="fas fa-thumbs-up"></i></button>
+                    <button class="icon-btn"><i class="fas fa-share-alt"></i></button>
+                    <button class="icon-btn"><i class="fas fa-bookmark"></i></button>
+                  </div>
                 </div>
-                <div class="post-footer">
-                  <button class="icon-btn"><i class="fas fa-thumbs-up"></i></button>
-                  <button class="icon-btn"><i class="fas fa-share-alt"></i></button>
-                  <button class="icon-btn"><i class="fas fa-bookmark"></i></button>
-                </div>
-              </div>
-            </ng-container>
-          </div>
+              </ng-container>
+            </div>
+
+
+          </ng-template>
+
 
           <aside class="filter-sidebar">
             <div class="mb-4">
               <h5 >Apply Filters</h5>
             </div>
+
 
             <form [formGroup]="searchForm" (submit)="searchEducationalResourcesSubmit($event)">
               <input formControlName="title" placeholder="Search by title" class="form-control">
@@ -95,23 +121,53 @@
 
               <!-- Sorting Options -->
               <select formControlName="sortBy" class="form-control">
-                <option value="createdAt">Date</option>
+                <option value="createdAt">Date Posted</option>
                 <option value="title">Title</option>
               </select>
 
               <select formControlName="sortOrder" class="form-control">
-                <option value="ascending">Ascending</option>
-                <option value="descending">Descending</option>
+                <option value="asc">Ascending</option>
+                <option value="desc">Descending</option>
               </select>
 
-                        <button type="submit" class="btn btn-primary">Clear Filters</button>
+              <input formControlName="likedOnly" class="invisible-form" type="checkbox">
+              <input formControlName="savedOnly" class="invisible-form" type="checkbox">
+
+              <button type="submit"
+                      class="btn btn-outline-secondary"
+                      (click)="resetFilters()"
+                      [matTooltipShowDelay]="800"
+                      [matTooltipHideDelay]="800"
+                      matTooltip="Clear all applied filters">
+                Clear Filters
+              </button>
             </form>
+
+            <div *ngIf="selectedCategories.length > 0" class="recommended-categories">
+              <h5>Selected Categories</h5>
+              <div class="categories-chips">
+
+                <mat-chip-list class="custom-chip-list">
+                  <mat-chip *ngFor="let category of selectedCategories" class="custom-chip" selected>
+                    {{category}}
+                    <button matChipRemove aria-label="Remove" (click)="onRemoveCategory(category)">
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </mat-chip>
+                </mat-chip-list>
+              </div>
+            </div>
 
             <!-- Recommended Categories -->
             <div class="recommended-categories">
               <h5>Recommended Categories</h5>
               <div class="categories-chips">
-                <!--            <span *ngFor="let category of recommendedCategories" (click)="onSelectRecommendedCategory(category)" class="category-chip">{{category}}</span>-->
+
+                <mat-chip-list class="custom-chip-list">
+                  <mat-chip *ngFor="let category of availableCategories" class="custom-chip" selected (click)="addCategoryIfNotExists(category)">
+                    {{category}}
+                  </mat-chip>
+                </mat-chip-list>
               </div>
             </div>
           </aside>

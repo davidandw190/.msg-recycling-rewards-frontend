@@ -19,14 +19,22 @@ export class EcoLearnService {
 
   search$(
     title: string = '',
+    contentType: string = '',
+    categories: string = '',
+    likedOnly: boolean = false,
+    savedOnly: boolean = false,
     sortBy: string = '',
     sortOrder: string = '',
     page: number = 0,
   ): Observable<CustomHttpResponse<EcoLearnPageResponse>> {
     let params = new HttpParams()
       .set('title', title)
-      .set('sortBy', sortBy)
+      .set('contentType', contentType)
+      .set('categories', categories)
+      .set('likedOnly', likedOnly)
+      .set('savedOnly', savedOnly)
       .set('sortOrder', sortOrder)
+      .set('sortBy', sortBy)
       .set('page', page.toString());
 
     console.log(params)

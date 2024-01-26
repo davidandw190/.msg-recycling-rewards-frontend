@@ -1,14 +1,13 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, signal} from '@angular/core';
 import {
   BehaviorSubject,
   catchError,
-  combineLatest,
   debounceTime,
   distinctUntilChanged,
   filter, forkJoin,
   map,
   Observable,
-  of,
+  of, pipe,
   startWith,
   Subject,
   switchMap,
@@ -48,6 +47,8 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
 
   searchForm: FormGroup;
 
+  activeTab: string = 'all';
+
   resourceForm: FormGroup;
 
   availableCategories: string[] = [];
@@ -73,10 +74,11 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initializeForm();
-    this.fetchAuxiliaryData();
     this.initializeSearch();
-    this.searchVouchers();
-    this.setupSearchObservable();
+    this.fetchAuxiliaryData();
+    this.searchEducationalResources();
+    this.setupReactiveSearch()
+
   }
 
   ngOnDestroy(): void {
@@ -85,44 +87,61 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
   }
 
   updateActiveTab(activeTab: string): void {
-    let redeemed: boolean | null = null;
-    let expired: boolean | null = null;
+    let likedOnly: boolean | null = null;
+    let savedOnly: boolean | null = null;
 
     switch (activeTab) {
-      case 'Redeemed':
-        redeemed = true;
+      case 'all':
+        likedOnly = false;
+        savedOnly = false;
         break;
-      case 'Expired':
-        expired = true;
+      case 'liked':
+        likedOnly = true;
+        savedOnly = false;
         break;
-      case 'Available':
-        redeemed = false;
-        expired = false;
+      case 'saved':
+        likedOnly = false;
+        savedOnly = true;
         break;
-      case 'All Vouchers':
-        break;
-
       default:
         break;
     }
 
-    this.searchForm.get('redeemed').setValue(redeemed);
-    this.searchForm.get('expired').setValue(expired);
+    this.searchForm.get('likedOnly').setValue(likedOnly);
+    this.searchForm.get('savedOnly').setValue(savedOnly);
 
-    this.searchVouchers();
+    this.searchEducationalResources();
   }
 
-  searchVouchers(): void {
+  private initializeForm(): void {
+    this.searchForm = this.formBuilder.group({
+      title: [''],
+      contentType: [''],
+      categories: [''],
+      sortBy: ['createdAt'],
+      sortOrder: ['desc'],
+      likedOnly: [false],
+      savedOnly: [false],
+    });
+  }
 
-    const { title, sortBy, sortOrder } = this.searchForm.value;
+  searchEducationalResources(): void {
+
+    const { title, contentType, likedOnly, savedOnly, sortBy, sortOrder } = this.searchForm.value;
+    const selectedCategories = this.selectedCategories.join(',');
     const page = this.currentPageSubject.value;
 
     this.isLoadingSubject.next(true);
 
     this.ecoLearnService
-      .search$(title, sortBy, sortOrder, page)
+      .search$(title, contentType, '', likedOnly, savedOnly, sortBy, sortOrder, page)
       .pipe(
-        tap((response) => this.dataSubject.next(response)),
+        tap((response) =>  {
+          console.log(response)
+          this.availableCategories = [...response.data.availableCategories] || []
+          this.availableContentTypes = [...response.data.availableContentTypes] || []
+          this.dataSubject.next(response)
+        }),
         catchError((error: string) => of({ dataState: DataState.ERROR, error }))
       )
       .subscribe();
@@ -150,22 +169,20 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
     this.router.navigate(["/centers/new"])
   }
 
-  private initializeForm(): void {
-    this.searchForm = this.formBuilder.group({
-      title: [''],
-      categories: [''],
-      contentTypes: [''],
-      sortBy: ['createdAt'],
-      sortOrder: ['desc'],
-    });
-  }
-
   private initializeSearch(): void {
     this.ecoLearnState$ = this.dataSubject.pipe(
-      map((response) => ({ dataState: DataState.LOADED, appData: response })),
+      map((response) => {
+        // this.availableCategories = [...response.data.availableCategories] || [];
+        // this.availableContentTypes = [...response.data.availableContentTypes] || [];
+        // this.dataSubject.next(response);
+        return { dataState: DataState.LOADED, appData: response }
+      }
+      ),
       startWith({ dataState: DataState.LOADING }),
       catchError((error: string) => of({ dataState: DataState.ERROR, error }))
     );
+
+    console.log("LOADED")
   }
 
   private fetchAuxiliaryData(): void {
@@ -175,64 +192,81 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
     })
       .pipe(
         takeUntil(this.destroy$),
-        tap(({ availableCategories, availableContentTypes }) => {
-          this.availableCategories = availableCategories;
-          this.availableContentTypes = availableContentTypes;
+        tap((response) => {
+          this.availableCategories = [...response.availableCategories] || [];
+          this.availableContentTypes = [...response.availableContentTypes] || [];
+
+          console.log(" >>>>>>>>>>>>" + this.availableCategories)
         })
       )
       .subscribe();
   }
 
-  private setupSearchObservable(): void {
+  private performSearch(): Observable<CustomHttpResponse<EcoLearnPageResponse>> {
 
-    this.searchForm.get('title').valueChanges
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        tap(() => this.isLoadingSubject.next(true)),
-        switchMap(() =>
-          this.ecoLearnService.search$(
-            this.searchForm.get('title').value,
-            this.searchForm.get('sortBy').value,
-            this.searchForm.get('sortOrder').value,
-            0,
-          )
-        ),
-        catchError((error: string) => {
-          console.error(error);
-          return of({ dataState: DataState.ERROR, error });
-        }),
-        tap((response) => this.handleSearch(response)),
-        takeUntil(this.destroy$)
-      )
-      .subscribe();
+    return this.ecoLearnService.search$(
+      this.searchForm.get('title').value,
+      this.searchForm.get('contentType').value,
+      this.selectedCategories.join(','),
+      this.searchForm.get('likedOnly').value,
+      this.searchForm.get('savedOnly').value,
+      this.searchForm.get('sortBy').value,
+      this.searchForm.get('sortOrder').value,
+      0
+    ).pipe(
+      catchError(error => {
+        console.error(error);
+        return of(null);
+      })
+    );
+  }
 
-    this.searchForm.get('categories').valueChanges
-      .pipe(
-        debounceTime(100),
-        distinctUntilChanged(),
-        tap(selectedCategory => this.onSelectCategory(selectedCategory)),
-        filter(() => false)
-      )
+  private setupReactiveSearch(): void {
 
-    combineLatest([
-      this.searchForm.valueChanges.pipe(debounceTime(100), distinctUntilChanged()),
-      this.searchForm.get('title').valueChanges.pipe(debounceTime(100), distinctUntilChanged()),
-      this.searchForm.get('sortBy').valueChanges.pipe(debounceTime(100), distinctUntilChanged()),
-      this.searchForm.get('sortOrder').valueChanges.pipe(debounceTime(100), distinctUntilChanged())
-    ])
-      .pipe(
-        tap(() => this.isLoadingSubject.next(true)),
-        switchMap(([title, sortBy, sortOrder]) =>
-          this.ecoLearnService.search$(title, sortBy, sortOrder, 0)
-        ),
-        catchError((error: string) => {
-          console.error(error);
-          return of({ dataState: DataState.ERROR, error });
-        }),
-        takeUntil(this.destroy$)
-      )
-      .subscribe((response) => this.handleSearch(response));
+    this.searchForm.get('title').valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(title => this.performSearch()),
+      takeUntil(this.destroy$)
+    ).subscribe(response => this.handleSearch(response));
+
+    this.searchForm.get('contentType').valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      filter(contentType => this.availableContentTypes.includes(contentType)),
+      switchMap(contentType => this.performSearch()),
+      takeUntil(this.destroy$)
+    ).subscribe(response => this.handleSearch(response));
+
+    this.searchForm.get('likedOnly').valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(likedOnly => this.performSearch()),
+      takeUntil(this.destroy$)
+    ).subscribe(response => this.handleSearch(response));
+
+    this.searchForm.get('savedOnly').valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(savedOnly => this.performSearch()),
+      takeUntil(this.destroy$)
+    ).subscribe(response => this.handleSearch(response));
+
+    this.searchForm.get('sortOrder').valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(savedOnly => this.performSearch()),
+      takeUntil(this.destroy$)
+    ).subscribe(response => this.handleSearch(response));
+
+
+    this.searchForm.get('sortBy').valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(savedOnly => this.performSearch()),
+      takeUntil(this.destroy$)
+    ).subscribe(response => this.handleSearch(response));
+
   }
 
 
@@ -243,7 +277,13 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        code: this.searchForm.get('title').value
+        title: this.searchForm.get('title').value,
+        contentType: this.searchForm.get('contentType').value,
+        categories: this.selectedCategories.join(','),
+        likedOnly: this.searchForm.get('likedOnly').value,
+        savedOnly: this.searchForm.get('savedOnly').value,
+        sortBy: this.searchForm.get('sortBy').value,
+        sortOrder: this.searchForm.get('sortOrder').value,
       },
       queryParamsHandling: 'merge',
     });
@@ -257,10 +297,13 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
     const selectedCategory = event.item;
     this.searchForm.get("categories").setValue("")
 
-    // Check if the category is not already in the list
-    if (!this.selectedCategories.includes(selectedCategory)) {
-      this.selectedCategories.push(selectedCategory);
-      this.searchVouchers();
+    this.addCategoryIfNotExists(selectedCategory);
+  }
+
+  addCategoryIfNotExists(category: string): void {
+    if (!this.selectedCategories.includes(category)) {
+      this.selectedCategories.push(category);
+      this.searchEducationalResources();
     }
   }
 
@@ -278,9 +321,21 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Method to submit the new resource
+  resetFilters(): void {
+    this.isLoadingSubject.next(true)
+    this.searchForm.reset()
+    this.searchEducationalResources();
+    this.selectedCategories = [];
+    this.initializeForm()
+    this.initializeSearch();
+    this.setupReactiveSearch();
+  }
   submitResource(): void {
     if (this.resourceForm.valid) {
     }
+  }
+
+  onRemoveCategory(category: string): void {
+    this.selectedCategories = this.selectedCategories.filter((c) => c !== category);
   }
 }
