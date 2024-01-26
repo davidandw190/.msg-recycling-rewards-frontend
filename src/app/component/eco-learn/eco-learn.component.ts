@@ -26,6 +26,7 @@ import {TypeaheadMatch} from "ngx-bootstrap/typeahead";
 import {MatDialog} from "@angular/material/dialog";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {EducationalResource} from "../../interface/educational-resource";
+import {ShareResourceComponent} from "../share-resource/share-resource.component";
 
 @Component({
   selector: 'app-eco-learn',
@@ -367,6 +368,10 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
   }
 
   shareResource(resource: EducationalResource) {
-
+    const dialogRef = this.dialog.open(ShareResourceComponent, {
+      width: '600px',
+      data: { resourceLink: resource.media
+      }
+    });
   }
 }

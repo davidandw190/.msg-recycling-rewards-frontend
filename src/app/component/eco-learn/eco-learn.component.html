@@ -9,7 +9,7 @@
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
             <li class="breadcrumb-item"><a [routerLink]="['/eco-learn']">EcoLearn</a></li>
-            <li class="breadcrumb-item active" aria-current="page">New</li>
+            <li class="breadcrumb-item active" aria-current="page">Feed</li>
           </ol>
         </nav>
 
@@ -40,7 +40,6 @@
           </div>
 
           <!-- New Resource Form -->
-
           <ng-template #postsFeed>
             <div class="posts-container">
               <ng-container *ngFor="let resource of state?.appData?.data?.page?.content">
@@ -124,13 +123,30 @@
 
 
             <form [formGroup]="searchForm" (submit)="searchEducationalResourcesSubmit($event)">
-              <input formControlName="title" placeholder="Search by title" class="form-control">
+              <input formControlName="title"
+                     placeholder="Search by title"
+                     class="form-control">
 
-              <input type="text" formControlName="contentType" class="form-control" id="contentType" [typeahead]="availableContentTypes" [minLength]="0" [typeaheadWaitMs]="10" placeholder="Select Post Content Type">
+              <input type="text"
+                     formControlName="contentType"
+                     class="form-control"
+                     id="contentType"
+                     [typeahead]="availableContentTypes"
+                     [minLength]="0"
+                     [typeaheadWaitMs]="10"
+                     placeholder="Select Post Content Type">
 
 
               <!-- Categories Filter -->
-              <input type="text" formControlName="categories" class="form-control" id="categories" [typeahead]="availableCategories" [minLength]="0" [typeaheadWaitMs]="10" placeholder="Select Category" (typeaheadOnSelect)="onSelectCategory($event)">
+              <input type="text"
+                     formControlName="categories"
+                     class="form-control"
+                     id="categories"
+                     [typeahead]="availableCategories"
+                     [minLength]="0"
+                     [typeaheadWaitMs]="10"
+                     placeholder="Select Category"
+                     (typeaheadOnSelect)="onSelectCategory($event)">
 
               <!-- Sorting Options -->
               <select formControlName="sortBy" class="form-control">
@@ -149,8 +165,8 @@
               <button type="submit"
                       class="btn btn-outline-secondary"
                       (click)="resetFilters()"
-                      [matTooltipShowDelay]="800"
-                      [matTooltipHideDelay]="800"
+                      [matTooltipShowDelay]="500"
+                      [matTooltipHideDelay]="500"
                       matTooltip="Clear all applied filters">
                 Clear Filters
               </button>

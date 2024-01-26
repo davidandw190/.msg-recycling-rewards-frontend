@@ -1,0 +1,36 @@
+<!-- share-modal.component.html -->
+<h2 mat-dialog-title>Share this Eco-Learn Post</h2>
+<mat-dialog-content class="mat-typography">
+  <p>Share this post using one of the following methods or copy the link below:</p>
+  <mat-form-field appearance="fill" class="link-display">
+    <mat-label>Post Link</mat-label>
+    <input matInput [value]="data?.resourceLink"
+           (click)="copyToClipboard(data?.resourceLink)"
+           ngxClipboard
+           [cbContent]="data?.resourceLink"
+           readonly>
+    <a mat-button matSuffix  aria-label="Copy link" (click)="copyToClipboard(data?.resourceLink)">
+      <mat-icon>content_copy</mat-icon>
+    </a>
+  </mat-form-field>
+  <div class="sharing-options">
+    <button mat-raised-button class="share-option facebook-share" (click)="shareOnSocialMedia('facebook')">
+      <i class="fa-brands fa-facebook-f"></i> Share on Facebook
+    </button>
+
+    <button mat-raised-button class="share-option instagram-share" (click)="shareOnSocialMedia('instagram')">
+      <i class="fa-brands fa-instagram"></i> Share on Instagram
+    </button>
+
+    <button mat-raised-button class="share-option discord-share" (click)="shareOnSocialMedia('discord')">
+      <i class="fa-brands fa-discord"></i> Share on Discord
+    </button>
+
+    <button mat-raised-button class="share-option whatsapp-share" (click)="shareOnSocialMedia('whatsapp')">
+      <i class="fa-brands fa-whatsapp"></i> Share on WhatsApp
+    </button>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>
