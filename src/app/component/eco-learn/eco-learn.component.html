@@ -113,7 +113,25 @@
             </div>
 
 
+            <nav *ngIf="state?.appData?.data?.page.totalPages > 0" class="pagination-container">
+              <ngb-pagination
+                [(page)]="currentPage"
+                [collectionSize]="state?.appData?.data?.page.totalElements"
+                [maxSize]="3"
+                [rotate]="true"
+                [boundaryLinks]="false"
+                [ellipses]="true"
+                (pageChange)="goToPage($event)"
+                class="pagination justify-content-end"
+              >
+                <ng-template ngbPaginationPrevious><i class="fa-solid fa-angle-left"></i> Prev</ng-template>
+                <ng-template ngbPaginationNext>Next <i class="fa-solid fa-angle-right"></i></ng-template>
+              </ngb-pagination>
+            </nav>
+
           </ng-template>
+
+
 
 
           <aside class="filter-sidebar">
@@ -202,6 +220,9 @@
           </aside>
         </div>
       </div>
+
     </section>
+
+
   </ng-container>
 </ng-container>

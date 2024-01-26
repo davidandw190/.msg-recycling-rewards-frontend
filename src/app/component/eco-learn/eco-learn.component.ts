@@ -136,7 +136,7 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
     this.isLoadingSubject.next(true);
 
     this.ecoLearnService
-      .search$(title, contentType, '', likedOnly, savedOnly, sortBy, sortOrder, page)
+      .search$(title, contentType, selectedCategories, likedOnly, savedOnly, sortBy, sortOrder, page)
       .pipe(
         tap((response) =>  {
           console.log(response)
@@ -157,14 +157,26 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
     const { redeemed, expired } = this.searchForm.value;
 
     this.isLoadingSubject.next(true);
-
-
   }
 
   goToPage(pageNumber?: number): void {
-    const { code, sortBy, sortOrder, redeemed, expired } = this.searchForm.value;
+    const { title, contentType, likedOnly, savedOnly, sortBy, sortOrder} = this.searchForm.value;
+    const selectedCategories: string[] = this.selectedCategories;
 
     this.isLoadingSubject.next(true);
+
+
+    this.ecoLearnService
+      .search$(title, contentType, selectedCategories.join(','), likedOnly, savedOnly, sortBy, sortOrder, pageNumber - 1)
+      .pipe(
+        tap((response) => {
+          this.isLoadingSubject.next(false);
+          this.dataSubject.next(response);
+          this.currentPageSubject.next(pageNumber - 1);
+        }),
+        catchError((error: string) => of({ dataState: DataState.ERROR, error }))
+      )
+      .subscribe();
   }
 
   redirectNewCenter() {
