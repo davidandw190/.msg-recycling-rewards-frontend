@@ -1,27 +1,27 @@
 .eco-learn-container {
   display: flex;
-  justify-content: center; /* Center the main content */
-  align-items: flex-start; /* Align items at the start */
-  gap: 50px; /* Add some space between the posts and the aside */
+  justify-content: center;
+  align-items: flex-start;
+  gap: 50px;
   padding: 15px;
 }
 
 .posts-container {
-  flex: 1; /* Allow the container to grow, maintaining its central position */
-  max-width: 850px; /* Maximum width for the posts container */
+  flex: 1;
+  max-width: 850px;
 }
 
 .filter-sidebar {
-  width: 400px; /* Simplify by setting a fixed width */
+  width: 400px;
   padding: 25px;
 
   margin-right: -250px;
-  box-shadow: none; /* Remove shadow for a simpler look */
-  position: sticky; /* Keep it sticky for better navigation */
-  top: 100px; /* Distance from the top */
+  box-shadow: none;
+  position: sticky;
+  top: 100px;
   /*border: 1px solid #860909; !* Add a light border for a clean, subtle separation *!*/
   border-radius: 8px;
-  background-color: #fff; /* Light background for the sidebar */
+  background-color: #fff;
   height: fit-content;
 }
 
@@ -97,51 +97,56 @@
   border-top: 1px solid #eee;
 }
 
-.icon-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 5px;
-  font-size: 15px;
-  color: #A01540FF;
-  transition: color 0.2s;
-}
-
-.icon-btn:hover {
-  color: #28a745;
-}
-
-
 .post-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid #eee;
-  padding: 15px 25px;
+  padding: 15px 20px;
 }
 
-.left-icons, .right-icons {
+.left-icons {
   display: flex;
+  align-items: center;
+}
+
+.right-icons {
+  display: flex;
+  align-items: center;
+}
+
+.icon-btn i:hover {
+  transform: scale(1.1);
 }
 
 .icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 5px;
-  margin-right: 15px;
-  font-size: 25px;
-  color: #A01540FF;
-  transition: transform 0.2s ease-in-out;
+  transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
+  color: #860909;
+  font-size: 20px;
+  margin: 0 8px;
 }
+
 
 .icon-btn:hover {
-  transform: scale(1.2);
+  color: #1aff00;
+  transform: translateY(-2px);
 }
 
-.like-btn {
-  animation: likeAnimation 0.2s ease-in-out forwards;
+.icon-text {
+  margin-left: 8px;
+  font-weight: bold;
+  color: #333;
+  font-size: 18px;
+  margin-bottom: 0;
+  margin-top: 0;
 }
+
 
 .share-btn {
   animation: shareAnimation 0.2s ease-in-out forwards;
@@ -167,35 +172,31 @@
   margin-top: 20px;
 }
 
-/* Responsive adjustments */
 @media (max-width: 992px) {
   .eco-learn-container {
     flex-direction: column;
-    align-items: center; /* Center items vertically for narrow screens */
+    align-items: center;
   }
 
   .filter-sidebar {
-    order: -1; /* Sidebar above the posts on narrow screens */
-    flex-basis: 100%; /* Full width for the sidebar */
+    order: -1;
+    flex-basis: 100%;
     max-height: none;
-    position: static; /* Remove sticky positioning on smaller screens */
-    margin-bottom: 20px; /* Add some space below the sidebar */
+    position: static;
+    margin-bottom: 20px;
   }
 }
 
 
-/* Simplify button and form elements */
 input, select, button {
-  width: 100%; /* Full width for a clean, aligned look */
-  padding: 3px 5px; /* Sufficient padding for easy interaction */
-  margin-bottom: 10px; /* Space out elements */
-  /*border: 1px solid #ccc; !* Light border for definition *!*/
-  /*border-radius: 4px; !* Subtle rounding *!*/
-  /*background-color: white; !* Ensure background consistency *!*/
+  width: 100%;
+  padding: 3px 5px;
+  margin-bottom: 10px;
+
+  border-radius: 4px;
 }
 
 
-/* Keep the category chip styling simple and consistent with the form elements */
 .category-chip {
   display: inline-block;
   padding: 5px 15px;
@@ -203,20 +204,19 @@ input, select, button {
   margin-bottom: 10px;
   background-color: #007bff;
   color: white;
-  border-radius: 20px; /* Rounded edges for a friendly, clickable appearance */
+  border-radius: 20px;
   cursor: pointer;
 }
 
 
-/* Additional styles for category chips and form elements for cohesiveness */
 .category-chip {
   margin: 5px;
   padding: 5px 15px;
-  border-radius: 25px; /* More pronounced rounded corners for chips */
-  background-color: #17a2b8; /* A fresh, modern color */
+  border-radius: 25px;
+  background-color: #17a2b8;
   color: white;
   cursor: pointer;
-  transition: background-color 0.3s; /* Smooth transition for hover effect */
+  transition: background-color 0.3s;
 }
 
 .category-chip:hover {
@@ -229,11 +229,13 @@ input, select, button {
 }
 
 .nav-link {
+  width: 250px;
+  height: 50px;
+  font-size: 16px;
   margin-bottom: 5px;
+  margin-left: -200px;
   border-radius: 5px;
-  color: #495057;
-  /*background-color: #f8f9fa;*/
-  border: 1px solid #860909;
+  color: #860909;
 }
 
 .nav-link.active {
@@ -255,7 +257,7 @@ input, select, button {
   }
 
   .filter-sidebar {
-    order: -1; /* Move filters above content on small screens */
+    order: -1;
     width: 100%;
     margin-bottom: 20px;
   }
@@ -279,8 +281,9 @@ input, select, button {
 }
 
 .custom-chip {
-  padding: 0 3px;
-  font-size: 0.25rem; /* Smaller text */
-  height: 10px; /* Smaller height */
-  line-height: 10px; /* Adjust line height to vertically center the text */
+  padding: 0 2px;
+  font-size: 0.25rem;
+  height: 10px;
+  line-height: 10px;
 }
+

@@ -63,7 +63,7 @@
                     <a *ngIf="shouldCollapse(resource.content)"  class="view-more">View More</a>
                     <ng-container  *ngIf="resource.contentType !== 'VIDEO'" >
 
-                      <img [src]="resource.media" width="1080" height="480" class="img-responsive post-media" alt="">
+                      <img [src]="resource.media" width="780px" height="480px" class="img-responsive post-media" alt="">
                     </ng-container>
 
                     <ng-container *ngIf="resource.contentType === 'VIDEO'">
@@ -91,10 +91,23 @@
                       </vg-player>
                     </ng-container>
                   </div>
-                  <div class="post-footer">
-                    <button class="icon-btn"><i class="fas fa-thumbs-up"></i></button>
-                    <button class="icon-btn"><i class="fas fa-share-alt"></i></button>
-                    <button class="icon-btn"><i class="fas fa-bookmark"></i></button>
+                  <div class="post-footer left-icons">
+                    <button class="icon-btn" (click)="likeResource(resource)">
+                      <i *ngIf="!resource.likedByUser" class="fa-regular fa-heart"></i>
+                      <i *ngIf="resource.likedByUser" class="fa-solid fa-heart"></i>
+                      <p class="icon-text">{{ resource.likesCount }}</p>
+                    </button>
+
+                    <button class="icon-btn" (click)="shareResource(resource)">
+                      <i class="fa-solid fa-share"></i>
+                      <p class="icon-text">{{ resource.sharesCount }}</p>
+                    </button>
+
+                    <button class="icon-btn" (click)="saveResource(resource)">
+                      <i *ngIf="!resource.savedByUser" class="fa-regular fa-bookmark"></i>
+                      <i *ngIf="resource.savedByUser" class="fa-solid fa-bookmark"></i>
+                      <p class="icon-text">{{ resource.savesCount }}</p>
+                    </button>
                   </div>
                 </div>
               </ng-container>

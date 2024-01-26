@@ -25,6 +25,7 @@ import {EcoLearnService} from "../../service/eco-learn.service";
 import {TypeaheadMatch} from "ngx-bootstrap/typeahead";
 import {MatDialog} from "@angular/material/dialog";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {EducationalResource} from "../../interface/educational-resource";
 
 @Component({
   selector: 'app-eco-learn',
@@ -337,5 +338,35 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
 
   onRemoveCategory(category: string): void {
     this.selectedCategories = this.selectedCategories.filter((c) => c !== category);
+  }
+
+  likeResource(resource: EducationalResource) {
+    resource.likedByUser = !resource.likedByUser;
+
+    resource.likedByUser
+      ? resource.likesCount = resource.likesCount++
+      : resource.likesCount = resource.likesCount--;
+
+    this.ecoLearnService.engage$(resource.resourceId, 'LIKE').pipe(
+      takeUntil(this.destroy$),
+      catchError((error: string) => of({ dataState: DataState.ERROR, error }))
+    ).subscribe()
+  }
+
+  saveResource(resource: EducationalResource) {
+    resource.savedByUser = !resource.savedByUser
+
+    resource.savedByUser
+      ? resource.savesCount = resource.savesCount++
+      : resource.savesCount = resource.savesCount--;
+
+    this.ecoLearnService.engage$(resource.resourceId, 'SAVE').pipe(
+      takeUntil(this.destroy$),
+      catchError((error: string) => of({ dataState: DataState.ERROR, error }))
+    ).subscribe()
+  }
+
+  shareResource(resource: EducationalResource) {
+
   }
 }

@@ -76,6 +76,13 @@ export class EcoLearnService {
         catchError(this.handleError)
       );
 
+  engage$ = (resourceId: number, action: string) => <Observable<CustomHttpResponse<ResourceNewPageResponse>>>
+    this.http.post<CustomHttpResponse<void>>
+    (`${this.server}/eco-learn/engage/${action.toUpperCase()}/${resourceId}`, {})
+      .pipe(
+        tap(console.log),
+        catchError(this.handleError)
+      );
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.log(error);
@@ -92,6 +99,7 @@ export class EcoLearnService {
     }
     return throwError(() => errorMessage);
   }
+
 
 
 }
