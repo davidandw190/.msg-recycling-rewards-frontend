@@ -1,7 +1,7 @@
 import {NgModule} from "@angular/core";
 import {RouterModule} from "@angular/router";
 import {CommonModule, NgOptimizedImage} from "@angular/common";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {AcceptedMaterialsPipe} from "../pipes/accepted-materials.pipe";
 import {RewardPointsPipe} from "../pipes/reward-points.pipe";
@@ -19,6 +19,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatMenuModule} from "@angular/material/menu";
 import {VoucherStatusPipe} from "../pipes/voucher-status.pipe";
+import {TypeaheadModule} from "ngx-bootstrap/typeahead";
 
 @NgModule({
   declarations: [],
@@ -48,8 +49,10 @@ import {VoucherStatusPipe} from "../pipes/voucher-status.pipe";
     RouterModule,
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     NgOptimizedImage,
     NgbModule,
+    TypeaheadModule,
     BrowserAnimationsModule,
     MatButtonModule,
     MatSortModule,

@@ -2,10 +2,10 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
-import {LoginComponent} from './component/login/login.component';
-import {RegisterComponent} from './component/register/register.component';
-import {VerifyComponent} from './component/verify/verify.component';
-import {ResetPassComponent} from './component/reset-pass/reset-pass.component';
+import {LoginComponent} from './component/auth/login/login.component';
+import {RegisterComponent} from './component/auth/register/register.component';
+import {VerifyComponent} from './component/auth/verify/verify.component';
+import {ResetPassComponent} from './component/auth/reset-pass/reset-pass.component';
 import {ProfileComponent} from './component/profile/profile.component';
 import {HomeComponent} from './component/home/home.component';
 import {NavbarComponent} from './component/navbar/navbar.component';
@@ -40,14 +40,11 @@ import {ShareResourceComponent} from './component/share-resource/share-resource.
 import {CKEditorModule} from "@ckeditor/ckeditor5-angular";
 import {CoreModule} from "./core/core.module";
 import {SharedModule} from "./shared/shared.module";
+import {AuthModule} from "./component/auth/auth.module";
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
-    RegisterComponent,
-    VerifyComponent,
-    ResetPassComponent,
     ProfileComponent,
     HomeComponent,
     NavbarComponent,
@@ -68,11 +65,10 @@ import {SharedModule} from "./shared/shared.module";
   imports: [
     CoreModule,
     SharedModule,
+    AuthModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule,
-    TypeaheadModule,
     MatInputModule,
     MatSelectModule,
     NgMultiSelectDropDownModule,

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { DataState } from 'src/app/enum/data-state.enum';
 import {catchError, map, Observable, of, startWith} from "rxjs";
-import {RegistrationResponse} from "../../interface/registration-response";
-import {UserService} from "../../service/user.service";
+import {RegistrationResponse} from "../../../interface/registration-response";
+import {UserService} from "../../../service/user.service";
 import {NgForm} from "@angular/forms";
 
 @Component({

@@ -1,9 +1,9 @@
 import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
-import {LoginComponent} from "./component/login/login.component";
-import {RegisterComponent} from "./component/register/register.component";
-import {ResetPassComponent} from "./component/reset-pass/reset-pass.component";
-import {VerifyComponent} from "./component/verify/verify.component";
+import {LoginComponent} from "./component/auth/login/login.component";
+import {RegisterComponent} from "./component/auth/register/register.component";
+import {ResetPassComponent} from "./component/auth/reset-pass/reset-pass.component";
+import {VerifyComponent} from "./component/auth/verify/verify.component";
 import {ProfileComponent} from "./component/profile/profile.component";
 import {HomeComponent} from "./component/home/home.component";
 import {AuthenticationGuard} from "./guard/authentication.guard";

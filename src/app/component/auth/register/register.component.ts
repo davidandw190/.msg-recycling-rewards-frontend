@@ -13,10 +13,10 @@ import {
   switchMap,
   tap
 } from "rxjs";
-import {RegistrationResponse} from "../../interface/registration-response";
-import {UserService} from "../../service/user.service";
+import {RegistrationResponse} from "../../../interface/registration-response";
+import {UserService} from "../../../service/user.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {LocationService} from "../../service/location.service";
+import {LocationService} from "../../../service/location.service";
 import {TypeaheadMatch} from "ngx-bootstrap/typeahead";
 
 @Component({
