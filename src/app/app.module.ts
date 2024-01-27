@@ -57,6 +57,7 @@ import {MatLegacyChipsModule} from "@angular/material/legacy-chips";
 import { ShareResourceComponent } from './component/share-resource/share-resource.component';
 import {MatExpansionModule} from "@angular/material/expansion";
 import {CKEditorModule} from "@ckeditor/ckeditor5-angular";
+import {CoreModule} from "./core/core.module";
 
 @NgModule({
   declarations: [
@@ -84,6 +85,7 @@ import {CKEditorModule} from "@ckeditor/ckeditor5-angular";
 
   ],
   imports: [
+    CoreModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
@@ -124,14 +126,10 @@ import {CKEditorModule} from "@ckeditor/ckeditor5-angular";
     CKEditorModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-    // { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
-    // HttpCacheService,
     RewardPointsPipe,
     SustainabilityIndexPipe,
     VoucherStatusPipe
   ],
-  bootstrap: [AppComponent],
-  exports: [HighlightSearchPipe]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
