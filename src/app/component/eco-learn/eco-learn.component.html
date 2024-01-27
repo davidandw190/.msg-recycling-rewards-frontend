@@ -62,34 +62,42 @@
                     <a *ngIf="isContentTooLong(resource.content)" (click)="toggleContent(resource.resourceId.toString())" class="view-more">
                       <span class="content-collapse-trigger">{{ isExpanded[resource.resourceId] ? 'View Less' : 'View More' }}</span>
                     </a>
-                    <ng-container  *ngIf="resource.contentType !== 'VIDEO' && resource.media != null"  >
+                    <ng-container  *ngIf="resource.contentType !== 'VIDEO' && resource.mediaUrl != null"  >
 
-                      <img [src]="resource.media" width="780px" height="480px" class="img-responsive post-media" alt="">
+                      <img [src]="resource.mediaUrl" width="780px" height="480px" class="img-responsive post-media" loading="eager" alt="">
                     </ng-container>
 
                     <ng-container *ngIf="resource.contentType === 'VIDEO'">
 
-                      <vg-player [style.width]="'780px'" [style.height]="'480px'">
-                        <vg-overlay-play></vg-overlay-play>
-                        <vg-buffering></vg-buffering>
-                        <vg-scrub-bar>
-                          <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
-                          <!--                    <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>-->
-                        </vg-scrub-bar>
-                        <vg-controls>
-                          <vg-play-pause></vg-play-pause>
-                          <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
-                          <vg-scrub-bar style="pointer-events: none;"></vg-scrub-bar>
-                          <vg-track-selector></vg-track-selector>
-                          <vg-mute></vg-mute>
-                          <vg-volume></vg-volume>
-                          <vg-fullscreen></vg-fullscreen>
-                        </vg-controls>
-                        <vg-buffering></vg-buffering>
-                        <video  [vgMedia]="$any(media)" #media id="resourceVideo" preload="auto" crossorigin>
-                          <source [src]="resource.media" type="video/mp4">
-                        </video>
-                      </vg-player>
+                      <ng-container *ngIf="resource.isExternalMedia" class="embed-responsive embed-responsive-16by9">
+                        <iframe [src]="sanitizeUrl(convertToEmbedUrl(resource.mediaUrl))"   loading="lazy" class="embed-responsive-item" width="780px" height="480px" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen></iframe>
+                      </ng-container>
+
+                      <ng-container *ngIf="!resource.isExternalMedia">
+                        <vg-player [style.width]="'780px'" [style.height]="'480px'">
+                          <vg-overlay-play></vg-overlay-play>
+                          <vg-buffering></vg-buffering>
+                          <vg-scrub-bar>
+                            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                            <!--                    <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>-->
+                          </vg-scrub-bar>
+                          <vg-controls>
+                            <vg-play-pause></vg-play-pause>
+                            <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+                            <vg-scrub-bar style="pointer-events: none;"></vg-scrub-bar>
+                            <vg-track-selector></vg-track-selector>
+                            <vg-mute></vg-mute>
+                            <vg-volume></vg-volume>
+                            <vg-fullscreen></vg-fullscreen>
+                          </vg-controls>
+                          <vg-buffering></vg-buffering>
+                          <video  [vgMedia]="$any(media)" #media id="resourceVideo" preload="auto" crossorigin>
+                            <source [src]="resource.mediaUrl" type="video/mp4">
+                          </video>
+                        </vg-player>
+                      </ng-container>
+
                     </ng-container>
                   </div>
                   <div class="post-footer left-icons">

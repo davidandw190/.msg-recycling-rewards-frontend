@@ -1,13 +1,14 @@
-import {Component, OnDestroy, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {
   BehaviorSubject,
   catchError,
   debounceTime,
   distinctUntilChanged,
-  filter, forkJoin,
+  filter,
+  forkJoin,
   map,
   Observable,
-  of, pipe,
+  of,
   startWith,
   Subject,
   switchMap,
@@ -16,7 +17,7 @@ import {
 } from "rxjs";
 import {AppState} from "../../interface/app-state";
 import {CustomHttpResponse} from "../../interface/custom-http-response";
-import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DataState} from '../../enum/data-state.enum';
 import {ClipboardService} from "ngx-clipboard";
@@ -24,7 +25,6 @@ import {EcoLearnPageResponse} from "../../interface/eco-learn-page-response";
 import {EcoLearnService} from "../../service/eco-learn.service";
 import {TypeaheadMatch} from "ngx-bootstrap/typeahead";
 import {MatDialog} from "@angular/material/dialog";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {EducationalResource} from "../../interface/educational-resource";
 import {ShareResourceComponent} from "../share-resource/share-resource.component";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
@@ -405,8 +405,24 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
   shareResource(resource: EducationalResource) {
     const dialogRef = this.dialog.open(ShareResourceComponent, {
       width: '600px',
-      data: { resourceLink: resource.media
+      data: { resourceLink: resource.mediaUrl
       }
     });
+  }
+
+  sanitizeUrl(url: string) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  convertToEmbedUrl(youtubeUrl: string): string {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = youtubeUrl.match(regExp);
+
+    if (match && match[2].length === 11) {
+      return `https://www.youtube.com/embed/${match[2]}`;
+    } else {
+      // return a default value or handle errors as appropriate
+      return 'about:blank';
+    }
   }
 }
