@@ -10,54 +10,36 @@ import {ProfileComponent} from './component/profile/profile.component';
 import {HomeComponent} from './component/home/home.component';
 import {NavbarComponent} from './component/navbar/navbar.component';
 import {AppRoutingModule} from "./app-routing.module";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {TokenInterceptor} from "./interceptor/token.interceptor";
-import {NgOptimizedImage} from "@angular/common";
+import {ReactiveFormsModule} from "@angular/forms";
+import {HttpClientModule} from "@angular/common/http";
 import {CenterDetailsComponent} from './component/center-details/center-details.component';
 import {CenterNewComponent} from './component/center-new/center-new.component';
 import {StatsComponent} from './component/stats/stats.component';
-import {NgbModule, NgbNavModule, NgbTimepickerModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNavModule, NgbTimepickerModule} from '@ng-bootstrap/ng-bootstrap';
 import {CenterAllComponent} from './component/center-all/center-all.component';
 import {HighlightSearchPipe} from "./pipes/highlight-search.pipe";
 import {TypeaheadModule} from "ngx-bootstrap/typeahead";
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
-import {AcceptedMaterialsPipe} from "./pipes/accepted-materials.pipe";
-import {MatButtonModule} from "@angular/material/button";
-import {MatSortModule} from "@angular/material/sort";
-import {MatChipsModule} from "@angular/material/chips";
-import {MatIconModule} from "@angular/material/icon";
-import {MatSlideToggleModule} from "@angular/material/slide-toggle";
-import {MatBadgeModule} from "@angular/material/badge";
-import {SustainabilityIndexPipe} from "./pipes/sustainability-index.pipe";
-import {RewardPointsPipe} from "./pipes/reward-points.pipe";
-import {UnitConversionPipe} from "./pipes/unit-converter.pipe";
-import { VouchersComponent } from './component/vouchers/vouchers.component';
-import { VoucherDetailsComponent } from './component/voucher-details/voucher-details.component';
-import {MatTabsModule} from "@angular/material/tabs";
+import {VouchersComponent} from './component/vouchers/vouchers.component';
+import {VoucherDetailsComponent} from './component/voucher-details/voucher-details.component';
 import {VoucherStatusPipe} from "./pipes/voucher-status.pipe";
 import {ClipboardModule} from "ngx-clipboard";
-import {MatTooltipModule} from "@angular/material/tooltip";
-import {MatDialogModule} from "@angular/material/dialog";
-import { VoucherGuidelinesComponent } from './component/voucher-guidelines/voucher-guidelines.component';
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {MatMenuModule} from "@angular/material/menu";
-import { LeaderboardComponent } from './component/leaderboard/leaderboard.component';
-import { EcoLearnComponent } from './component/eco-learn/eco-learn.component';
-import { RecyclingGuidelinesComponent } from './component/recycling-guidelines/recycling-guidelines.component';
-import { EcoLearnNewComponent } from './component/eco-learn-new/eco-learn-new.component';
+import {VoucherGuidelinesComponent} from './component/voucher-guidelines/voucher-guidelines.component';
+import {LeaderboardComponent} from './component/leaderboard/leaderboard.component';
+import {EcoLearnComponent} from './component/eco-learn/eco-learn.component';
+import {RecyclingGuidelinesComponent} from './component/recycling-guidelines/recycling-guidelines.component';
+import {EcoLearnNewComponent} from './component/eco-learn-new/eco-learn-new.component';
 import {VgCoreModule} from "@videogular/ngx-videogular/core";
 import {VgOverlayPlayModule} from "@videogular/ngx-videogular/overlay-play";
 import {VgBufferingModule} from "@videogular/ngx-videogular/buffering";
 import {VgControlsModule} from "@videogular/ngx-videogular/controls";
 import {MatLegacyChipsModule} from "@angular/material/legacy-chips";
-import { ShareResourceComponent } from './component/share-resource/share-resource.component';
-import {MatExpansionModule} from "@angular/material/expansion";
+import {ShareResourceComponent} from './component/share-resource/share-resource.component';
 import {CKEditorModule} from "@ckeditor/ckeditor5-angular";
 import {CoreModule} from "./core/core.module";
+import {SharedModule} from "./shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -73,7 +55,6 @@ import {CoreModule} from "./core/core.module";
     CenterDetailsComponent,
     CenterNewComponent,
     StatsComponent,
-    HighlightSearchPipe,
     VouchersComponent,
     VoucherDetailsComponent,
     VoucherGuidelinesComponent,
@@ -86,49 +67,27 @@ import {CoreModule} from "./core/core.module";
   ],
   imports: [
     CoreModule,
+    SharedModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    NgOptimizedImage,
-    NgbModule,
     ReactiveFormsModule,
     TypeaheadModule,
     MatInputModule,
     MatSelectModule,
     NgMultiSelectDropDownModule,
-    AcceptedMaterialsPipe,
     NgbTimepickerModule,
-    MatButtonModule,
-    MatSortModule,
-    MatChipsModule,
     ClipboardModule,
-    MatIconModule,
-    MatSlideToggleModule,
-    MatBadgeModule,
-    RewardPointsPipe,
-    SustainabilityIndexPipe,
-    UnitConversionPipe,
     NgbNavModule,
-    MatTabsModule,
     VoucherStatusPipe,
-    MatTooltipModule,
-    MatDialogModule,
-    MatProgressSpinnerModule,
-    MatMenuModule,
     VgCoreModule,
     VgOverlayPlayModule,
     VgBufferingModule,
     VgControlsModule,
     MatLegacyChipsModule,
-    MatExpansionModule,
     CKEditorModule
   ],
   providers: [
-    RewardPointsPipe,
-    SustainabilityIndexPipe,
-    VoucherStatusPipe
   ],
   bootstrap: [AppComponent]
 })
