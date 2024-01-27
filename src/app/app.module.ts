@@ -2,23 +2,12 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
-import {LoginComponent} from './component/auth/login/login.component';
-import {RegisterComponent} from './component/auth/register/register.component';
-import {VerifyComponent} from './component/auth/verify/verify.component';
-import {ResetPassComponent} from './component/auth/reset-pass/reset-pass.component';
 import {ProfileComponent} from './component/profile/profile.component';
 import {HomeComponent} from './component/home/home.component';
-import {NavbarComponent} from './component/navbar/navbar.component';
 import {AppRoutingModule} from "./app-routing.module";
-import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
-import {CenterDetailsComponent} from './component/centers/center-details/center-details.component';
-import {CenterNewComponent} from './component/centers/center-new/center-new.component';
 import {StatsComponent} from './component/stats/stats.component';
 import {NgbNavModule, NgbTimepickerModule} from '@ng-bootstrap/ng-bootstrap';
-import {CenterAllComponent} from './component/centers/center-all/center-all.component';
-import {HighlightSearchPipe} from "./pipes/highlight-search.pipe";
-import {TypeaheadModule} from "ngx-bootstrap/typeahead";
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
@@ -41,15 +30,14 @@ import {CKEditorModule} from "@ckeditor/ckeditor5-angular";
 import {CoreModule} from "./core/core.module";
 import {SharedModule} from "./shared/shared.module";
 import {AuthModule} from "./component/auth/auth.module";
-import {CentersRoutingModule} from "./component/centers/centers-routing.module";
 import {CentersModule} from "./component/centers/centers.module";
+import {NavbarModule} from "./component/navbar/navbar.module";
 
 @NgModule({
   declarations: [
     AppComponent,
     ProfileComponent,
     HomeComponent,
-    NavbarComponent,
     StatsComponent,
     VouchersComponent,
     VoucherDetailsComponent,
@@ -81,7 +69,8 @@ import {CentersModule} from "./component/centers/centers.module";
     VgBufferingModule,
     VgControlsModule,
     MatLegacyChipsModule,
-    CKEditorModule
+    CKEditorModule,
+    NavbarModule
   ],
   providers: [
   ],

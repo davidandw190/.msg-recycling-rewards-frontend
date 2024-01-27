@@ -14,9 +14,6 @@ export class NavbarComponent {
   isNavbarCollapsed = true;
   isSmallScreen = false;
 
-
-
-
   constructor(
     private router: Router,
     private userService: UserService
@@ -24,16 +21,6 @@ export class NavbarComponent {
   }
 
   isNavbarOpen = false;
-
-  centerLinks = [
-    { label: 'All Centers', route: '/centers/all' },
-    { label: 'My Favourites', route: '/centers/favourites' },
-  ];
-
-  challengeLinks = [
-    { label: 'All Challenges', route: '/challenges/all' },
-    { label: 'My Challenges', route: '/challenges/my' },
-  ];
 
   toggleNavbar() {
     this.isNavbarOpen = !this.isNavbarOpen;

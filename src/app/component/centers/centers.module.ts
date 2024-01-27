@@ -4,6 +4,7 @@ import {CenterNewComponent} from "./center-new/center-new.component";
 import {CenterDetailsComponent} from "./center-details/center-details.component";
 import {SharedModule} from "../../shared/shared.module";
 import {CentersRoutingModule} from "./centers-routing.module";
+import {NavbarModule} from "../navbar/navbar.module";
 
 @NgModule({
   declarations: [
@@ -11,6 +12,6 @@ import {CentersRoutingModule} from "./centers-routing.module";
     CenterNewComponent,
     CenterDetailsComponent,
   ],
-  imports: [ SharedModule, CentersRoutingModule, NavBarModule ]
+  imports: [ SharedModule, CentersRoutingModule, NavbarModule ]
 })
 export class CentersModule {}
