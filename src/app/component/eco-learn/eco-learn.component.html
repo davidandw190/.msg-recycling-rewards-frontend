@@ -196,11 +196,11 @@
               <h5>Selected Categories</h5>
               <div class="categories-chips">
 
-                <mat-chip-list class="custom-chip-list">
-                  <mat-chip *ngFor="let category of selectedCategories" class="custom-chip" selected>
+                <mat-chip-list class="custom-chip-list" >
+                  <mat-chip *ngFor="let category of selectedCategories" class="category-chip"  selected>
                     {{category}}
-                    <button matChipRemove aria-label="Remove" (click)="onRemoveCategory(category)">
-                      <mat-icon>cancel</mat-icon>
+                    <button matChipRemove aria-label="Remove"  (click)="onRemoveCategory(category)">
+                      <mat-icon style="margin-bottom: -8px; margin-left: -8px;">cancel</mat-icon>
                     </button>
                   </mat-chip>
                 </mat-chip-list>

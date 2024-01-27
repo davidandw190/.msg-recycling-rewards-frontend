@@ -197,31 +197,9 @@ input, select, button {
 }
 
 
-.category-chip {
-  display: inline-block;
-  padding: 5px 15px;
-  margin-right: 10px;
-  margin-bottom: 10px;
-  background-color: #007bff;
-  color: white;
-  border-radius: 20px;
-  cursor: pointer;
-}
-
-
-.category-chip {
-  margin: 5px;
-  padding: 5px 15px;
-  border-radius: 25px;
-  background-color: #17a2b8;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.category-chip:hover {
-  background-color: #138496; /* Slightly darker on hover */
-}
+/*.category-chip:hover {*/
+/*  background-color: #138496; !* Slightly darker on hover *!*/
+/*}*/
 
 .nav-pills {
   flex-direction: column;
@@ -280,12 +258,6 @@ input, select, button {
   margin-left: 5px;
 }
 
-.custom-chip {
-  padding: 0 2px;
-  font-size: 0.25rem;
-  height: 10px;
-  line-height: 10px;
-}
 
 .collapsed {
   max-height: 3em;

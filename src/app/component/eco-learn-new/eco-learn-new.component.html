@@ -80,18 +80,16 @@
 
 
                   <ng-container *ngIf="selectedCategories.length > 0">
-
                     <label class="mt-3">Selected Categories For The New Eco-Learn Resource:</label>
-                    <mat-chip-listbox>
-                      <div *ngFor="let category of selectedCategories">
-                        <mat-chip-row (removed)="onRemoveCategory(category)">
-                          {{ category }}
-                          <button matChipRemove aria-label="Remove" (click)="onRemoveCategory(category)">
-                            <mat-icon>cancel</mat-icon>
-                          </button>
-                        </mat-chip-row>
-                      </div>
-                    </mat-chip-listbox>
+
+                    <mat-chip-list class="custom-chip-list" >
+                      <mat-chip *ngFor="let category of selectedCategories"  selected>
+                        {{category}}
+                        <button matChipRemove aria-label="Remove"  (click)="onRemoveCategory(category)">
+                          <mat-icon>cancel</mat-icon>
+                        </button>
+                      </mat-chip>
+                    </mat-chip-list>
                   </ng-container>
 
 

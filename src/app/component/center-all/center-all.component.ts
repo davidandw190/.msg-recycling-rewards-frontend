@@ -91,7 +91,7 @@ export class CenterAllComponent implements OnInit, OnDestroy {
       county: [''],
       city: [{ value: '', disabled: true }],
       materials: [''],
-      sortBy: ['createdAt'],
+      sortBy: ['name'],
       sortOrder: ['asc'],
     });
   }
@@ -104,7 +104,7 @@ export class CenterAllComponent implements OnInit, OnDestroy {
         county: params.get('county') || '',
         city: params.get('city') || '',
         materials: '',
-        sortBy: params.get('sortBy') || 'createdAt',
+        sortBy: params.get('sortBy') || 'name',
         sortOrder: params.get('sortOrder') || 'asc',
       });
       this.initializeSearch();
@@ -334,7 +334,7 @@ export class CenterAllComponent implements OnInit, OnDestroy {
   private updateEnabledFilters(): void {
     // Count the number of enabled filters excluding "createdAt", "asc", and "materials"
     this.numEnabledFilters = Object.entries(this.searchForm.controls)
-        .filter(([key, control]) => key !== 'sortBy' || control.value !== 'createdAt')
+        .filter(([key, control]) => key !== 'sortBy' || control.value !== 'name')
         .filter(([key, control]) => key !== 'sortOrder' || control.value !== 'asc')
         .filter(([key, control]) => key !== 'materials') // Exclude materials
         .filter(([key, control]) => control.value !== null && control.value !== '')

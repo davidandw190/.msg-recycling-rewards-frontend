@@ -17,16 +17,14 @@
           <div class="col-12">
             <h4 class="fw-bold">Available Recycling Centers ({{ state?.appData?.data?.page?.totalElements }})</h4>
             <div class="d-flex justify-content-end align-items-center" style="margin-top: -10px">
-              <mat-chip-set #chipSet class="chip-set-container">
-                <div *ngFor="let material of selectedMaterials">
-                  <mat-chip-row (removed)="onRemoveMaterial(material)">
-                    {{ material }}
-                    <button matChipRemove aria-label="Remove" (click)="onRemoveMaterial(material)">
-                      <mat-icon>cancel</mat-icon>
-                    </button>
-                  </mat-chip-row>
-                </div>
-              </mat-chip-set>
+              <div mat-basic-chip-row class="chip-set-container">
+                <mat-chip *ngFor="let material of selectedMaterials" class="custom-chip">
+                  {{ material }}
+                  <button matChipRemove aria-label="Remove" (click)="onRemoveMaterial(material)">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip>
+              </div>
 
               <button class="btn btn-danger btn-export me-2"
                       (click)="downloadCentersReport()"
@@ -72,8 +70,8 @@
                         class="btn btn-outline-secondary"
                         (click)="resetFilters()"
                         [disabled]="numEnabledFilters === 0"
-                        [matTooltipShowDelay]="800"
-                        [matTooltipHideDelay]="800"
+                        [matTooltipShowDelay]="500"
+                        [matTooltipHideDelay]="500"
                         matTooltip="Clear all applied filters"
                 >Clear</button>
               </div>
@@ -224,9 +222,6 @@
           <ngb-alert *ngIf="state?.appData?.data?.page?.content.length === 0 && numEnabledFilters === 0" style="margin-top: 0;" type="info" [dismissible]="false">
             No recycling centers available at the moment. Check back later.
           </ngb-alert>
-
-
-
 
         </div>
 
