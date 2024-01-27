@@ -46,8 +46,8 @@ export class EcoLearnNewComponent implements OnInit {
       ]
     },
     language: 'en',
-
-    // Additional configuration options...
+    height: 500,
+    maxHeight: 700,
   };
 
   readonly DataState = DataState;
@@ -58,6 +58,8 @@ export class EcoLearnNewComponent implements OnInit {
   mediaType: string = 'url';
 
   newResourceForm: FormGroup;
+
+  readonly validUrlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/;
 
   selectedCategories: string[] = []
 
@@ -71,7 +73,9 @@ export class EcoLearnNewComponent implements OnInit {
       title: ['', Validators.required],
       content: ['', Validators.required],
       contentType: ['', Validators.required],
-      categories:  ['']
+      categories:  [''],
+      videoSource: ['internal'],
+      externalMediaUrl: ['', [Validators.required]]
     });
 
   }
@@ -127,10 +131,15 @@ export class EcoLearnNewComponent implements OnInit {
     formData.append('contentType', this.newResourceForm.value.contentType);
     formData.append('categories', this.selectedCategories.join(","));
 
-    if (fileInput.files && fileInput.files.length) {
+    if (this.newResourceForm.value.videoSource === 'external') {
+      formData.append('isExternalMedia', 'true');
+      formData.append('externalMediaUrl', this.newResourceForm.value.externalMediaUrl);
+
+    } else if (fileInput.files && fileInput.files.length) {
       const file = fileInput.files[0];
       formData.append('file', file);
     }
+
     this.ecoLearnService.create$(formData).pipe(
       map((response) => {
         console.log(response);

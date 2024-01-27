@@ -1,0 +1,8 @@
+.hidden {
+  display: none;
+}
+
+.ck-editor__editable {
+  max-height: 700px;
+  overflow-y: auto;
+}

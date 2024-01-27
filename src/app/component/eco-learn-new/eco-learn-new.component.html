@@ -48,32 +48,40 @@
 
                     <div class="col-12 mb-3">
                       <div class="form-group">
-
                         <ckeditor [editor]="Editor" [config]="editorConfig" formControlName="content"></ckeditor>
-
-                        <!--                        <input type="text" formControlName="content" class="form-control" id="content" placeholder="Ex. Your content here" required>-->
                       </div>
                     </div>
-<!--                    <div class="col-md-6 mb-3"> &lt;!&ndash; Media field &ndash;&gt;-->
-<!--                      <label for="media">Media URL</label>-->
-<!--                      <input type="url" formControlName="media" class="form-control" id="media" placeholder="Ex. Image or article link">-->
-<!--                    </div>-->
                   </div>
 
-                  <!-- Conditional Media URL Input -->
-<!--                  <div class="row mb-3" *ngIf="mediaType === 'url'">-->
-<!--                    <div class="col-12">-->
-<!--                      <label >Media URL</label>-->
-<!--                      <input type="url" formControlName="mediaUrl" class="form-control" placeholder="Ex. https://example.com or https://youtu.be/example">-->
-<!--                    </div>-->
-<!--                  </div>-->
 
-                  <!-- Conditional File Upload Input -->
-                  <div class="row mb-3" >
+                  <!-- Video Source Selection -->
+                  <div class="row mb-3" *ngIf="newResourceForm.get('contentType').value === 'VIDEO'">
+                    <div class="col-12">
+                      <label for="videoSource">Video Source</label>
+                      <select formControlName="videoSource" class="form-control" id="videoSource" required>
+                        <option value="internal">I Wish To Upload The Video Myself</option>
+                        <option value="external">Upload Url To External Video</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- External Video URL Input -->
+                  <div class="row mb-3" *ngIf="newResourceForm.get('videoSource').value === 'external'">
+                    <div class="col-12">
+                      <label>External Video URL</label>
+                      <input type="text" formControlName="externalMediaUrl" class="form-control" id="externalVideoUrl" placeholder="Enter YouTube video URL" required>
+                    </div>
+                  </div>
+
+                  <div class="row mb-3"
+                       [ngClass]="{'hidden': newResourceForm.get('videoSource').value === 'external'}">
                     <div class="col-12">
                       <label for="mediaFile">Upload File</label>
-<!--                      <input type="file" class="form-control" id="mediaFile" (change)="onFileSelected($event)">-->
-                      <input [accept]="newResourceForm.value.contentType === 'VIDEO' ? 'video/*' : 'image/*'" type="file" class="form-control" id="mediaFile" #fileInput>
+                      <input [accept]="newResourceForm.value.contentType === 'VIDEO' ? 'video/*' : 'image/*'"
+                             type="file"
+                             class="form-control"
+                             id="mediaFile"
+                             #fileInput>
 
                     </div>
                   </div>

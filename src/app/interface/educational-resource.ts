@@ -3,12 +3,13 @@ export interface EducationalResource {
   title: string;
   content: string;
   contentType: string;
-  media: string | null;
+  isExternalMedia: boolean;
+  mediaUrl: string | null;
   likesCount: number;
   sharesCount: number;
   savesCount: number;
-  createdAt: Date,
-  categories: string[],
+  createdAt: Date;
+  categories: string[];
   likedByUser: boolean;
   sharedByUser: boolean;
   savedByUser: boolean

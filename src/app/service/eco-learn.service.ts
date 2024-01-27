@@ -60,9 +60,9 @@ export class EcoLearnService {
     );
   }
 
-  create$ = (date: FormData) => <Observable<CustomHttpResponse<ResourceNewPageResponse>>>
+  create$ = (data: FormData) => <Observable<CustomHttpResponse<ResourceNewPageResponse>>>
     this.http.post<CustomHttpResponse<ResourceNewPageResponse>>
-    (`${this.server}/eco-learn/create`, date)
+    (`${this.server}/eco-learn/create`, data)
       .pipe(
         tap(console.log),
         catchError(this.handleError)
