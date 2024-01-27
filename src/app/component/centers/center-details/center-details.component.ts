@@ -10,24 +10,24 @@ import {
   startWith, Subject,
   switchMap, takeUntil, tap
 } from 'rxjs';
-import {AppState} from '../../interface/app-state';
-import {CustomHttpResponse} from '../../interface/custom-http-response';
-import {DataState} from '../../enum/data-state.enum';
-import {CenterDetailsResponse} from '../../interface/center-details-response';
+import {AppState} from '../../../interface/app-state';
+import {CustomHttpResponse} from '../../../interface/custom-http-response';
+import {DataState} from '../../../enum/data-state.enum';
+import {CenterDetailsResponse} from '../../../interface/center-details-response';
 import {ActivatedRoute, ParamMap} from '@angular/router';
-import {CenterService} from '../../service/center.service';
+import {CenterService} from '../../../service/center.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {RecyclableMaterial} from '../../interface/recyclable-material';
-import {UnitMeasure} from '../../interface/unit-measure';
+import {RecyclableMaterial} from '../../../interface/recyclable-material';
+import {UnitMeasure} from '../../../interface/unit-measure';
 import {NgbModal, NgbTimeStruct} from "@ng-bootstrap/ng-bootstrap";
-import {SustainabilityIndexPipe} from "../../pipes/sustainability-index.pipe";
-import {RewardPointsPipe} from "../../pipes/reward-points.pipe";
-import {LocationService} from "../../service/location.service";
+import {SustainabilityIndexPipe} from "../../../pipes/sustainability-index.pipe";
+import {RewardPointsPipe} from "../../../pipes/reward-points.pipe";
+import {LocationService} from "../../../service/location.service";
 import {TypeaheadMatch} from "ngx-bootstrap/typeahead";
-import {RecyclingCenter} from "../../interface/recycling-center";
-import {VoucherGuidelinesComponent} from "../voucher-guidelines/voucher-guidelines.component";
+import {RecyclingCenter} from "../../../interface/recycling-center";
+import {VoucherGuidelinesComponent} from "../../voucher-guidelines/voucher-guidelines.component";
 import {MatDialog} from "@angular/material/dialog";
-import {RecyclingGuidelinesComponent} from "../recycling-guidelines/recycling-guidelines.component";
+import {RecyclingGuidelinesComponent} from "../../recycling-guidelines/recycling-guidelines.component";
 
 
 @Component({

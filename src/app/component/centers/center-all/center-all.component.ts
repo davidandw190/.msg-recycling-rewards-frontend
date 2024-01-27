@@ -15,16 +15,16 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import {AppState} from '../../interface/app-state';
-import {DataState} from '../../enum/data-state.enum';
-import {CustomHttpResponse} from '../../interface/custom-http-response';
-import {CentersPageResponse} from '../../interface/centers-page-response';
+import {AppState} from '../../../interface/app-state';
+import {DataState} from '../../../enum/data-state.enum';
+import {CustomHttpResponse} from '../../../interface/custom-http-response';
+import {CentersPageResponse} from '../../../interface/centers-page-response';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
-import {CenterService} from '../../service/center.service';
+import {CenterService} from '../../../service/center.service';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {LocationService} from "../../service/location.service";
+import {LocationService} from "../../../service/location.service";
 import {Sort} from "@angular/material/sort";
-import {RecyclingCenter} from "../../interface/recycling-center";
+import {RecyclingCenter} from "../../../interface/recycling-center";
 import {HttpResponse} from "@angular/common/http";
 
 @Component({

@@ -12,11 +12,11 @@ import {NavbarComponent} from './component/navbar/navbar.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
-import {CenterDetailsComponent} from './component/center-details/center-details.component';
-import {CenterNewComponent} from './component/center-new/center-new.component';
+import {CenterDetailsComponent} from './component/centers/center-details/center-details.component';
+import {CenterNewComponent} from './component/centers/center-new/center-new.component';
 import {StatsComponent} from './component/stats/stats.component';
 import {NgbNavModule, NgbTimepickerModule} from '@ng-bootstrap/ng-bootstrap';
-import {CenterAllComponent} from './component/center-all/center-all.component';
+import {CenterAllComponent} from './component/centers/center-all/center-all.component';
 import {HighlightSearchPipe} from "./pipes/highlight-search.pipe";
 import {TypeaheadModule} from "ngx-bootstrap/typeahead";
 import {MatInputModule} from "@angular/material/input";
@@ -41,6 +41,8 @@ import {CKEditorModule} from "@ckeditor/ckeditor5-angular";
 import {CoreModule} from "./core/core.module";
 import {SharedModule} from "./shared/shared.module";
 import {AuthModule} from "./component/auth/auth.module";
+import {CentersRoutingModule} from "./component/centers/centers-routing.module";
+import {CentersModule} from "./component/centers/centers.module";
 
 @NgModule({
   declarations: [
@@ -48,9 +50,6 @@ import {AuthModule} from "./component/auth/auth.module";
     ProfileComponent,
     HomeComponent,
     NavbarComponent,
-    CenterAllComponent,
-    CenterDetailsComponent,
-    CenterNewComponent,
     StatsComponent,
     VouchersComponent,
     VoucherDetailsComponent,
@@ -66,6 +65,7 @@ import {AuthModule} from "./component/auth/auth.module";
     CoreModule,
     SharedModule,
     AuthModule,
+    CentersModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,

@@ -7,9 +7,9 @@ import {VerifyComponent} from "./component/auth/verify/verify.component";
 import {ProfileComponent} from "./component/profile/profile.component";
 import {HomeComponent} from "./component/home/home.component";
 import {AuthenticationGuard} from "./guard/authentication.guard";
-import {CenterNewComponent} from "./component/center-new/center-new.component";
-import {CenterDetailsComponent} from "./component/center-details/center-details.component";
-import {CenterAllComponent} from "./component/center-all/center-all.component";
+import {CenterNewComponent} from "./component/centers/center-new/center-new.component";
+import {CenterDetailsComponent} from "./component/centers/center-details/center-details.component";
+import {CenterAllComponent} from "./component/centers/center-all/center-all.component";
 import {VouchersComponent} from "./component/vouchers/vouchers.component";
 import {VoucherDetailsComponent} from "./component/voucher-details/voucher-details.component";
 import {LeaderboardComponent} from "./component/leaderboard/leaderboard.component";
@@ -17,18 +17,7 @@ import {EcoLearnComponent} from "./component/eco-learn/eco-learn.component";
 import {EcoLearnNewComponent} from "./component/eco-learn-new/eco-learn-new.component";
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-
-  { path: 'reset-password', component: ResetPassComponent },
-  { path: 'user/verify/account/:key', component: VerifyComponent },
-  { path: 'user/verify/password/:key', component: VerifyComponent },
-
   { path: 'profile', component: ProfileComponent, canActivate: [AuthenticationGuard] },
-
-  { path: 'centers/all', component: CenterAllComponent, canActivate: [AuthenticationGuard] },
-  { path: 'centers/new', component: CenterNewComponent, canActivate: [AuthenticationGuard] },
-  { path: 'centers/:id', component: CenterDetailsComponent, canActivate: [AuthenticationGuard] },
 
   { path: 'vouchers', component: VouchersComponent, canActivate: [AuthenticationGuard] },
   { path: 'vouchers/:code', component: VoucherDetailsComponent, canActivate: [AuthenticationGuard] },

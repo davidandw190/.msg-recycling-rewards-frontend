@@ -15,12 +15,12 @@ import {
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms'; // Import Validators
 import {TypeaheadMatch} from 'ngx-bootstrap/typeahead';
-import {CustomHttpResponse} from '../../interface/custom-http-response';
-import {AppState} from '../../interface/app-state';
-import {CentersPageResponse} from '../../interface/centers-page-response';
-import {DataState} from '../../enum/data-state.enum';
-import {CenterService} from '../../service/center.service';
-import {LocationService} from '../../service/location.service';
+import {CustomHttpResponse} from '../../../interface/custom-http-response';
+import {AppState} from '../../../interface/app-state';
+import {CentersPageResponse} from '../../../interface/centers-page-response';
+import {DataState} from '../../../enum/data-state.enum';
+import {CenterService} from '../../../service/center.service';
+import {LocationService} from '../../../service/location.service';
 import {NgbTimeStruct} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
