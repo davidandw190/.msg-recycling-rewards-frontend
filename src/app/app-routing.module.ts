@@ -22,9 +22,6 @@ const routes: Routes = [
   { path: 'vouchers', component: VouchersComponent, canActivate: [AuthenticationGuard] },
   { path: 'vouchers/:code', component: VoucherDetailsComponent, canActivate: [AuthenticationGuard] },
 
-  { path: 'leaderboard', component: LeaderboardComponent, canActivate: [AuthenticationGuard] },
-
-
   { path: 'eco-learn', component: EcoLearnComponent, canActivate: [AuthenticationGuard] },
   { path: 'eco-learn/new', component: EcoLearnNewComponent, canActivate: [AuthenticationGuard] },
 

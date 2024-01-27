@@ -32,6 +32,7 @@ import {SharedModule} from "./shared/shared.module";
 import {AuthModule} from "./component/auth/auth.module";
 import {CentersModule} from "./component/centers/centers.module";
 import {NavbarModule} from "./component/navbar/navbar.module";
+import {LeaderboardModule} from "./component/leaderboard/leaderboard.module";
 
 @NgModule({
   declarations: [
@@ -42,7 +43,6 @@ import {NavbarModule} from "./component/navbar/navbar.module";
     VouchersComponent,
     VoucherDetailsComponent,
     VoucherGuidelinesComponent,
-    LeaderboardComponent,
     EcoLearnComponent,
     RecyclingGuidelinesComponent,
     EcoLearnNewComponent,
@@ -54,6 +54,7 @@ import {NavbarModule} from "./component/navbar/navbar.module";
     SharedModule,
     AuthModule,
     CentersModule,
+    LeaderboardModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
