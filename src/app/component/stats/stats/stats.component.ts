@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {SustainabilityIndexPipe} from "../../pipes/sustainability-index.pipe";
+import {SustainabilityIndexPipe} from "../../../pipes/sustainability-index.pipe";
 
 @Component({
   selector: 'app-stats',
@@ -17,10 +17,7 @@ export class StatsComponent implements OnInit {
   averageRecyclerContribution: number
 
   constructor(
-    private sustainabilityIndexPipe: SustainabilityIndexPipe
-  ) {
-
-  }
+  ) {}
 
   ngOnInit(): void {
   }

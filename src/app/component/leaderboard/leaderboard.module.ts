@@ -6,6 +6,7 @@ import {NavbarModule} from "../navbar/navbar.module";
 
 @NgModule({
   declarations: [LeaderboardComponent],
-  imports: [ SharedModule, LeaderboardRoutingModule, NavbarModule ]
+  imports: [ SharedModule, LeaderboardRoutingModule, NavbarModule ],
+  exports: [LeaderboardComponent]
 })
 export class LeaderboardModule {}

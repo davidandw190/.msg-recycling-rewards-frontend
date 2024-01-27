@@ -3,10 +3,10 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
 import {ProfileComponent} from './component/profile/profile.component';
-import {HomeComponent} from './component/home/home.component';
+import {HomeComponent} from './component/home/home/home.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {HttpClientModule} from "@angular/common/http";
-import {StatsComponent} from './component/stats/stats.component';
+import {StatsComponent} from './component/stats/stats/stats.component';
 import {NgbNavModule, NgbTimepickerModule} from '@ng-bootstrap/ng-bootstrap';
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
@@ -33,13 +33,13 @@ import {AuthModule} from "./component/auth/auth.module";
 import {CentersModule} from "./component/centers/centers.module";
 import {NavbarModule} from "./component/navbar/navbar.module";
 import {LeaderboardModule} from "./component/leaderboard/leaderboard.module";
+import {HomeModule} from "./component/home/home.module";
+import {StatsModule} from "./component/stats/stats.module";
 
 @NgModule({
   declarations: [
     AppComponent,
     ProfileComponent,
-    HomeComponent,
-    StatsComponent,
     VouchersComponent,
     VoucherDetailsComponent,
     VoucherGuidelinesComponent,
@@ -55,6 +55,7 @@ import {LeaderboardModule} from "./component/leaderboard/leaderboard.module";
     AuthModule,
     CentersModule,
     LeaderboardModule,
+    HomeModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,

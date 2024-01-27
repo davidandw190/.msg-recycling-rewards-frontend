@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {HomePageResponse} from "../../interface/home-page-response";
-import {CustomHttpResponse} from "../../interface/custom-http-response";
+import {HomePageResponse} from "../../../interface/home-page-response";
+import {CustomHttpResponse} from "../../../interface/custom-http-response";
 import {DataState} from 'src/app/enum/data-state.enum';
-import {AppState} from "../../interface/app-state";
+import {AppState} from "../../../interface/app-state";
 import {
   BehaviorSubject,
   catchError,
@@ -15,8 +15,8 @@ import {
   tap
 } from "rxjs";
 import {Router} from "@angular/router";
-import {CenterService} from "../../service/center.service";
-import {RecyclingCenter} from "../../interface/recycling-center";
+import {CenterService} from "../../../service/center.service";
+import {RecyclingCenter} from "../../../interface/recycling-center";
 import {Sort} from "@angular/material/sort";
 import {FormBuilder, FormGroup} from "@angular/forms";
 

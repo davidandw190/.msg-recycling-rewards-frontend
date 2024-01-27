@@ -5,7 +5,7 @@ import {RegisterComponent} from "./component/auth/register/register.component";
 import {ResetPassComponent} from "./component/auth/reset-pass/reset-pass.component";
 import {VerifyComponent} from "./component/auth/verify/verify.component";
 import {ProfileComponent} from "./component/profile/profile.component";
-import {HomeComponent} from "./component/home/home.component";
+import {HomeComponent} from "./component/home/home/home.component";
 import {AuthenticationGuard} from "./guard/authentication.guard";
 import {CenterNewComponent} from "./component/centers/center-new/center-new.component";
 import {CenterDetailsComponent} from "./component/centers/center-details/center-details.component";
@@ -25,9 +25,8 @@ const routes: Routes = [
   { path: 'eco-learn', component: EcoLearnComponent, canActivate: [AuthenticationGuard] },
   { path: 'eco-learn/new', component: EcoLearnNewComponent, canActivate: [AuthenticationGuard] },
 
-  { path: '', component: HomeComponent, canActivate: [AuthenticationGuard] },
   { path: '', redirectTo: '/', pathMatch: 'full' },
-  { path: '**', component: LoginComponent }
+  { path: '**', component: HomeComponent, canActivate: [AuthenticationGuard] },
 ];
 
 @NgModule({
