@@ -32,7 +32,8 @@ import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 @Component({
   selector: 'app-eco-learn',
   templateUrl: './eco-learn.component.html',
-  styleUrls: ['./eco-learn.component.css']
+  styleUrls: ['./eco-learn.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EcoLearnComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();

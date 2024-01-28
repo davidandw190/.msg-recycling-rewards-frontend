@@ -34,7 +34,7 @@ import {RecyclingGuidelinesComponent} from "../../guidelines/recycling-guideline
   selector: 'app-center-details',
   templateUrl: './center-details.component.html',
   styleUrls: ['./center-details.component.css'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CenterDetailsComponent implements OnInit {
   private destroy$ = new Subject<void>();

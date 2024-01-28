@@ -1,10 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {SustainabilityIndexPipe} from "../../../pipes/sustainability-index.pipe";
 
 @Component({
   selector: 'app-stats',
   templateUrl: './stats.component.html',
-  styleUrls: ['./stats.component.css']
+  styleUrls: ['./stats.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StatsComponent implements OnInit {
 

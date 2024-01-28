@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {
   BehaviorSubject,
   catchError,
@@ -31,7 +31,8 @@ import {MatDialog} from "@angular/material/dialog";
 @Component({
   selector: 'app-vouchers',
   templateUrl: './vouchers.component.html',
-  styleUrls: ['./vouchers.component.css']
+  styleUrls: ['./vouchers.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VouchersComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();

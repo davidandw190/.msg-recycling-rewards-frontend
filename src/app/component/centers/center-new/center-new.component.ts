@@ -27,7 +27,7 @@ import {NgbTimeStruct} from "@ng-bootstrap/ng-bootstrap";
   selector: 'app-center-new',
   templateUrl: './center-new.component.html',
   styleUrls: ['./center-new.component.css'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CenterNewComponent implements OnInit {
   newCenterState$: Observable<AppState<CustomHttpResponse<CentersPageResponse>>>;

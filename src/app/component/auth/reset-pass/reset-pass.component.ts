@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { DataState } from 'src/app/enum/data-state.enum';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {DataState} from 'src/app/enum/data-state.enum';
 import {catchError, map, Observable, of, startWith} from "rxjs";
 import {RegistrationResponse} from "../../../interface/registration-response";
 import {UserService} from "../../../service/user.service";
@@ -8,7 +8,8 @@ import {NgForm} from "@angular/forms";
 @Component({
   selector: 'app-reset-pass',
   templateUrl: './reset-pass.component.html',
-  styleUrls: ['./reset-pass.component.css']
+  styleUrls: ['./reset-pass.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ResetPassComponent {
   resetPasswordState$: Observable<RegistrationResponse> = of({ dataState: DataState.LOADED });

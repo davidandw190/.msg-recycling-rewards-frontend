@@ -1,5 +1,5 @@
 import {NgModule} from "@angular/core";
-import {RouterModule, Routes} from "@angular/router";
+import {PreloadAllModules, RouterModule, Routes} from "@angular/router";
 import {LoginComponent} from "./component/auth/login/login.component";
 import {RegisterComponent} from "./component/auth/register/register.component";
 import {ResetPassComponent} from "./component/auth/reset-pass/reset-pass.component";
@@ -17,12 +17,13 @@ import {EcoLearnComponent} from "./component/eco-learn/eco-learn/eco-learn.compo
 import {EcoLearnNewComponent} from "./component/eco-learn/eco-learn-new/eco-learn-new.component";
 
 const routes: Routes = [
+  { path: 'profile', loadChildren: () => import('./component/profile/profile.module').then(module => module.ProfileModule) },
   { path: '', redirectTo: '/', pathMatch: 'full' },
   { path: '**', component: HomeComponent, canActivate: [AuthenticationGuard] },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules})],
   exports: [RouterModule]
 })
 

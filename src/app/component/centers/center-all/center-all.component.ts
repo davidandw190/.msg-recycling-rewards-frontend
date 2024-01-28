@@ -31,7 +31,7 @@ import {HttpResponse} from "@angular/common/http";
   selector: 'app-center-all',
   templateUrl: './center-all.component.html',
   styleUrls: ['./center-all.component.css'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CenterAllComponent implements OnInit, OnDestroy {
 

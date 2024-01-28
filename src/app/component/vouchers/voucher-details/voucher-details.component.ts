@@ -18,7 +18,7 @@ const VOUCHER_CODE: string = 'code';
   selector: 'app-voucher-details',
   templateUrl: './voucher-details.component.html',
   styleUrls: ['./voucher-details.component.css'],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VoucherDetailsComponent implements OnInit, OnDestroy {
   voucherDetailsState$: Observable<AppState<CustomHttpResponse<VoucherDetailsResponse>>>;

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {DataState} from 'src/app/enum/data-state.enum';
 import {
   BehaviorSubject,
@@ -22,7 +22,8 @@ import {TypeaheadMatch} from "ngx-bootstrap/typeahead";
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegisterComponent implements OnInit {
   registerState$: Observable<RegistrationResponse> = of({ dataState: DataState.LOADED });

@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {Profile} from "../../../interface/profile";
 import {DataState} from "../../../enum/data-state.enum";
 import {CustomHttpResponse} from "../../../interface/custom-http-response";
@@ -23,7 +23,8 @@ import {User} from "../../../interface/user";
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProfileComponent implements OnInit {
 
