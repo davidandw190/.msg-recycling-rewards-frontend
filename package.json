@@ -27,6 +27,7 @@
     "@ng-bootstrap/ng-bootstrap": "^15.1.2",
     "@popperjs/core": "^2.11.6",
     "@videogular/ngx-videogular": "^8.0.0",
+    "angular-notifier": "^14.0.0",
     "bootstrap": "^5.3.2",
     "core-js": "^3.35.0",
     "file-server": "^2.2.1",
