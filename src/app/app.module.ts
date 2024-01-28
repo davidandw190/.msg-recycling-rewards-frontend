@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
-import {ProfileComponent} from './component/profile/profile.component';
+import {ProfileComponent} from './component/profile/profile/profile.component';
 import {HomeComponent} from './component/home/home/home.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {HttpClientModule} from "@angular/common/http";
@@ -35,11 +35,11 @@ import {NavbarModule} from "./component/navbar/navbar.module";
 import {LeaderboardModule} from "./component/leaderboard/leaderboard.module";
 import {HomeModule} from "./component/home/home.module";
 import {StatsModule} from "./component/stats/stats.module";
+import {ProfileModule} from "./component/profile/profile.module";
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProfileComponent,
     VouchersComponent,
     VoucherDetailsComponent,
     EcoLearnComponent,
@@ -54,6 +54,7 @@ import {StatsModule} from "./component/stats/stats.module";
     CentersModule,
     LeaderboardModule,
     HomeModule,
+    ProfileModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,

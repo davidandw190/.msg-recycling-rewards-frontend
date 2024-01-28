@@ -1,8 +1,8 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {Profile} from "../../interface/profile";
-import {DataState} from "../../enum/data-state.enum";
-import {CustomHttpResponse} from "../../interface/custom-http-response";
-import {AppState} from "../../interface/app-state";
+import {Profile} from "../../../interface/profile";
+import {DataState} from "../../../enum/data-state.enum";
+import {CustomHttpResponse} from "../../../interface/custom-http-response";
+import {AppState} from "../../../interface/app-state";
 import {
   BehaviorSubject,
   catchError,
@@ -14,11 +14,11 @@ import {
   startWith, switchMap,
   tap
 } from "rxjs";
-import {UserService} from "../../service/user.service";
+import {UserService} from "../../../service/user.service";
 import {FormBuilder, FormGroup, NgForm, Validators} from "@angular/forms";
-import {LocationService} from "../../service/location.service";
+import {LocationService} from "../../../service/location.service";
 import {TypeaheadMatch} from "ngx-bootstrap/typeahead";
-import {User} from "../../interface/user";
+import {User} from "../../../interface/user";
 
 @Component({
   selector: 'app-profile',
