@@ -44,6 +44,7 @@ import {TypeaheadModule} from "ngx-bootstrap/typeahead";
     SustainabilityIndexPipe,
     UnitConversionPipe,
     AcceptedMaterialsPipe,
+    VoucherStatusPipe
   ],
   exports: [
     RouterModule,
@@ -67,10 +68,10 @@ import {TypeaheadModule} from "ngx-bootstrap/typeahead";
     RewardPointsPipe,
     SustainabilityIndexPipe,
     UnitConversionPipe,
-    AcceptedMaterialsPipe
+    AcceptedMaterialsPipe,
+    VoucherStatusPipe
   ],
   providers:[
-
     RewardPointsPipe,
     SustainabilityIndexPipe,
     VoucherStatusPipe

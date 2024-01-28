@@ -11,8 +11,8 @@ import {NgbNavModule, NgbTimepickerModule} from '@ng-bootstrap/ng-bootstrap';
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
-import {VouchersComponent} from './component/vouchers/vouchers.component';
-import {VoucherDetailsComponent} from './component/voucher-details/voucher-details.component';
+import {VouchersComponent} from './component/vouchers/vouchers/vouchers.component';
+import {VoucherDetailsComponent} from './component/vouchers/voucher-details/voucher-details.component';
 import {VoucherStatusPipe} from "./pipes/voucher-status.pipe";
 import {ClipboardModule} from "ngx-clipboard";
 import {VoucherGuidelinesComponent} from './component/guidelines/voucher-guidelines/voucher-guidelines.component';
@@ -36,12 +36,11 @@ import {LeaderboardModule} from "./component/leaderboard/leaderboard.module";
 import {HomeModule} from "./component/home/home.module";
 import {StatsModule} from "./component/stats/stats.module";
 import {ProfileModule} from "./component/profile/profile.module";
+import {VouchersModule} from "./component/vouchers/vouchers.module";
 
 @NgModule({
   declarations: [
     AppComponent,
-    VouchersComponent,
-    VoucherDetailsComponent,
     EcoLearnComponent,
     EcoLearnNewComponent,
     ShareResourceComponent,
@@ -55,6 +54,7 @@ import {ProfileModule} from "./component/profile/profile.module";
     LeaderboardModule,
     HomeModule,
     ProfileModule,
+    VouchersModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
@@ -62,7 +62,6 @@ import {ProfileModule} from "./component/profile/profile.module";
     MatSelectModule,
     NgMultiSelectDropDownModule,
     NgbTimepickerModule,
-    ClipboardModule,
     NgbNavModule,
     VoucherStatusPipe,
     VgCoreModule,

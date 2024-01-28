@@ -1,16 +1,16 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {BehaviorSubject, catchError, map, Observable, of, startWith, Subject, switchMap, takeUntil, tap} from "rxjs";
-import {CustomHttpResponse} from "../../interface/custom-http-response";
-import {VoucherDetailsResponse} from "../../interface/voucher-details-response";
+import {CustomHttpResponse} from "../../../interface/custom-http-response";
+import {VoucherDetailsResponse} from "../../../interface/voucher-details-response";
 import {AppState} from 'src/app/interface/app-state';
 import {ActivatedRoute, ParamMap} from "@angular/router";
 import {DataState} from 'src/app/enum/data-state.enum';
-import {VoucherService} from "../../service/voucher.service";
-import {VoucherStatusPipe} from "../../pipes/voucher-status.pipe";
+import {VoucherService} from "../../../service/voucher.service";
+import {VoucherStatusPipe} from "../../../pipes/voucher-status.pipe";
 import {jsPDF} from 'jspdf';
 import html2canvas from "html2canvas";
 import {MatDialog} from "@angular/material/dialog";
-import {VoucherGuidelinesComponent} from "../guidelines/voucher-guidelines/voucher-guidelines.component";
+import {VoucherGuidelinesComponent} from "../../guidelines/voucher-guidelines/voucher-guidelines.component";
 
 const VOUCHER_CODE: string = 'code';
 

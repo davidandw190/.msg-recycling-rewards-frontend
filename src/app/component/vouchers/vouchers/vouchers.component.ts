@@ -14,18 +14,18 @@ import {
   takeUntil,
   tap
 } from "rxjs";
-import {AppState} from "../../interface/app-state";
+import {AppState} from "../../../interface/app-state";
 import {DataState} from 'src/app/enum/data-state.enum';
-import {CustomHttpResponse} from "../../interface/custom-http-response";
+import {CustomHttpResponse} from "../../../interface/custom-http-response";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Sort} from "@angular/material/sort";
 
-import {VouchersPageResponse} from "../../interface/vouchers-page-response";
-import {VoucherService} from "../../service/voucher.service";
-import {Voucher} from "../../interface/voucher";
+import {VouchersPageResponse} from "../../../interface/vouchers-page-response";
+import {VoucherService} from "../../../service/voucher.service";
+import {Voucher} from "../../../interface/voucher";
 import {ClipboardService} from "ngx-clipboard";
-import {VoucherGuidelinesComponent} from "../guidelines/voucher-guidelines/voucher-guidelines.component";
+import {VoucherGuidelinesComponent} from "../../guidelines/voucher-guidelines/voucher-guidelines.component";
 import {MatDialog} from "@angular/material/dialog";
 
 @Component({
