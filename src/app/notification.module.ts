@@ -9,7 +9,7 @@ const notificationConfig: NotifierOptions = {
     },
     vertical: {
       position: 'bottom',
-      distance: 12,
+      distance: 50,
       gap: 10
     }
   },

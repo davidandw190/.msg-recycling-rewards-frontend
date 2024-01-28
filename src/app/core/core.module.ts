@@ -8,10 +8,11 @@ import {VoucherService} from "../service/voucher.service";
 import {LeaderboardService} from "../service/leaderboard.service";
 import {EcoLearnService} from "../service/eco-learn.service";
 import {LocationService} from "../service/location.service";
+import {NotificationService} from "../service/notification.service";
 
 @NgModule({
+  imports: [HttpClientModule],
   providers: [
-    HttpClientModule,
     UserService,
     CenterService,
     VoucherService,
@@ -19,6 +20,7 @@ import {LocationService} from "../service/location.service";
     EcoLearnService,
     LocationService,
     HttpCacheService,
+    NotificationService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     // { provide: HttpCacheService, useClass: HttpCacheService },
   ]
