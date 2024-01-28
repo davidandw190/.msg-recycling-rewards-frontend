@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {VoucherService} from "../../service/voucher.service";
+import {VoucherService} from "../../../service/voucher.service";
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 
 @Component({

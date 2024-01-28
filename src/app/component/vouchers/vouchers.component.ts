@@ -25,7 +25,7 @@ import {VouchersPageResponse} from "../../interface/vouchers-page-response";
 import {VoucherService} from "../../service/voucher.service";
 import {Voucher} from "../../interface/voucher";
 import {ClipboardService} from "ngx-clipboard";
-import {VoucherGuidelinesComponent} from "../voucher-guidelines/voucher-guidelines.component";
+import {VoucherGuidelinesComponent} from "../guidelines/voucher-guidelines/voucher-guidelines.component";
 import {MatDialog} from "@angular/material/dialog";
 
 @Component({

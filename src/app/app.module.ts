@@ -15,10 +15,10 @@ import {VouchersComponent} from './component/vouchers/vouchers.component';
 import {VoucherDetailsComponent} from './component/voucher-details/voucher-details.component';
 import {VoucherStatusPipe} from "./pipes/voucher-status.pipe";
 import {ClipboardModule} from "ngx-clipboard";
-import {VoucherGuidelinesComponent} from './component/voucher-guidelines/voucher-guidelines.component';
+import {VoucherGuidelinesComponent} from './component/guidelines/voucher-guidelines/voucher-guidelines.component';
 import {LeaderboardComponent} from './component/leaderboard/leaderboard.component';
 import {EcoLearnComponent} from './component/eco-learn/eco-learn.component';
-import {RecyclingGuidelinesComponent} from './component/recycling-guidelines/recycling-guidelines.component';
+import {RecyclingGuidelinesComponent} from './component/guidelines/recycling-guidelines/recycling-guidelines.component';
 import {EcoLearnNewComponent} from './component/eco-learn-new/eco-learn-new.component';
 import {VgCoreModule} from "@videogular/ngx-videogular/core";
 import {VgOverlayPlayModule} from "@videogular/ngx-videogular/overlay-play";
@@ -42,9 +42,7 @@ import {StatsModule} from "./component/stats/stats.module";
     ProfileComponent,
     VouchersComponent,
     VoucherDetailsComponent,
-    VoucherGuidelinesComponent,
     EcoLearnComponent,
-    RecyclingGuidelinesComponent,
     EcoLearnNewComponent,
     ShareResourceComponent,
 

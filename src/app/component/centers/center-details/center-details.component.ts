@@ -25,9 +25,9 @@ import {RewardPointsPipe} from "../../../pipes/reward-points.pipe";
 import {LocationService} from "../../../service/location.service";
 import {TypeaheadMatch} from "ngx-bootstrap/typeahead";
 import {RecyclingCenter} from "../../../interface/recycling-center";
-import {VoucherGuidelinesComponent} from "../../voucher-guidelines/voucher-guidelines.component";
+import {VoucherGuidelinesComponent} from "../../guidelines/voucher-guidelines/voucher-guidelines.component";
 import {MatDialog} from "@angular/material/dialog";
-import {RecyclingGuidelinesComponent} from "../../recycling-guidelines/recycling-guidelines.component";
+import {RecyclingGuidelinesComponent} from "../../guidelines/recycling-guidelines/recycling-guidelines.component";
 
 
 @Component({

@@ -10,7 +10,7 @@ import {VoucherStatusPipe} from "../../pipes/voucher-status.pipe";
 import {jsPDF} from 'jspdf';
 import html2canvas from "html2canvas";
 import {MatDialog} from "@angular/material/dialog";
-import {VoucherGuidelinesComponent} from "../voucher-guidelines/voucher-guidelines.component";
+import {VoucherGuidelinesComponent} from "../guidelines/voucher-guidelines/voucher-guidelines.component";
 
 const VOUCHER_CODE: string = 'code';
 
