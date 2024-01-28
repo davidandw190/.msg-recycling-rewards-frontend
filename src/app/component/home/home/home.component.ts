@@ -19,6 +19,7 @@ import {CenterService} from "../../../service/center.service";
 import {RecyclingCenter} from "../../../interface/recycling-center";
 import {Sort} from "@angular/material/sort";
 import {FormBuilder, FormGroup} from "@angular/forms";
+import {NotificationService} from "../../../service/notification.service";
 
 @Component({
   selector: 'app-home',
@@ -47,7 +48,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private router: Router,
     private centerService: CenterService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private notification: NotificationService
   ) {
 
     this.tableFilterForm = this.formBuilder.group({
@@ -58,6 +60,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeSearch();
+    this.notification.onSuccess('Centers near you retrieved successfully!');
 
     this.tableFilterForm.valueChanges
       .pipe(

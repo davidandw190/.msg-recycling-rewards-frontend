@@ -26,6 +26,7 @@ import {LocationService} from "../../../service/location.service";
 import {Sort} from "@angular/material/sort";
 import {RecyclingCenter} from "../../../interface/recycling-center";
 import {HttpResponse} from "@angular/common/http";
+import {NotificationService} from "../../../service/notification.service";
 
 @Component({
   selector: 'app-center-all',
@@ -69,7 +70,8 @@ export class CenterAllComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private centerService: CenterService,
     private formBuilder: FormBuilder,
-    private locationService: LocationService
+    private locationService: LocationService,
+    private notification: NotificationService
   ) {
     this.initializeForm();
     this.subscribeToQueryParams();
@@ -204,12 +206,13 @@ export class CenterAllComponent implements OnInit, OnDestroy {
   }
 
   onSelectCounty(event: TypeaheadMatch): void {
-    this.searchForm.get('city').setValue('');
-    this.searchForm.get('city').enable();
-    this.handleCountyChange(this.searchForm.get('county').value)
+    // this.searchForm.get('city').setValue('');
+    // this.searchForm.get('city').enable();
+    // this.handleCountyChange(this.searchForm.get('county').value)
   }
 
   onSelectCity(event: TypeaheadMatch): void {
+    this.notification.onDefault(event.item + ' city filter applied.');
   }
 
   private handleSearch(response: any): void {
@@ -300,6 +303,7 @@ export class CenterAllComponent implements OnInit, OnDestroy {
 
     if (this.isValidCounty(county)) {
       cityControl.enable();
+      this.notification.onDefault(county + ' county filter applied.');
       this.cities = this.locationService.getCitiesForCounty(county);
     } else {
       cityControl.disable();
@@ -316,6 +320,7 @@ export class CenterAllComponent implements OnInit, OnDestroy {
     this.cities = [];
     this.selectedMaterials = [];
     this.initializeForm()
+    this.notification.onDefault('Filters have been cleared successfully!');
     this.initializeSearch();
 
   }
@@ -326,8 +331,11 @@ export class CenterAllComponent implements OnInit, OnDestroy {
 
     // Check if the material is not already in the list
     if (!this.selectedMaterials.includes(selectedMaterial)) {
+      this.notification.onDefault(selectedMaterial + ' added to the filter.');
       this.selectedMaterials.push(selectedMaterial);
       this.updateSearch(); // Update search when a new material is added
+    } else {
+      this.notification.onDefault(selectedMaterial + 'already  added to the filter.');
     }
   }
 
@@ -345,6 +353,7 @@ export class CenterAllComponent implements OnInit, OnDestroy {
 
   onRemoveMaterial(material: string): void {
     this.selectedMaterials = this.selectedMaterials.filter((m) => m !== material);
+    this.notification.onDefault(material + ' removed from filter.');
     this.updateSearch();
   }
 

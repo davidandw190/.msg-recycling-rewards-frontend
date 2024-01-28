@@ -7,6 +7,7 @@ import {DataState} from 'src/app/enum/data-state.enum';
 import {AccountType} from "../../../interface/account-type";
 import {User} from "../../../interface/user";
 import {NgForm} from "@angular/forms";
+import {NotificationService} from "../../../service/notification.service";
 
 @Component({
   selector: 'app-verify',
@@ -27,7 +28,8 @@ export class VerifyComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private userService: UserService
+    private userService: UserService,
+    private notification: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -38,6 +40,7 @@ export class VerifyComponent implements OnInit {
         return this.userService.verify$(params.get(this.ACCOUNT_KEY), type)
           .pipe(
             map(response => {
+              this.notification.onDefault(response.message);
               console.log(response);
               type === 'password' ? this.userSubject.next(response.data.user) : null;
               return {
@@ -55,6 +58,7 @@ export class VerifyComponent implements OnInit {
               verifySuccess: false
             }),
             catchError((error: string) => {
+              this.notification.onError(error);
               return of({title: error, dataState: DataState.ERROR, error, message: error, verifySuccess: false})
             })
           )
@@ -71,12 +75,14 @@ export class VerifyComponent implements OnInit {
     this.verifyState$ = this.userService.resetPasswordExternally$({ userId: this.userSubject.value.id, password: resetPasswordForm.value.password, confirmPassword: resetPasswordForm.value.confirmPassword })
       .pipe(
         map(response => {
+          this.notification.onSuccess(response.message);
           console.log(response);
           this.isLoadingSubject.next(false);
           return { type: 'account' as AccountType, title: 'Success', dataState: DataState.LOADED, message: response.message, verifySuccess: true };
         }),
         startWith({ type: 'password' as AccountType, title: 'Verified!', dataState: DataState.LOADED, verifySuccess: false }),
         catchError((error: string) => {
+          this.notification.onError(error);
           this.isLoadingSubject.next(false);
           return of({ type: 'password' as AccountType, title: 'Verified!', dataState: DataState.LOADED, error, verifySuccess: true })
         })

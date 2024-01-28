@@ -18,6 +18,7 @@ import {UserService} from "../../../service/user.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {LocationService} from "../../../service/location.service";
 import {TypeaheadMatch} from "ngx-bootstrap/typeahead";
+import {NotificationService} from "../../../service/notification.service";
 
 @Component({
   selector: 'app-register',
@@ -41,7 +42,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder,
-    private locationService: LocationService
+    private locationService: LocationService,
+    private notification: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -109,12 +111,14 @@ export class RegisterComponent implements OnInit {
     this.registerState$ = this.userService.register$(formData)
       .pipe(
         map(response => {
+          this.notification.onSuccess(response.message);
           console.log(response);
           // registerForm.reset();
           return { dataState: DataState.LOADED, registerSuccess: true, message: response.message };
         }),
         startWith({ dataState: DataState.LOADING, registerSuccess: false }),
         catchError((error: string) => {
+          this.notification.onError(error);
           return of({ dataState: DataState.ERROR, registerSuccess: false, error })
         })
       );

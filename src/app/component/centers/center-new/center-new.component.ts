@@ -12,7 +12,6 @@ import {
   switchMap,
   tap
 } from 'rxjs';
-import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms'; // Import Validators
 import {TypeaheadMatch} from 'ngx-bootstrap/typeahead';
 import {CustomHttpResponse} from '../../../interface/custom-http-response';
@@ -22,6 +21,7 @@ import {DataState} from '../../../enum/data-state.enum';
 import {CenterService} from '../../../service/center.service';
 import {LocationService} from '../../../service/location.service';
 import {NgbTimeStruct} from "@ng-bootstrap/ng-bootstrap";
+import {NotificationService} from "../../../service/notification.service";
 
 @Component({
   selector: 'app-center-new',
@@ -48,10 +48,10 @@ export class CenterNewComponent implements OnInit {
   defaultClosingHour: NgbTimeStruct;
 
   constructor(
-    private router: Router,
     private centerService: CenterService,
     private locationService: LocationService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private notification: NotificationService
   ) {
     this.defaultOpeningHour = { hour: 8, minute: 0, second: 0 };
     this.defaultClosingHour = { hour: 20, minute: 0, second: 0 };
@@ -148,7 +148,7 @@ export class CenterNewComponent implements OnInit {
 
     this.centerService.create$(formData).pipe(
       map((response) => {
-        console.log(response);
+        this.notification.onSuccess(response.message)
         this.newCenterForm.reset({ county: '', city: '' });
         this.isLoadingSubject.next(false);
         return { dataState: DataState.LOADED, appData: this.dataSubject.value };
@@ -156,6 +156,7 @@ export class CenterNewComponent implements OnInit {
       startWith({ dataState: DataState.LOADED, appData: this.dataSubject.value }),
       catchError((error: string) => {
         this.isLoadingSubject.next(false);
+        this.notification.onError(error)
         return of({ dataState: DataState.LOADED, error });
       })
     ).subscribe((result) => {
@@ -209,7 +210,10 @@ export class CenterNewComponent implements OnInit {
     const selectedMaterial = event.item;
 
     if (!this.selectedMaterials.includes(selectedMaterial)) {
+      this.notification.onDefault(selectedMaterial + " added to the accepted materials.")
       this.selectedMaterials.push(selectedMaterial);
+    } else {
+      this.notification.onDefault("Accepted material already selected.")
     }
 
     this.newCenterForm.get("materials").reset()
@@ -219,6 +223,7 @@ export class CenterNewComponent implements OnInit {
 
   onRemoveMaterial(material: string): void {
     this.selectedMaterials = this.selectedMaterials.filter((m) => m !== material);
+    this.notification.onDefault("Accepted material removed successfully.")
   }
 
   private formatTime(time: NgbTimeStruct): string {

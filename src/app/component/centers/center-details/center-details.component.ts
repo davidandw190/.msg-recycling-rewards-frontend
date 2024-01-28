@@ -28,6 +28,7 @@ import {RecyclingCenter} from "../../../interface/recycling-center";
 import {VoucherGuidelinesComponent} from "../../guidelines/voucher-guidelines/voucher-guidelines.component";
 import {MatDialog} from "@angular/material/dialog";
 import {RecyclingGuidelinesComponent} from "../../guidelines/recycling-guidelines/recycling-guidelines.component";
+import {NotificationService} from "../../../service/notification.service";
 
 
 @Component({
@@ -135,7 +136,8 @@ export class CenterDetailsComponent implements OnInit {
     private locationService: LocationService,
     private sustainabilityIndexPipe: SustainabilityIndexPipe,
     private modalService: NgbModal,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private notification: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -260,10 +262,6 @@ export class CenterDetailsComponent implements OnInit {
     const unitMeasure = this.recyclingForm.value.unitMeasure;
     const amount = this.recyclingForm.value.amount;
 
-
-    console.log("CHOSEN MATERIAL TYPE IS:" + materialType)
-    console.log("UNIT MEANSURES: " + this.materialUnitMeasures[materialType])
-
     if (!materialType || !unitMeasure || amount === null) {
       this.earnedRewardPoints = null;
       this.earnedSustainabilityIndex = null;
@@ -273,6 +271,7 @@ export class CenterDetailsComponent implements OnInit {
     const selectedMaterial = this.acceptedMaterials.find((m) => m.name === materialType);
 
     if (!selectedMaterial) {
+
       console.error('Selected material not found in acceptedMaterials array');
       this.earnedRewardPoints = null;
       this.earnedSustainabilityIndex = null;
@@ -321,9 +320,9 @@ export class CenterDetailsComponent implements OnInit {
     };
 
     this.centerService.contribute$(formData).pipe(
+      map((response) => this.notification.onSuccess(response.message)),
       switchMap(() => this.centerService.centerDetails$(this.centerId)),
       map((response) => {
-        console.log(response);
         this.dataSubject.next(response);
         this.centerId = response.data.center.centerId;
         this.userId = response.data.user.id;
@@ -337,6 +336,7 @@ export class CenterDetailsComponent implements OnInit {
       }),
       catchError((error: string) => {
         this.isLoadingSubject.next(false);
+        this.notification.onError(error)
         return of({ dataState: DataState.ERROR, error });
       })
     ).subscribe((result) => {
@@ -440,7 +440,7 @@ export class CenterDetailsComponent implements OnInit {
       )
       .subscribe(
         ([response, _]) => {
-          console.log(response);
+          this.notification.onSuccess("Center details updated successfully.")
           this.dataSubject.next({ ...response, data: response.data });
           this.initializeCenterUpdateForm(response.data.center);
           this.isLoadingSubject.next(false);
@@ -450,6 +450,7 @@ export class CenterDetailsComponent implements OnInit {
         },
         (error: string) => {
           this.isLoadingSubject.next(false);
+          this.notification.onError(error)
           console.error(error);
         }
       );
@@ -483,7 +484,7 @@ export class CenterDetailsComponent implements OnInit {
       const minute = parseInt(timeArray[1], 10);
 
       if (!isNaN(hour) && !isNaN(minute) && hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59) {
-        return { hour, minute, second: 0 }; // Assuming seconds are always 0
+        return { hour, minute, second: 0 };
       }
     }
 
