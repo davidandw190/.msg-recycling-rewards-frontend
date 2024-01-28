@@ -15,17 +15,17 @@ import {
   takeUntil,
   tap
 } from "rxjs";
-import {AppState} from "../../interface/app-state";
-import {CustomHttpResponse} from "../../interface/custom-http-response";
+import {AppState} from "../../../interface/app-state";
+import {CustomHttpResponse} from "../../../interface/custom-http-response";
 import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
-import {DataState} from '../../enum/data-state.enum';
+import {DataState} from '../../../enum/data-state.enum';
 import {ClipboardService} from "ngx-clipboard";
-import {EcoLearnPageResponse} from "../../interface/eco-learn-page-response";
-import {EcoLearnService} from "../../service/eco-learn.service";
+import {EcoLearnPageResponse} from "../../../interface/eco-learn-page-response";
+import {EcoLearnService} from "../../../service/eco-learn.service";
 import {TypeaheadMatch} from "ngx-bootstrap/typeahead";
 import {MatDialog} from "@angular/material/dialog";
-import {EducationalResource} from "../../interface/educational-resource";
+import {EducationalResource} from "../../../interface/educational-resource";
 import {ShareResourceComponent} from "../share-resource/share-resource.component";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 

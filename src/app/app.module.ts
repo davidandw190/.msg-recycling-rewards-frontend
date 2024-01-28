@@ -17,15 +17,15 @@ import {VoucherStatusPipe} from "./pipes/voucher-status.pipe";
 import {ClipboardModule} from "ngx-clipboard";
 import {VoucherGuidelinesComponent} from './component/guidelines/voucher-guidelines/voucher-guidelines.component';
 import {LeaderboardComponent} from './component/leaderboard/leaderboard.component';
-import {EcoLearnComponent} from './component/eco-learn/eco-learn.component';
+import {EcoLearnComponent} from './component/eco-learn/eco-learn/eco-learn.component';
 import {RecyclingGuidelinesComponent} from './component/guidelines/recycling-guidelines/recycling-guidelines.component';
-import {EcoLearnNewComponent} from './component/eco-learn-new/eco-learn-new.component';
+import {EcoLearnNewComponent} from './component/eco-learn/eco-learn-new/eco-learn-new.component';
 import {VgCoreModule} from "@videogular/ngx-videogular/core";
 import {VgOverlayPlayModule} from "@videogular/ngx-videogular/overlay-play";
 import {VgBufferingModule} from "@videogular/ngx-videogular/buffering";
 import {VgControlsModule} from "@videogular/ngx-videogular/controls";
 import {MatLegacyChipsModule} from "@angular/material/legacy-chips";
-import {ShareResourceComponent} from './component/share-resource/share-resource.component';
+import {ShareResourceComponent} from './component/eco-learn/share-resource/share-resource.component';
 import {CKEditorModule} from "@ckeditor/ckeditor5-angular";
 import {CoreModule} from "./core/core.module";
 import {SharedModule} from "./shared/shared.module";
@@ -37,15 +37,10 @@ import {HomeModule} from "./component/home/home.module";
 import {StatsModule} from "./component/stats/stats.module";
 import {ProfileModule} from "./component/profile/profile.module";
 import {VouchersModule} from "./component/vouchers/vouchers.module";
+import {EcoLearnModule} from "./component/eco-learn/eco-learn.module";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    EcoLearnComponent,
-    EcoLearnNewComponent,
-    ShareResourceComponent,
-
-  ],
+  declarations: [AppComponent],
   imports: [
     CoreModule,
     SharedModule,
@@ -55,25 +50,11 @@ import {VouchersModule} from "./component/vouchers/vouchers.module";
     HomeModule,
     ProfileModule,
     VouchersModule,
-    BrowserModule,
+    EcoLearnModule,
     AppRoutingModule,
     HttpClientModule,
-    MatInputModule,
-    MatSelectModule,
-    NgMultiSelectDropDownModule,
-    NgbTimepickerModule,
-    NgbNavModule,
-    VoucherStatusPipe,
-    VgCoreModule,
-    VgOverlayPlayModule,
-    VgBufferingModule,
-    VgControlsModule,
-    MatLegacyChipsModule,
-    CKEditorModule,
-    NavbarModule
   ],
-  providers: [
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

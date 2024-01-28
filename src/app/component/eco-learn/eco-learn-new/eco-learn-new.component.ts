@@ -16,11 +16,11 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms'; // Import Validators
 import {TypeaheadMatch} from 'ngx-bootstrap/typeahead';
-import {CustomHttpResponse} from '../../interface/custom-http-response';
-import {AppState} from '../../interface/app-state';
-import {DataState} from '../../enum/data-state.enum';
-import {ResourceNewPageResponse} from "../../interface/resource-new-page-response";
-import {EcoLearnService} from "../../service/eco-learn.service";
+import {CustomHttpResponse} from '../../../interface/custom-http-response';
+import {AppState} from '../../../interface/app-state';
+import {DataState} from '../../../enum/data-state.enum';
+import {ResourceNewPageResponse} from "../../../interface/resource-new-page-response";
+import {EcoLearnService} from "../../../service/eco-learn.service";
 
 
 @Component({

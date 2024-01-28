@@ -13,13 +13,10 @@ import {CenterAllComponent} from "./component/centers/center-all/center-all.comp
 import {VouchersComponent} from "./component/vouchers/vouchers/vouchers.component";
 import {VoucherDetailsComponent} from "./component/vouchers/voucher-details/voucher-details.component";
 import {LeaderboardComponent} from "./component/leaderboard/leaderboard.component";
-import {EcoLearnComponent} from "./component/eco-learn/eco-learn.component";
-import {EcoLearnNewComponent} from "./component/eco-learn-new/eco-learn-new.component";
+import {EcoLearnComponent} from "./component/eco-learn/eco-learn/eco-learn.component";
+import {EcoLearnNewComponent} from "./component/eco-learn/eco-learn-new/eco-learn-new.component";
 
 const routes: Routes = [
-  { path: 'eco-learn', component: EcoLearnComponent, canActivate: [AuthenticationGuard] },
-  { path: 'eco-learn/new', component: EcoLearnNewComponent, canActivate: [AuthenticationGuard] },
-
   { path: '', redirectTo: '/', pathMatch: 'full' },
   { path: '**', component: HomeComponent, canActivate: [AuthenticationGuard] },
 ];
