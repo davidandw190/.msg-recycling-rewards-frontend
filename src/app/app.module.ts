@@ -38,6 +38,7 @@ import {StatsModule} from "./component/stats/stats.module";
 import {ProfileModule} from "./component/profile/profile.module";
 import {VouchersModule} from "./component/vouchers/vouchers.module";
 import {EcoLearnModule} from "./component/eco-learn/eco-learn.module";
+import {NotificationModule} from "./notification.module";
 
 @NgModule({
   declarations: [AppComponent],
@@ -51,8 +52,8 @@ import {EcoLearnModule} from "./component/eco-learn/eco-learn.module";
     ProfileModule,
     VouchersModule,
     EcoLearnModule,
-    AppRoutingModule,
-    HttpClientModule,
+    NotificationModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

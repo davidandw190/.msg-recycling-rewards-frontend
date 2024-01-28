@@ -2,7 +2,7 @@ import {NgModule} from "@angular/core";
 import {UserService} from "../service/user.service";
 import {CenterService} from "../service/center.service";
 import {HttpCacheService} from "../service/http.cache.service";
-import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {TokenInterceptor} from "../interceptor/token.interceptor";
 import {VoucherService} from "../service/voucher.service";
 import {LeaderboardService} from "../service/leaderboard.service";
@@ -11,6 +11,7 @@ import {LocationService} from "../service/location.service";
 
 @NgModule({
   providers: [
+    HttpClientModule,
     UserService,
     CenterService,
     VoucherService,
