@@ -8,5 +8,5 @@ export interface Voucher {
   redeemed: boolean;
   createdAt: Date;
   expiresAt: Date;
-
+  redeemedAt?: Date;
 }

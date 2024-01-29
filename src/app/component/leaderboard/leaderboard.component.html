@@ -92,42 +92,8 @@
                 <td class="text-center"><strong style="color:#218838"> +{{ entry?.rewardPoints | sustainabilityIndex }}%</strong></td>
               </tr>
             </ng-container>
-
             </tbody>
-<!--          </ng-container>-->
-
-<!--          <ng-container *ngIf="countyFilterApplied">-->
-<!--            &lt;!&ndash; Table Body &ndash;&gt;-->
-<!--            <tbody *ngFor="let entry of state?.appData?.data?.page.content;  let index = index" class="table-body">-->
-
-<!--            <ng-container *ngIf="!entry.administration">-->
-<!--              <tr class="cell-1">-->
-<!--                <td class="text-center text-muted"> <strong>#{{ index + 1 }}</strong></td>-->
-
-<!--                <td class="text-center">-->
-<!--                  <img-->
-<!--                    [src]="entry?.imageUrl || 'https://img.freepik.com/free-icon/user_318-159711.jpg'"-->
-<!--                    alt=""-->
-<!--                    width="42" height="42" class="rounded-circle"-->
-<!--                  ></td>-->
-<!--                <td>{{ entry?.firstName }}</td>-->
-<!--                <td>{{ entry?.lastName }}</td>-->
-<!--                <td>{{ entry?.email }}</td>-->
-<!--                <td>{{ entry?.county }}</td>-->
-<!--                <td>{{ entry?.city }}</td>-->
-<!--                <td><strong style="color: #A01540FF">{{ entry?.rewardPoints }}</strong></td>-->
-<!--                <td class="text-center"><strong style="color:#218838">{{ entry?.rewardPoints | sustainabilityIndex }}%</strong></td>-->
-<!--              </tr>-->
-<!--            </ng-container>-->
-
-<!--            </tbody>-->
-<!--          </ng-container>-->
-
         </table>
-
-<!--        <ngb-alert *ngIf="state?.appData?.data?.page?.content.length === 0 && numEnabledFilters !== 0" style="margin-top: 0;" type="info" [dismissible]="false">-->
-<!--          No recycling centers found by your criteria. Try changing your search criteria.-->
-<!--        </ngb-alert>-->
 
         <ngb-alert *ngIf="state?.appData?.data?.page?.content.length === 0" style="margin-top: 0;" type="info" [dismissible]="false">
           No recycling centers available at the moment. Check back later.

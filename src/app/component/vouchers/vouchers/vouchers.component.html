@@ -59,12 +59,10 @@
                   <th mat-sort-header="status" style="width: 8%;" scope="col">Status</th>
                   <th mat-sort-header="createdAt" style="width: 12%;" scope="col">Earned On</th>
                   <th mat-sort-header="expiresAt" style="width: 12%;" scope="col">Expires At</th>
+                  <th *ngIf="tab === 'Redeemed' || tab === 'All Vouchers'" mat-sort-header="redeemedAt" style="width: 12%;" scope="col">Redeemed At</th>
                   <th style="width: 8%;" scope="col">Action</th>
                 </tr>
                 </thead>
-
-
-
 
                 <tbody class="table-body">
                 <tr *ngFor="let voucher of state?.appData?.data?.page?.content" class="cell-1">
@@ -80,6 +78,9 @@
                   <td [innerHTML]="voucher | voucherStatus"></td>
                   <td>{{ voucher.createdAt | date: 'mediumDate' }}</td>
                   <td>{{ voucher.expiresAt | date: 'mediumDate' }}</td>
+                  <td *ngIf="tab === 'Redeemed' || tab === 'All Vouchers' " >
+                    {{ voucher.redeemedAt === null ? '-' :  voucher.redeemedAt | date: 'mediumDate'}}
+                  </td>
                   <td class="text-center">
                     <button type="button" mat-flat-button [routerLink]="['/vouchers', voucher.uniqueCode]"  class="btn" style="background-color: #28a745; color: #fff;" *ngIf="isVoucherRedeemable(voucher)"><i class="fa-solid fa-leaf"></i></button>
                     <button type="button" mat-flat-button [routerLink]="['/vouchers', voucher.uniqueCode]" class="btn" style="background-color: #948a8a; color: #fff;" *ngIf="!isVoucherRedeemable(voucher)"><i class="fa-solid fa-info"></i></button>

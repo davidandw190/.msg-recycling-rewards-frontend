@@ -72,6 +72,7 @@
                     <small>to</small>
                     <address class="address-details">
                       <strong class="text-inverse">{{ state?.appData?.data?.user.firstName }} {{ state?.appData?.data?.user.lastName }}</strong><br>
+                      Address: {{ state?.appData?.data?.user.address || " -"}} <br>
                       Email: {{ state?.appData?.data?.user.email }} <br>
                       Phone: {{ state?.appData?.data?.user.phone || " -" }} <br>
                     </address>
@@ -80,13 +81,13 @@
                     <img src="../../../../assets/msg-logo.png" width="100px"  alt=".MSG" style="margin-top: -200px">
                     <br>
                     <div class="date text-inverse text-muted">
-                      Earn Date: Jan 6 2024 {{ state?.appData?.data?.voucher?.expiresAt | date: 'shortTime' }}
+                      Earn Date: {{ state?.appData?.data?.voucher?.createdAt | date: 'mediumDate' }} {{ state?.appData?.data?.voucher?.createdAt | date: 'shortTime' }}
                     </div>
                     <div class="date text-inverse text-muted">
                       Expires At: {{ state?.appData?.data?.voucher?.expiresAt | date: 'mediumDate' }} {{ state?.appData?.data?.voucher?.expiresAt | date: 'shortTime' }}
                     </div>
                     <div *ngIf="voucherStatus == 'REDEEMED'" class="date text-inverse text-muted">
-                      Redeem Date: {{ state?.appData?.data?.voucher?.createdAt | date: 'mediumDate' }}
+                      Redeem Date: {{ state?.appData?.data?.voucher?.redeemedAt | date: 'mediumDate' }} {{ state?.appData?.data?.voucher?.redeemedAt | date: 'shortTime' }}
                     </div>
 
                     <div class="mt-3">
