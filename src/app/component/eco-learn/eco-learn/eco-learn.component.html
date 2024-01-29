@@ -1,8 +1,8 @@
 <ng-container *ngIf="(ecoLearnState$ | async) as state" [ngSwitch]="state.dataState">
-  <ng-container *ngSwitchCase="DataState.LOADED">
-    <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
+  <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
+  <div style="margin-top: 100px"> </div>
 
-    <div style="margin-top: 100px"> </div>
+  <ng-container *ngSwitchCase="DataState.LOADED">
     <section>
       <div class="container mt-4">
         <nav aria-label="breadcrumb">
@@ -230,9 +230,15 @@
           </aside>
         </div>
       </div>
-
     </section>
-
-
   </ng-container>
+
+  <ng-container *ngSwitchCase="DataState.ERROR">
+    <div class="container mt-4">
+      <ngb-alert [dismissible]="false" type="danger">
+        <strong>An unexpected error occurred. </strong> Please try again later.
+      </ngb-alert>
+    </div>
+  </ng-container>
+
 </ng-container>

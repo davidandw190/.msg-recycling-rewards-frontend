@@ -1,7 +1,8 @@
 <ng-container *ngIf="(centersState$ | async) as state" [ngSwitch]="state.dataState">
+  <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
+  <div style="margin-top: 90px"> </div>
+
   <ng-container *ngSwitchCase="DataState.LOADED">
-    <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
-    <div style="margin-top: 90px"> </div>
     <section>
       <div class="container mt-4">
         <nav aria-label="breadcrumb">
@@ -245,8 +246,15 @@
     </section>
   </ng-container>
 
+  <ng-container *ngSwitchCase="DataState.LOADING">
+  </ng-container>
+
   <ng-container *ngSwitchCase="DataState.ERROR">
-    <div>{{ state.error }}</div>
+    <div class="container mt-4">
+      <ngb-alert [dismissible]="false" type="danger">
+        <strong>An unexpected error occurred. </strong> Please try again later.
+      </ngb-alert>
+    </div>
   </ng-container>
 </ng-container>
 

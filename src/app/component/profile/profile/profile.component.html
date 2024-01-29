@@ -1,7 +1,9 @@
-<ng-container *ngIf="(profileState$ | async) as state">
-  <ng-container>
-    <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
-    <div style="margin-top: 90px"></div>
+<ng-container *ngIf="(profileState$ | async) as state" [ngSwitch]="state.dataState">
+
+  <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
+  <div style="margin-top: 90px"></div>
+
+  <ng-container *ngSwitchCase="DataState.LOADED">
     <section>
       <div class="container">
         <nav aria-label="breadcrumb" style="margin-top: 8px;">
@@ -363,6 +365,14 @@
 
       </div>
     </section>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="DataState.ERROR">
+    <div class="container mt-4">
+      <ngb-alert [dismissible]="false" type="danger">
+        <strong>An unexpected error occurred. </strong> Please try again later.
+      </ngb-alert>
+    </div>
   </ng-container>
 </ng-container>
 

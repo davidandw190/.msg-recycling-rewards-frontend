@@ -1,7 +1,9 @@
 <ng-container *ngIf="(voucherDetailsState$ | async) as state" [ngSwitch]="state.dataState">
+
+  <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
+  <div style="margin-top: 90px"></div>
+
   <ng-container *ngSwitchCase="DataState.LOADED">
-    <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
-    <div style="margin-top: 90px"></div>
     <section>
       <div class="container">
         <nav aria-label="breadcrumb" class="breadcrumb-nav mb-4">
@@ -136,5 +138,13 @@
         </div>
       </div>
     </section>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="DataState.ERROR">
+    <div class="container mt-4">
+      <ngb-alert [dismissible]="false" type="danger">
+        <strong>An unexpected error occurred. </strong> Please try again later.
+      </ngb-alert>
+    </div>
   </ng-container>
 </ng-container>

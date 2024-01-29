@@ -21,8 +21,7 @@
                 </div>
 
                 <div *ngIf="state.error" class="alert alert-danger mt-3" role="alert">
-                  {{ state.error }}
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  <ngb-alert type="danger">{{ state.error }}</ngb-alert>
                 </div>
 
                 <form (ngSubmit)="createResource($event, fileInput)" [formGroup]="newResourceForm" class="mb-3">

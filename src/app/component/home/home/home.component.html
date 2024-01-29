@@ -3,9 +3,7 @@
   <!-- Main Content -->
   <section class="main-section">
     <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
-
     <div style="margin-top: 90px"></div>
-
 
     <ng-container *ngSwitchCase="DataState.LOADED">
 
@@ -167,17 +165,14 @@
           </div>
         </div>
       </div>
-
-    </ng-container>
-
-    <ng-container *ngSwitchCase="DataState.LOADING">
-      <mat-spinner></mat-spinner>
     </ng-container>
 
     <ng-container *ngSwitchCase="DataState.ERROR">
-      <ngb-alert [dismissible]="false" type="danger">
-        <strong>An unexpected error occurred. </strong> Please try again later.
-      </ngb-alert>
+      <div class="container mt-4">
+        <ngb-alert [dismissible]="false" type="danger">
+          <strong>An unexpected error occurred. </strong> Please try again later.
+        </ngb-alert>
+      </div>
     </ng-container>
 
 
