@@ -70,7 +70,7 @@
                     <ng-container *ngIf="resource.contentType === 'VIDEO'">
 
                       <ng-container *ngIf="resource.isExternalMedia" class="embed-responsive embed-responsive-16by9">
-                        <iframe [src]="sanitizeUrl(convertToEmbedUrl(resource.mediaUrl))"   loading="lazy" class="embed-responsive-item" width="780px" height="480px" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        <iframe [src]="sanitizeUrl(convertToEmbedUrl(resource.mediaUrl))" loading="lazy" class="embed-responsive-item" width="780px" height="480px" allow="autoplay; clipboard-write; picture-in-picture"
                                 allowfullscreen></iframe>
                       </ng-container>
 
@@ -109,13 +109,13 @@
 
                     <button class="icon-btn" (click)="shareResource(resource)">
                       <i class="fa-solid fa-share"></i>
-                      <p class="icon-text">{{ resource.sharesCount }}</p>
+<!--                      <p class="icon-text">{{ resource.sharesCount }}</p>-->
                     </button>
 
                     <button class="icon-btn" (click)="saveResource(resource)">
                       <i *ngIf="!resource.savedByUser" class="fa-regular fa-bookmark"></i>
                       <i *ngIf="resource.savedByUser" class="fa-solid fa-bookmark"></i>
-                      <p class="icon-text">{{ resource.savesCount }}</p>
+<!--                      <p class="icon-text">{{ resource.savesCount }}</p>-->
                     </button>
                   </div>
                 </div>

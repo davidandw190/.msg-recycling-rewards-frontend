@@ -17,8 +17,8 @@
           <div class="col-12">
             <h4 class="fw-bold">Available Recycling Centers ({{ state?.appData?.data?.page?.totalElements }})</h4>
             <div class="d-flex justify-content-end align-items-center" style="margin-top: -10px">
-              <div mat-basic-chip-row class="chip-set-container">
-                <mat-chip *ngFor="let material of selectedMaterials" class="custom-chip">
+              <div mat-basic-chip-row>
+                <mat-chip *ngFor="let material of selectedMaterials" class="chip-set">
                   {{ material }}
                   <button matChipRemove aria-label="Remove" (click)="onRemoveMaterial(material)">
                     <mat-icon>cancel</mat-icon>

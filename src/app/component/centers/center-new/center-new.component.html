@@ -119,8 +119,8 @@
 
                       <label class="mt-3">Accepted Recycling Materials:</label>
 
-                      <div mat-basic-chip-row class="chip-set-container">
-                        <mat-chip *ngFor="let material of selectedMaterials">
+                      <div mat-basic-chip-row>
+                        <mat-chip *ngFor="let material of selectedMaterials" class="chip-set">
                           {{ material }}
                           <button matChipRemove aria-label="Remove" (click)="onRemoveMaterial(material)">
                             <mat-icon>cancel</mat-icon>

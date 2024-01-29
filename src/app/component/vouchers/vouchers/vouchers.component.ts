@@ -27,6 +27,7 @@ import {Voucher} from "../../../interface/voucher";
 import {ClipboardService} from "ngx-clipboard";
 import {VoucherGuidelinesComponent} from "../../guidelines/voucher-guidelines/voucher-guidelines.component";
 import {MatDialog} from "@angular/material/dialog";
+import {NotificationService} from "../../../service/notification.service";
 
 @Component({
   selector: 'app-vouchers',
@@ -51,13 +52,15 @@ export class VouchersComponent implements OnInit, OnDestroy {
   searchForm: FormGroup;
 
 
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private voucherService: VoucherService,
     private formBuilder: FormBuilder,
     private clipboardService: ClipboardService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private notification: NotificationService
   ) {
   }
 
@@ -275,6 +278,10 @@ export class VouchersComponent implements OnInit, OnDestroy {
 
   copyToClipboard(code: string) {
     this.clipboardService.copyFromContent(code);
-
+    this.notification.onDefault("Voucher Code copied to clipboard.")
   }
+
+  // getActiveTab(): string {
+  //   return this.updateActiveTab()
+  // }
 }

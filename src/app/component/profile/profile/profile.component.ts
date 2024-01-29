@@ -19,6 +19,7 @@ import {FormBuilder, FormGroup, NgForm, Validators} from "@angular/forms";
 import {LocationService} from "../../../service/location.service";
 import {TypeaheadMatch} from "ngx-bootstrap/typeahead";
 import {User} from "../../../interface/user";
+import {NotificationService} from "../../../service/notification.service";
 
 @Component({
   selector: 'app-profile',
@@ -44,16 +45,15 @@ export class ProfileComponent implements OnInit {
   constructor(
     private userService: UserService,
     private locationService: LocationService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private notification: NotificationService
   ) {}
 
   ngOnInit(): void {
     this.profileState$ = this.userService.profile$()
       .pipe(
         map(response => {
-          console.log(response)
           this.dataSubject.next(response);
-          console.log(response.data.user.id + " asdasdadsasdasd")
           this.initializeForm(response.data.user)
           return { dataState: DataState.LOADED, appData: response }
         }),
@@ -61,6 +61,7 @@ export class ProfileComponent implements OnInit {
         startWith({ dataState: DataState.LOADING }),
 
         catchError((error: string) => {
+          this.notification.onError(error);
           return of({ dataState: DataState.ERROR, isUsingMfa: false, loginSuccess: false, error: error})
         })
       )
@@ -115,7 +116,7 @@ export class ProfileComponent implements OnInit {
     this.profileState$ = this.userService.updateUser$(formData)
       .pipe(
         map(response => {
-          console.log(response);
+          this.notification.onSuccess(response.message);
           this.dataSubject.next({ ...response, data: response.data });
           this.initializeForm(response.data.user)
           this.isLoadingSubject.next(false);
@@ -126,6 +127,7 @@ export class ProfileComponent implements OnInit {
         startWith({ dataState: DataState.LOADING, appData: this.dataSubject.value }),
 
         catchError((error: string) => {
+          this.notification.onError(error);
           this.isLoadingSubject.next(false);
           return of({ dataState: DataState.LOADED, appData: this.dataSubject.value, error: error })
         })
@@ -139,24 +141,27 @@ export class ProfileComponent implements OnInit {
       this.profileState$ = this.userService.updateUserPassword$(updatePasswordForm.value)
         .pipe(
           map(response => {
-            console.log(response);
+            this.isLoadingSubject.next(false);
+            this.notification.onSuccess(response.message);
             this.dataSubject.next({ ...response, data: response.data });
             updatePasswordForm.reset();
-            this.isLoadingSubject.next(false);
             return { dataState: DataState.LOADED, appData: this.dataSubject.value };
           }),
 
           startWith({ dataState: DataState.LOADED, appData: this.dataSubject.value }),
 
           catchError((error: string) => {
-            updatePasswordForm.reset();
             this.isLoadingSubject.next(false);
+            this.notification.onError(error);
+            updatePasswordForm.reset();
             return of({ dataState: DataState.LOADED, appData: this.dataSubject.value, error: error })
           })
         )
     } else {
-      updatePasswordForm.reset();
       this.isLoadingSubject.next(false);
+      this.notification.onError("The new password and the confirmation password dont match.");
+      updatePasswordForm.reset();
+
     }
   }
 
@@ -165,7 +170,7 @@ export class ProfileComponent implements OnInit {
     this.profileState$ = this.userService.updateUserRoles$(roleForm.value.roleName)
       .pipe(
         map(response => {
-          console.log(response);
+          this.notification.onSuccess(response.message);
           this.dataSubject.next({ ...response, data: response.data });
           this.isLoadingSubject.next(false);
           return { dataState: DataState.LOADED, appData: this.dataSubject.value };
@@ -175,6 +180,7 @@ export class ProfileComponent implements OnInit {
 
         catchError((error: string) => {
           this.isLoadingSubject.next(false);
+          this.notification.onError(error);
           return of({ dataState: DataState.LOADED, appData: this.dataSubject.value, error: error })
         })
       )
@@ -185,9 +191,9 @@ export class ProfileComponent implements OnInit {
     this.profileState$ = this.userService.updateUserAccountSettings$(accountSettingsForm.value)
       .pipe(
         map(response => {
-          console.log(response);
-          this.dataSubject.next({ ...response, data: response.data });
+          this.notification.onSuccess(response.message);
           this.isLoadingSubject.next(false);
+          this.dataSubject.next({ ...response, data: response.data });
           return { dataState: DataState.LOADED, appData: this.dataSubject.value };
         }),
 
@@ -195,6 +201,7 @@ export class ProfileComponent implements OnInit {
 
         catchError((error: string) => {
           this.isLoadingSubject.next(false);
+          this.notification.onError(error);
           return of({ dataState: DataState.LOADED, appData: this.dataSubject.value, error: error })
         })
       )
@@ -205,7 +212,7 @@ export class ProfileComponent implements OnInit {
     this.profileState$ = this.userService.toggleMfa$()
       .pipe(
         map(response => {
-          console.log(response);
+          this.notification.onSuccess(response.message);
           this.dataSubject.next({ ...response, data: response.data });
           this.isLoadingSubject.next(false);
           return { dataState: DataState.LOADED, appData: this.dataSubject.value };
@@ -215,6 +222,7 @@ export class ProfileComponent implements OnInit {
 
         catchError((error: string) => {
           this.isLoadingSubject.next(false);
+          this.notification.onError(error);
           return of({ dataState: DataState.LOADED, appData: this.dataSubject.value, error: error })
         })
       )
@@ -225,7 +233,7 @@ export class ProfileComponent implements OnInit {
     this.profileState$ = this.userService.toggleNotifications$()
       .pipe(
         map(response => {
-          console.log(response);
+          this.notification.onSuccess(response.message);
           this.dataSubject.next({ ...response, data: response.data });
           this.isLoadingSubject.next(false);
           return { dataState: DataState.LOADED, appData: this.dataSubject.value };
@@ -235,6 +243,7 @@ export class ProfileComponent implements OnInit {
 
         catchError((error: string) => {
           this.isLoadingSubject.next(false);
+          this.notification.onError(error);
           return of({ dataState: DataState.LOADED, appData: this.dataSubject.value, error: error })
         })
       )
@@ -252,7 +261,7 @@ export class ProfileComponent implements OnInit {
       this.profileState$ = this.userService.updateUserProfilePicture$(this.getFormData(image))
         .pipe(
           map(response => {
-            console.log(response);
+            this.notification.onSuccess(response.message);
             this.dataSubject.next({ ...response,
               data: { ...response.data,
                 user: { ...response.data.user, imageUrl: `${response.data.user.imageUrl}?time=${new Date().getTime()}`}} }); // Im a fucking genius sometimes
@@ -261,6 +270,7 @@ export class ProfileComponent implements OnInit {
           }),
           startWith({ dataState: DataState.LOADED, appData: this.dataSubject.value }),
           catchError((error: string) => {
+            this.notification.onError(error);
             this.isLoadingSubject.next(false);
             return of({ dataState: DataState.LOADED, appData: this.dataSubject.value, error })
           })

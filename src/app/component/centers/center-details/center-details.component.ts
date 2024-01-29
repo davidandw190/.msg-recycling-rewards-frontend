@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject, OnInit, TemplateRef} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, TemplateRef} from '@angular/core';
 import {
   BehaviorSubject,
   catchError,
@@ -37,7 +37,7 @@ import {NotificationService} from "../../../service/notification.service";
   styleUrls: ['./center-details.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CenterDetailsComponent implements OnInit {
+export class CenterDetailsComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   centerDetailsState$: Observable<AppState<CustomHttpResponse<CenterDetailsResponse>>>;
@@ -151,7 +151,6 @@ export class CenterDetailsComponent implements OnInit {
       this.initialAcceptedMaterials = response.appData.data.center.acceptedMaterials
         ? response.appData.data.center.acceptedMaterials.map(material => material.name)
         : [];
-      console.log(">>>>>>>>>>>>>>>>>>>>>>>>> " + response.appData.data.user.roleName)
       this.updateCenterFormControlsState(response.appData.data.user.roleName)
     });
 

@@ -11,6 +11,7 @@ import {jsPDF} from 'jspdf';
 import html2canvas from "html2canvas";
 import {MatDialog} from "@angular/material/dialog";
 import {VoucherGuidelinesComponent} from "../../guidelines/voucher-guidelines/voucher-guidelines.component";
+import {NotificationService} from "../../../service/notification.service";
 
 const VOUCHER_CODE: string = 'code';
 
@@ -36,7 +37,8 @@ export class VoucherDetailsComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private voucherService: VoucherService,
     private voucherStatusPipe: VoucherStatusPipe,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private notification: NotificationService
   ) { }
 
 
@@ -46,7 +48,6 @@ export class VoucherDetailsComponent implements OnInit, OnDestroy {
         return this.voucherService.voucher$(params.get(VOUCHER_CODE))
           .pipe(
             map(response => {
-              console.log(response);
               this.dataSubject.next(response);
               this.voucherStatus = this.voucherStatusPipe.transform(response.data.voucher, false, true);
               this.currentVoucherCode = response.data.voucher.uniqueCode;
@@ -73,6 +74,7 @@ export class VoucherDetailsComponent implements OnInit, OnDestroy {
     this.isLoadingSubject.next(true);
 
     this.voucherService.redeem$(this.currentVoucherCode).pipe(
+      map((response) => this.notification.onSuccess(response.message)),
       switchMap(() => this.voucherService.voucher$(this.currentVoucherCode)),
       map((response) => {
         console.log(response);
@@ -82,6 +84,7 @@ export class VoucherDetailsComponent implements OnInit, OnDestroy {
         return { dataState: DataState.LOADED, appData: response };
       }),
       catchError((error: string) => {
+        this.notification.onError(error)
         this.isLoadingSubject.next(false);
         return of({ dataState: DataState.ERROR, error });
       }),
@@ -108,6 +111,8 @@ export class VoucherDetailsComponent implements OnInit, OnDestroy {
 
         doc.save(filename);
       });
+
+      this.notification.onSuccess("Voucher exported successfully.")
     }
   }
 

@@ -28,6 +28,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {EducationalResource} from "../../../interface/educational-resource";
 import {ShareResourceComponent} from "../share-resource/share-resource.component";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
+import {NotificationService} from "../../../service/notification.service";
 
 @Component({
   selector: 'app-eco-learn',
@@ -71,8 +72,9 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
     private ecoLearnService: EcoLearnService,
     private formBuilder: FormBuilder,
     private clipboardService: ClipboardService,
-    public dialog: MatDialog,
-    private sanitizer: DomSanitizer
+    private dialog: MatDialog,
+    private sanitizer: DomSanitizer,
+    private notification: NotificationService
   ) {
   }
 
@@ -188,16 +190,10 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  redirectNewCenter() {
-    this.router.navigate(["/centers/new"])
-  }
-
   private initializeSearch(): void {
     this.ecoLearnState$ = this.dataSubject.pipe(
       map((response) => {
-        // this.availableCategories = [...response.data.availableCategories] || [];
-        // this.availableContentTypes = [...response.data.availableContentTypes] || [];
-        // this.dataSubject.next(response);
+
         return { dataState: DataState.LOADED, appData: response }
       }
       ),
@@ -226,8 +222,6 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
         tap((response) => {
           this.availableCategories = [...response.availableCategories] || [];
           this.availableContentTypes = [...response.availableContentTypes] || [];
-
-          console.log(" >>>>>>>>>>>>" + this.availableCategories)
         })
       )
       .subscribe();
@@ -272,6 +266,7 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
       debounceTime(300),
       distinctUntilChanged(),
       filter(contentType => this.availableContentTypes.includes(contentType)),
+      tap((contentType) => this.notification.onSuccess(contentType + " content type filter applied.")),
       switchMap(contentType => this.performSearch()),
       takeUntil(this.destroy$)
     ).subscribe(response => this.handleSearch(response));
@@ -307,7 +302,6 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
 
   }
 
-
   private handleSearch(response: any): void {
     this.dataSubject.next(response);
     this.availableCategories = [...response.appData.data.availableCategories];
@@ -327,10 +321,6 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
     });
   }
 
-  copyToClipboard(code: string) {
-    this.clipboardService.copyFromContent(code);
-  }
-
   protected onSelectCategory(event: TypeaheadMatch): void {
     const selectedCategory = event.item;
     this.searchForm.get("categories").setValue("")
@@ -340,22 +330,11 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
 
   addCategoryIfNotExists(category: string): void {
     if (!this.selectedCategories.includes(category)) {
+      this.notification.onDefault(category + " category added to filter.");
       this.selectedCategories.push(category);
       this.searchEducationalResources();
-    }
-  }
-
-  shouldCollapse(summary: string): boolean {
-    return summary.length > this.collapseThreshold;
-  }
-
-  onCategoryChange(event: any, category: string): void {
-    const categories = this.resourceForm.get('categories') as FormArray;
-    if (event.target.checked) {
-      categories.push(this.formBuilder.control(category));
     } else {
-      const index = categories.controls.findIndex(x => x.value === category);
-      categories.removeAt(index);
+      this.notification.onDefault("Category already added to filter.");
     }
   }
 
@@ -368,39 +347,50 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
     this.initializeSearch();
     this.setupReactiveSearch();
   }
-  submitResource(): void {
-    if (this.resourceForm.valid) {
-    }
-  }
 
   onRemoveCategory(category: string): void {
     this.selectedCategories = this.selectedCategories.filter((c) => c !== category);
+    this.notification.onDefault(category + " category removed from filter.");
   }
 
   likeResource(resource: EducationalResource) {
+    const previouslyLiked = resource.likedByUser;
     resource.likedByUser = !resource.likedByUser;
 
-    resource.likedByUser
-      ? resource.likesCount++
-      : resource.likesCount--;
+    resource.likedByUser ? resource.likesCount++ : resource.likesCount--;
 
     this.ecoLearnService.engage$(resource.resourceId, 'LIKE').pipe(
       takeUntil(this.destroy$),
-      catchError((error: string) => of({ dataState: DataState.ERROR, error }))
-    ).subscribe()
+      tap(() => {
+        const message = previouslyLiked
+          ? 'Resource removed from favourites'
+          : 'Resource added to favourites';
+        this.notification.onSuccess(message);
+      }),
+      catchError((error: string) => {
+        this.notification.onError(error);
+        return of({ dataState: DataState.ERROR, error });
+      })
+    ).subscribe();
   }
 
   saveResource(resource: EducationalResource) {
-    resource.savedByUser = !resource.savedByUser
+    const previouslySaved = resource.savedByUser;
+    resource.savedByUser = !resource.savedByUser;
 
-    resource.savedByUser
-      ? resource.savesCount++
-      : resource.savesCount--;
+    resource.savedByUser ? resource.savesCount++ : resource.savesCount--;
 
     this.ecoLearnService.engage$(resource.resourceId, 'SAVE').pipe(
       takeUntil(this.destroy$),
-      catchError((error: string) => of({ dataState: DataState.ERROR, error }))
-    ).subscribe()
+      tap(() => {
+        const message = previouslySaved ? 'Resource unsaved successfully.' : 'Resource saved successfully.';
+        this.notification.onSuccess(message);
+      }),
+      catchError((error: string) => {
+        this.notification.onError(error);
+        return of({ dataState: DataState.ERROR, error });
+      })
+    ).subscribe();
   }
 
   shareResource(resource: EducationalResource) {
@@ -422,7 +412,6 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
     if (match && match[2].length === 11) {
       return `https://www.youtube.com/embed/${match[2]}`;
     } else {
-      // return a default value or handle errors as appropriate
       return 'about:blank';
     }
   }

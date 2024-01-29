@@ -21,6 +21,7 @@ import {AppState} from '../../../interface/app-state';
 import {DataState} from '../../../enum/data-state.enum';
 import {ResourceNewPageResponse} from "../../../interface/resource-new-page-response";
 import {EcoLearnService} from "../../../service/eco-learn.service";
+import {NotificationService} from "../../../service/notification.service";
 
 
 @Component({
@@ -66,7 +67,8 @@ export class EcoLearnNewComponent implements OnInit {
   constructor(
     private router: Router,
     private ecoLearnService: EcoLearnService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private notification: NotificationService
   ) {
 
     this.newResourceForm = this.formBuilder.group({
@@ -119,7 +121,7 @@ export class EcoLearnNewComponent implements OnInit {
   createResource(event: Event, fileInput: HTMLInputElement): void {
     event.preventDefault();
     if (this.newResourceForm.invalid) {
-      alert('Please fill all required fields.');
+      this.notification.onError('Please fill all required fields.')
       return;
     }
 
@@ -142,13 +144,14 @@ export class EcoLearnNewComponent implements OnInit {
 
     this.ecoLearnService.create$(formData).pipe(
       map((response) => {
-        console.log(response);
+        this.notification.onSuccess(response.message)
         this.newResourceForm.reset({ contentType: '', categories: '' });
         this.isLoadingSubject.next(false);
         return { dataState: DataState.LOADED, appData: this.dataSubject.value };
       }),
       startWith({ dataState: DataState.LOADED, appData: this.dataSubject.value }),
       catchError((error: string) => {
+        this.notification.onError(error)
         this.isLoadingSubject.next(false);
         return of({ dataState: DataState.LOADED, error });
       })
@@ -167,23 +170,23 @@ export class EcoLearnNewComponent implements OnInit {
     const selectedCategory = event.item;
 
     if (!this.selectedCategories.includes(selectedCategory)) {
+      this.notification.onDefault(selectedCategory + " category added to the resource categories.")
       this.selectedCategories.push(selectedCategory);
+    }  else {
+      this.notification.onDefault("Resource category already added.")
     }
 
     this.newResourceForm.get("categories").reset()
-
-    console.log(this.selectedCategories.length);
   }
 
   onRemoveCategory(category: string): void {
     this.selectedCategories = this.selectedCategories.filter((c) => c !== category);
+    this.notification.onDefault("Resource category removed successfully.")
   }
 
   protected isCategoryChosen(): boolean {
     return this.selectedCategories.length >= 1;
   }
-
-
 
 }
 

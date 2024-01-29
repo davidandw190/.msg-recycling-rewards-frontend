@@ -24,6 +24,7 @@ import {Sort} from "@angular/material/sort";
 import {LeaderboardPageResponse} from "../../interface/leaderboard-page-response";
 import {LeaderboardService} from "../../service/leaderboard.service";
 import {LocationService} from "../../service/location.service";
+import {NotificationService} from "../../service/notification.service";
 
 @Component({
   selector: 'app-leaderboard',
@@ -59,7 +60,8 @@ export class LeaderboardComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private locationService: LocationService,
     private leaderboardService: LeaderboardService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private notification: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -143,6 +145,7 @@ export class LeaderboardComponent implements OnInit, OnDestroy {
         switchMap((selectedCounty) => {
           // to check if the selectedCounty is a valid county from the options
           if (this.counties.includes(selectedCounty)) {
+            this.notification.onDefault("Leaderboard for " + selectedCounty + " retrieved successfully.");
             return this.leaderboardService.leaderboard$(
               selectedCounty,
               this.searchForm.get('sortBy').value,
@@ -167,6 +170,7 @@ export class LeaderboardComponent implements OnInit, OnDestroy {
         filter(response => response !== null), // to filter out the null response
         catchError((error: string) => {
           console.error(error);
+          this.notification.onError(error);
           return of({ dataState: DataState.ERROR, error });
         }),
         tap((response) => this.handleSearch(response)),
@@ -200,9 +204,6 @@ export class LeaderboardComponent implements OnInit, OnDestroy {
         this.chosenCountyForFilter = queryParams['county'];
       });
   }
-
-
-
 
   private handleSearch(response: any): void {
     this.dataSubject.next(response);

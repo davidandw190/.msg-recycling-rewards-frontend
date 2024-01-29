@@ -5,17 +5,17 @@ const notificationConfig: NotifierOptions = {
   position: {
     horizontal: {
       position: 'left',
-      distance: 150
+      distance: 130
     },
     vertical: {
       position: 'bottom',
-      distance: 50,
+      distance: 40,
       gap: 10
     }
   },
   theme: 'material',
   behaviour: {
-    autoHide: 5000,
+    autoHide: 2000,
     onClick: 'hide',
     onMouseover: 'pauseAutoHide',
     showDismissButton: true,
