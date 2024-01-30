@@ -7,12 +7,15 @@ import {NgForm} from "@angular/forms";
 import {CenterNewResponse} from "../interface/center-new-response";
 import {User} from "../interface/user";
 import {ResourceNewPageResponse} from "../interface/resource-new-page-response";
+import {environment} from "../../environment/environment.dev";
 
 @Injectable({
   providedIn: 'root'
 })
 export class EcoLearnService {
-  private readonly server: string = 'http://localhost:8080';
+
+  private readonly server: string = environment.API_BASE_URL;
+  // private readonly server: string = 'http://localhost:8080';
 
   constructor(private http: HttpClient) {
   }

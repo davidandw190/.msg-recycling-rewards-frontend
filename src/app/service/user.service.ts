@@ -7,12 +7,15 @@ import {Key} from "../enum/key.enum";
 import {User} from "../interface/user";
 import {JwtHelperService} from "@auth0/angular-jwt";
 import {AccountType} from "../interface/account-type";
+import {environment} from "../../environment/environment.dev";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private readonly server: string = 'http://localhost:8080';
+
+  private readonly server: string = environment.API_BASE_URL;
+  // private readonly server: string = 'http://localhost:8080';
   private jwtHelper = new JwtHelperService();
 
   constructor(private http: HttpClient) { }

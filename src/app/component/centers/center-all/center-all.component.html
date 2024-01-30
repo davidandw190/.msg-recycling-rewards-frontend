@@ -1,6 +1,6 @@
 <ng-container *ngIf="(centersState$ | async) as state" [ngSwitch]="state.dataState">
   <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
-  <div style="margin-top: 90px"> </div>
+  <div style="margin-top: 85px"> </div>
 
   <ng-container *ngSwitchCase="DataState.LOADED">
     <section>
@@ -38,7 +38,7 @@
 
               <button class="btn btn-success btn-create me-3"
                       (click)="redirectNewCenter()"
-                      [matTooltipShowDelay]="800"
+                      [matTooltipShowDelay]="500"
                       [matTooltipHideDelay]="500"
                       matTooltip="Register a new Recycling Center that users can engage with"
               >
@@ -57,7 +57,7 @@
                   (click)="toggleFilters()"
                   [attr.aria-expanded]="!isFiltersCollapsed"
                   [class.active]="!isFiltersCollapsed"
-                  [matTooltipShowDelay]="800"
+                  [matTooltipShowDelay]="500"
                   [matTooltipHideDelay]="500"
                   matTooltip="Trigger fields for filters"
                 >
@@ -247,6 +247,7 @@
   </ng-container>
 
   <ng-container *ngSwitchCase="DataState.LOADING">
+
   </ng-container>
 
   <ng-container *ngSwitchCase="DataState.ERROR">

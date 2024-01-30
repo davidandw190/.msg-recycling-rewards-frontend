@@ -4,13 +4,15 @@ import {catchError, Observable, tap, throwError} from "rxjs";
 import {CustomHttpResponse} from "../interface/custom-http-response";
 import {CentersPageResponse} from "../interface/centers-page-response";
 import {LeaderboardPageResponse} from "../interface/leaderboard-page-response";
+import {environment} from "../../environment/environment.dev";
 
 @Injectable({
   providedIn: 'root'
 })
 export class LeaderboardService {
 
-  private readonly server: string = 'http://localhost:8080';
+  private readonly server: string = environment.API_BASE_URL;
+  // private readonly server: string = 'http://localhost:8080';
 
   constructor(private http: HttpClient) { }
 

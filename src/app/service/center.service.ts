@@ -9,13 +9,15 @@ import {RecyclingCenter} from "../interface/recycling-center";
 import {CenterNewResponse} from "../interface/center-new-response";
 import {CenterDetailsResponse} from "../interface/center-details-response";
 import {NgForm} from "@angular/forms";
+import {environment} from "../../environment/environment.dev";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CenterService {
 
-  private readonly server: string = 'http://localhost:8080';
+  private readonly server: string = environment.API_BASE_URL;
+  // private readonly server: string = 'http://localhost:8080';
 
   constructor(private http: HttpClient) { }
 
