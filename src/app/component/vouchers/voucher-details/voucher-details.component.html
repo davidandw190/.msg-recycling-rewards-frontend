@@ -8,8 +8,8 @@
       <div class="container">
         <nav aria-label="breadcrumb" class="breadcrumb-nav mb-4">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item" ><a [routerLink]="['/']" style="color:#208c38">Home</a></li>
-            <li class="breadcrumb-item"><a [routerLink]="['/vouchers']" style="color: #208c38">Vouchers</a></li>
+            <li class="breadcrumb-item" ><a class="navigation-link" [routerLink]="['/']" style="color:#208c38">Home</a></li>
+            <li class="breadcrumb-item"><a class="navigation-link" [routerLink]="['/vouchers']" style="color: #208c38">Vouchers</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ state?.appData?.data?.voucher.uniqueCode }}</li>
           </ol>
         </nav>

@@ -8,8 +8,8 @@
       <div class="container center-details">
         <nav aria-label="breadcrumb" style="margin-top: 20px;">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
-            <li class="breadcrumb-item"><a [routerLink]="['/centers/all']">Centers</a></li>
+            <li class="breadcrumb-item"><a class="navigation-link" [routerLink]="['/']">Home</a></li>
+            <li class="breadcrumb-item"><a class="navigation-link" [routerLink]="['/centers/all']">Centers</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ state?.appData?.data?.center.name }}</li>
           </ol>
         </nav>

@@ -2,6 +2,12 @@
   display: none;
 }
 
+.btn-msg-color {
+  background-color: #A01540;
+  color: #fff;
+  transition: background-color 0.3s ease-in-out;
+}
+
 .ck-editor__editable {
   max-height: 700px;
   overflow-y: auto;

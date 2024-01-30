@@ -6,8 +6,8 @@
       <div class="container mt-4">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
-            <li class="breadcrumb-item"><a [routerLink]="['/eco-learn']">EcoLearn</a></li>
+            <li class="breadcrumb-item"><a class="navigation-link" [routerLink]="['/']">Home</a></li>
+            <li class="breadcrumb-item"><a class="navigation-link" [routerLink]="['/eco-learn']">EcoLearn</a></li>
             <li class="breadcrumb-item active" aria-current="page">New</li>
           </ol>
         </nav>
@@ -103,7 +103,7 @@
                   <div class="mt-4 d-flex justify-content-end">
                     <button [disabled]="state.dataState === DataState.LOADING || newResourceForm.invalid || newResourceForm.pristine || !isCategoryChosen() || (isLoading$ | async)"
                             (click)="createResource($event, fileInput)"
-                            type="submit" class="btn btn-primary">
+                            type="submit" class="btn btn-msg-color">
                       <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                       <span *ngIf="isLoading$ | async">Saving...</span>
                       <span *ngIf="!(isLoading$ | async)">Create Resource</span>

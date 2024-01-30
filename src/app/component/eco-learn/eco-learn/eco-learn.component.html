@@ -7,15 +7,15 @@
       <div class="container mt-4">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
-            <li class="breadcrumb-item"><a [routerLink]="['/eco-learn']">EcoLearn</a></li>
+            <li class="breadcrumb-item"><a class="navigation-link" [routerLink]="['/']">Home</a></li>
+            <li class="breadcrumb-item"><a class="navigation-link" [routerLink]="['/eco-learn']">EcoLearn</a></li>
             <li class="breadcrumb-item active" aria-current="page">Feed</li>
           </ol>
         </nav>
 
         <div class="eco-learn-container">
           <div class="d-flex">
-            <div ngbNav #nav="ngbNav"  class="nav-pills flex-column" orientation="vertical">
+            <div ngbNav #nav="ngbNav" class="nav-pills flex-column" orientation="vertical">
               <ng-container ngbNavItem="all">
                 <button ngbNavLink (click)="updateActiveTab('all')">All Resources</button>
                 <ng-template ngbNavContent>

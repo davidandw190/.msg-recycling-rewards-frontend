@@ -9,8 +9,8 @@
       <div class="container mt-4">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
-            <li class="breadcrumb-item"><a [routerLink]="['/centers/all']">Centers</a></li>
+            <li class="breadcrumb-item"><a class="navigation-link" [routerLink]="['/']">Home</a></li>
+            <li class="breadcrumb-item"><a class="navigation-link" [routerLink]="['/centers/all']">Recycling Centers</a></li>
             <li class="breadcrumb-item active" aria-current="page">New</li>
           </ol>
         </nav>
@@ -137,7 +137,7 @@
                   <div class="mt-4 d-flex justify-content-end">
                     <button [disabled]="state.dataState === DataState.LOADING || newCenterForm.invalid || newCenterForm.pristine ||
                             !isAcceptedMaterialsChosen() || (isLoading$ | async)"
-                            type="submit" class="btn btn-success me-2">
+                            type="submit" class="btn btn-msg-color">
                       <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                       <span *ngIf="isLoading$ | async">Saving...</span>
                       <span *ngIf="!(isLoading$ | async)">Create Center</span>

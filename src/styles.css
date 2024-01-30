@@ -14,6 +14,14 @@ body{
 .pointer {
   cursor: pointer;
 }
+.navigation-link {
+  color: #299b43;
+}
+
+.navigation-link:hover {
+  color: #0cd547;
+}
+
 .card {
   box-shadow: 0 0 2px 0 rgb(0 0 0 / 10%);
   margin-bottom: 24px;
@@ -94,12 +102,10 @@ thead {
   border-bottom-width: 1px;
 }
 
-
 .highlight {
   background-color: yellow;
   font-weight: bold;
 }
-/* Add these styles to your component's CSS file */
 
 .badge-soft-ewaste {
   color: #fff !important;
@@ -177,7 +183,7 @@ thead {
 
 .accepted-materials {
   display: flex;
-  gap: 5px; /* Adjust the spacing between badges as needed */
+  gap: 5px;
 }
 
 
