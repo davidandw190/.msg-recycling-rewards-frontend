@@ -37,7 +37,13 @@
             ],
             "allowedCommonJsDependencies": [
               "canvg",
-              "html2canvas"
+              "html2canvas",
+              "jspdf",
+              "file-saver",
+              "core-js",
+              "raf",
+              "rgbcolor",
+              "@ckeditor/ckeditor5-build-classic"
             ]
           },
           "configurations": {

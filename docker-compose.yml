@@ -1,0 +1,15 @@
+services:
+  securecapitaapp:
+    container_name: rewardsapp-fe-container
+    build: .
+    image: rewardsapp-fe:v1
+    ports:
+      - 80:80
+    expose:
+      - 80
+    networks:
+      - internalnet
+
+networks:
+  internalnet:
+    driver: bridge
