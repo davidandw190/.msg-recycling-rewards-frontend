@@ -135,7 +135,7 @@ export class EcoLearnNewComponent implements OnInit {
 
     if (this.newResourceForm.value.videoSource === 'external') {
       formData.append('isExternalMedia', 'true');
-      formData.append('externalMediaUrl', this.newResourceForm.value.externalMediaUrl);
+      formData.append('externalMediaUrl', this.convertToEmbedUrl(this.newResourceForm.value.externalMediaUrl));
 
     } else if (fileInput.files && fileInput.files.length) {
       const file = fileInput.files[0];
@@ -186,6 +186,17 @@ export class EcoLearnNewComponent implements OnInit {
 
   protected isCategoryChosen(): boolean {
     return this.selectedCategories.length >= 1;
+  }
+
+  private convertToEmbedUrl(youtubeUrl: string): string {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = youtubeUrl.match(regExp);
+
+    if (match && match[2].length === 11) {
+      return `https://www.youtube.com/embed/${match[2]}`;
+    } else {
+      return 'about:blank';
+    }
   }
 
 }

@@ -27,8 +27,8 @@
           <a class="nav-link">Challenges</a>
         </li>
 
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/ecolearn']">EcoLearn</a>
+        <li class="nav-item" [matMenuTriggerFor]="ecoLearnMenu">
+          <a class="nav-link" [routerLink]="['/eco-learn']">EcoLearn</a>
         </li>
 
         <li class="nav-item" [matMenuTriggerFor]="userMenu">
@@ -41,13 +41,18 @@
       <!-- Dropdown Menus -->
       <mat-menu #centersMenu="matMenu" class="submenu">
         <a mat-menu-item [routerLink]="['/centers/all']"><i class="bi bi-person-plus-fill"></i> All Centers</a>
-        <a mat-menu-item [routerLink]="['/centers/all']"><i class="bi bi-people-fill"></i> My Favourites</a>
+        <a mat-menu-item [routerLink]="['/centers/new']"><i class="bi bi-people-fill"></i> Create Center</a>
       </mat-menu>
 
 
       <mat-menu #challengesMenu="matMenu" class="submenu">
         <a mat-menu-item [routerLink]="['/challenges/all']"><i class="bi bi-person-plus-fill"></i> All Challenges</a>
         <a mat-menu-item [routerLink]="['/challenges/']"><i class="bi bi-people-fill"></i> My Challenges</a>
+      </mat-menu>
+
+      <mat-menu #ecoLearnMenu="matMenu" class="submenu">
+        <a mat-menu-item [routerLink]="['/eco-learn']"><i class="bi bi-person-plus-fill"></i> EcoLearn Feed</a>
+        <a mat-menu-item [routerLink]="['/eco-learn/new']"><i class="bi bi-people-fill"></i> Create Post</a>
       </mat-menu>
 
       <mat-menu #userMenu="matMenu" class="submenu">

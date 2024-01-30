@@ -19,7 +19,7 @@
   box-shadow: none;
   position: sticky;
   top: 100px;
-  /*border: 1px solid #860909; !* Add a light border for a clean, subtle separation *!*/
+  /*border: 1px solid #860909;*/
   border-radius: 8px;
   background-color: #fff;
   height: fit-content;
@@ -76,12 +76,6 @@
   -webkit-line-clamp: 3; /* Limit to 3 lines */
   -webkit-box-orient: vertical;
 }
-.view-more {
-  color: #007bff;
-  cursor: pointer;
-  margin-bottom: 20px;
-  display: block;
-}
 
 .post-media {
   width: 100%;
@@ -127,14 +121,14 @@
   border: none;
   cursor: pointer;
   transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
-  color: #860909;
-  font-size: 20px;
+  color: #A01540;
+  font-size: 24px;
   margin: 0 8px;
 }
 
 
 .icon-btn:hover {
-  color: #1aff00;
+  color: #008000;
   transform: translateY(-2px);
 }
 
@@ -213,13 +207,13 @@ input, select, button {
   margin-bottom: 5px;
   margin-left: -200px;
   border-radius: 5px;
-  color: #860909;
+  color: #A01540;
 }
 
 .nav-link.active {
   color: #fff;
-  background-color: #860909;
-  border-color: #860909;
+  background-color: #A01540;
+  border-color: #A01540;
 }
 
 @media (max-width: 768px) {

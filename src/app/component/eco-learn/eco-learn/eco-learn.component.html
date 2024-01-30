@@ -42,84 +42,89 @@
           <!-- New Resource Form -->
           <ng-template #postsFeed>
             <div class="posts-container">
-              <ng-container *ngFor="let resource of state?.appData?.data?.page?.content">
-                <div class="post-card">
-                  <div class="post-header">
-                    <h3 class="post-title">{{resource.title}}</h3>
-                    <p class="post-details">
-                      {{resource.createdAt | date: 'longDate'}} •
-                      {{resource.contentType}} •
-                      <mat-chip-list class="custom-chip-list">
-                        <mat-chip *ngFor="let category of resource.categories" class="custom-chip" selected>
-                          {{category}}
-                        </mat-chip>
-                      </mat-chip-list>
+              <ng-container *ngIf="state?.appData?.data?.page?.content.length > 0">
+                <ng-container *ngFor="let resource of state?.appData?.data?.page?.content">
+                  <div class="post-card">
+                    <div class="post-header">
+                      <h3 class="post-title">{{resource.title}}</h3>
+                      <p class="post-details">
+                        {{resource.createdAt | date: 'longDate'}} •
+                        {{resource.contentType}} •
+                        <mat-chip-list class="custom-chip-list">
+                          <mat-chip *ngFor="let category of resource.categories" class="custom-chip" selected>
+                            {{category}}
+                          </mat-chip>
+                        </mat-chip-list>
+                      </p>
+                    </div>
+                    <div class="post-body">
+                      <p [innerHTML]="sanitizeHtml(getDisplayedContent(resource))" [class.expanded]="isExpanded[resource.resourceId]"></p>
+                      <a *ngIf="isContentTooLong(resource.content)" (click)="toggleContent(resource.resourceId.toString())" class="view-more">
+                        <span class="content-collapse-trigger">{{ isExpanded[resource.resourceId] ? 'View Less' : 'View More' }}</span>
+                      </a>
+                      <ng-container  *ngIf="resource.contentType !== 'VIDEO' && resource.mediaUrl != null"  >
 
-                    </p>
-                  </div>
-                  <div class="post-body">
-                    <p [innerHTML]="sanitizeHtml(getDisplayedContent(resource))" [class.expanded]="isExpanded[resource.resourceId]"></p>
-                    <a *ngIf="isContentTooLong(resource.content)" (click)="toggleContent(resource.resourceId.toString())" class="view-more">
-                      <span class="content-collapse-trigger">{{ isExpanded[resource.resourceId] ? 'View Less' : 'View More' }}</span>
-                    </a>
-                    <ng-container  *ngIf="resource.contentType !== 'VIDEO' && resource.mediaUrl != null"  >
-
-                      <img [src]="resource.mediaUrl" width="780px" height="480px" class="img-responsive post-media" loading="eager" alt="">
-                    </ng-container>
-
-                    <ng-container *ngIf="resource.contentType === 'VIDEO'">
-
-                      <ng-container *ngIf="resource.isExternalMedia" class="embed-responsive embed-responsive-16by9">
-                        <iframe [src]="sanitizeUrl(convertToEmbedUrl(resource.mediaUrl))" loading="lazy" class="embed-responsive-item" width="780px" height="480px" allow="autoplay; clipboard-write; picture-in-picture"
-                                allowfullscreen></iframe>
+                        <img [src]="resource.mediaUrl" width="780px" height="480px" class="img-responsive post-media" loading="eager" alt="">
                       </ng-container>
 
-                      <ng-container *ngIf="!resource.isExternalMedia">
-                        <vg-player [style.width]="'780px'" [style.height]="'480px'">
-                          <vg-overlay-play></vg-overlay-play>
-                          <vg-buffering></vg-buffering>
-                          <vg-scrub-bar>
-                            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
-                            <!--                    <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>-->
-                          </vg-scrub-bar>
-                          <vg-controls>
-                            <vg-play-pause></vg-play-pause>
-                            <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
-                            <vg-scrub-bar style="pointer-events: none;"></vg-scrub-bar>
-                            <vg-track-selector></vg-track-selector>
-                            <vg-mute></vg-mute>
-                            <vg-volume></vg-volume>
-                            <vg-fullscreen></vg-fullscreen>
-                          </vg-controls>
-                          <vg-buffering></vg-buffering>
-                          <video  [vgMedia]="$any(media)" #media id="resourceVideo" preload="auto" crossorigin>
-                            <source [src]="resource.mediaUrl" type="video/mp4">
-                          </video>
-                        </vg-player>
+                      <ng-container *ngIf="resource.contentType === 'VIDEO'">
+
+                        <ng-container *ngIf="resource.isExternalMedia" class="embed-responsive embed-responsive-16by9">
+                          <iframe [src]="sanitizeUrl(resource.mediaUrl)" loading="eager" class="embed-responsive-item" width="780px" height="480px" allow="autoplay; clipboard-write; picture-in-picture"
+                                  allowfullscreen></iframe>
+                        </ng-container>
+
+                        <ng-container *ngIf="!resource.isExternalMedia">
+                          <vg-player [style.width]="'780px'" [style.height]="'480px'">
+                            <vg-overlay-play></vg-overlay-play>
+                            <vg-buffering></vg-buffering>
+                            <vg-scrub-bar>
+                              <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                              <!--                    <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>-->
+                            </vg-scrub-bar>
+                            <vg-controls>
+                              <vg-play-pause></vg-play-pause>
+                              <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+                              <vg-scrub-bar style="pointer-events: none;"></vg-scrub-bar>
+                              <vg-track-selector></vg-track-selector>
+                              <vg-mute></vg-mute>
+                              <vg-volume></vg-volume>
+                              <vg-fullscreen></vg-fullscreen>
+                            </vg-controls>
+                            <vg-buffering></vg-buffering>
+                            <video  [vgMedia]="$any(media)" #media id="resourceVideo" preload="auto" crossorigin>
+                              <source [src]="resource.mediaUrl" type="video/mp4">
+                            </video>
+                          </vg-player>
+                        </ng-container>
+
                       </ng-container>
+                    </div>
+                    <div class="post-footer left-icons">
+                      <button class="icon-btn" (click)="likeResource(resource)">
+                        <i *ngIf="!resource.likedByUser" class="fa-regular fa-heart"></i>
+                        <i *ngIf="resource.likedByUser" class="fa-solid fa-heart"></i>
+                        <p class="icon-text">{{ resource.likesCount }}</p>
+                      </button>
 
-                    </ng-container>
+                      <button class="icon-btn" (click)="shareResource(resource)">
+                        <i class="fa-solid fa-share"></i>
+                        <!--                      <p class="icon-text">{{ resource.sharesCount }}</p>-->
+                      </button>
+
+                      <button class="icon-btn" (click)="saveResource(resource)">
+                        <i *ngIf="!resource.savedByUser" class="fa-regular fa-bookmark"></i>
+                        <i *ngIf="resource.savedByUser" class="fa-solid fa-bookmark"></i>
+                        <!--                      <p class="icon-text">{{ resource.savesCount }}</p>-->
+                      </button>
+                    </div>
                   </div>
-                  <div class="post-footer left-icons">
-                    <button class="icon-btn" (click)="likeResource(resource)">
-                      <i *ngIf="!resource.likedByUser" class="fa-regular fa-heart"></i>
-                      <i *ngIf="resource.likedByUser" class="fa-solid fa-heart"></i>
-                      <p class="icon-text">{{ resource.likesCount }}</p>
-                    </button>
-
-                    <button class="icon-btn" (click)="shareResource(resource)">
-                      <i class="fa-solid fa-share"></i>
-<!--                      <p class="icon-text">{{ resource.sharesCount }}</p>-->
-                    </button>
-
-                    <button class="icon-btn" (click)="saveResource(resource)">
-                      <i *ngIf="!resource.savedByUser" class="fa-regular fa-bookmark"></i>
-                      <i *ngIf="resource.savedByUser" class="fa-solid fa-bookmark"></i>
-<!--                      <p class="icon-text">{{ resource.savesCount }}</p>-->
-                    </button>
-                  </div>
-                </div>
+                </ng-container>
               </ng-container>
+
+                <ngb-alert *ngIf="state?.appData?.data?.page?.content.length === 0" type="info" [dismissible]="false">
+                  No current posts available for the selected tab.
+                </ngb-alert>
             </div>
 
 

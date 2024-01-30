@@ -50,6 +50,27 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.initializeProfileState();
+    this.profileForm.markAsPristine();
+    this.initializeProfileFormObservables();
+  }
+
+  private initializeForm(user: User): void {
+    this.profileForm = this.formBuilder.group({
+      id: [user.id],
+      firstName: [user.firstName, [Validators.required, Validators.minLength(3)]],
+      lastName: [user.lastName, [Validators.required, Validators.minLength(3)]],
+      email: [user.email, [Validators.required, Validators.email]],
+      county: [user.county, [Validators.required]],
+      city: [ user.city, [Validators.required]],
+      phone: [user.phone],
+      bio: [user.bio]
+    });
+
+    this.loadCitiesForCounty(user.county)
+  }
+
+  private initializeProfileState() {
     this.profileState$ = this.userService.profile$()
       .pipe(
         map(response => {
@@ -65,10 +86,9 @@ export class ProfileComponent implements OnInit {
           return of({ dataState: DataState.ERROR, isUsingMfa: false, loginSuccess: false, error: error})
         })
       )
+  }
 
-
-    this.profileForm.markAsPristine();
-
+  private initializeProfileFormObservables() {
     this.profileForm
       .get('county')
       .valueChanges.pipe(
@@ -93,26 +113,10 @@ export class ProfileComponent implements OnInit {
       .subscribe();
   }
 
-  private initializeForm(user: User): void {
-    this.profileForm = this.formBuilder.group({
-      id: [user.id],
-      firstName: [user.firstName, [Validators.required, Validators.minLength(3)]],
-      lastName: [user.lastName, [Validators.required, Validators.minLength(3)]],
-      email: [user.email, [Validators.required, Validators.email]],
-      county: [user.county, [Validators.required]],
-      city: [ user.city, [Validators.required]],
-      phone: [user.phone],
-      bio: [user.bio]
-    });
-
-    this.loadCitiesForCounty(user.county)
-  }
-
   updateProfile(event: Event): void {
     event.preventDefault();
 
     const formData = this.profileForm.value
-    this.isLoadingSubject.next(true);
     this.profileState$ = this.userService.updateUser$(formData)
       .pipe(
         map(response => {
@@ -124,7 +128,7 @@ export class ProfileComponent implements OnInit {
           return { dataState: DataState.LOADED, appData: this.dataSubject.value };
         }),
 
-        startWith({ dataState: DataState.LOADING, appData: this.dataSubject.value }),
+        startWith({ dataState: DataState.LOADED, appData: this.dataSubject.value }),
 
         catchError((error: string) => {
           this.notification.onError(error);

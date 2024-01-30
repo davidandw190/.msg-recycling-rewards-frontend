@@ -215,5 +215,4 @@ export class LeaderboardComponent implements OnInit, OnDestroy {
       queryParamsHandling: 'merge',
     });
   }
-
 }

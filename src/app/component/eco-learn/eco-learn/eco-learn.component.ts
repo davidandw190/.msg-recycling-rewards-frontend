@@ -136,7 +136,6 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
   }
 
   searchEducationalResources(): void {
-
     const { title, contentType, likedOnly, savedOnly, sortBy, sortOrder } = this.searchForm.value;
     const selectedCategories = this.selectedCategories.join(',');
     const page = this.currentPageSubject.value;
@@ -161,7 +160,6 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
   }
 
   searchEducationalResourcesSubmit(event: Event): void {
-
     event.preventDefault();
     const { code, sortBy, sortOrder } = this.searchForm.value;
     const page = this.currentPageSubject.value;
@@ -175,7 +173,6 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
     const selectedCategories: string[] = this.selectedCategories;
 
     this.isLoadingSubject.next(true);
-
 
     this.ecoLearnService
       .search$(title, contentType, selectedCategories.join(','), likedOnly, savedOnly, sortBy, sortOrder, pageNumber - 1)
@@ -192,12 +189,8 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
 
   private initializeSearch(): void {
     this.ecoLearnState$ = this.dataSubject.pipe(
-      map((response) => {
-
-        return { dataState: DataState.LOADED, appData: response }
-      }
-      ),
-      startWith({ dataState: DataState.LOADING }),
+      map((response) => ({ dataState: DataState.LOADED, appData: response })),
+      startWith({ dataState: DataState.LOADED }),
       catchError((error: string) => of({ dataState: DataState.ERROR, error }))
     );
 
@@ -254,7 +247,6 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
   }
 
   private setupReactiveSearch(): void {
-
     this.searchForm.get('title').valueChanges.pipe(
       debounceTime(300),
       distinctUntilChanged(),
@@ -403,16 +395,5 @@ export class EcoLearnComponent implements OnInit, OnDestroy {
 
   sanitizeUrl(url: string) {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-  }
-
-  convertToEmbedUrl(youtubeUrl: string): string {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    const match = youtubeUrl.match(regExp);
-
-    if (match && match[2].length === 11) {
-      return `https://www.youtube.com/embed/${match[2]}`;
-    } else {
-      return 'about:blank';
-    }
   }
 }
