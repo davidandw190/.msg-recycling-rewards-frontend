@@ -1,5 +1,5 @@
 services:
-  securecapitaapp:
+  rewardsapp-fe:
     container_name: rewardsapp-fe-container
     build: .
     image: rewardsapp-fe:v1

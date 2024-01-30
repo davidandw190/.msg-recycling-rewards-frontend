@@ -7,6 +7,6 @@ COPY . .
 
 RUN npm run build
 FROM nginx:stable
-COPY default.conf /etc/nginx/conf.d
+COPY default-nginx.conf /etc/nginx/conf.d
 COPY --from=build /app/dist/msg-recycling-rewards-frontend/ /usr/a/nginx/html
 EXPOSE 80
