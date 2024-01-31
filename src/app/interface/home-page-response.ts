@@ -9,6 +9,7 @@ export interface HomePageResponse {
   page?: Page<RecyclingCenter>;
   userRewardPoints: number;
   userStats?: UserStats;
+  pointsUntilVoucher?: number;
   appStats?: AppStats;
   ecoTip: string;
 }

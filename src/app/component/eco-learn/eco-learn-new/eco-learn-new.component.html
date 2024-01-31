@@ -99,16 +99,17 @@
                     </mat-chip-list>
                   </ng-container>
 
-
-                  <div class="mt-4 d-flex justify-content-end">
-                    <button [disabled]="state.dataState === DataState.LOADING || newResourceForm.invalid || newResourceForm.pristine || !isCategoryChosen() || (isLoading$ | async)"
-                            (click)="createResource($event, fileInput)"
-                            type="submit" class="btn btn-msg-color">
-                      <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                      <span *ngIf="isLoading$ | async">Saving...</span>
-                      <span *ngIf="!(isLoading$ | async)">Create Resource</span>
-                    </button>
-                  </div>
+                  <ng-container *ngIf="state?.appData?.data?.user?.roleName === 'ROLE_ADMIN' || state?.appData?.data?.user?.roleName === 'ROLE_SYSADMIN'">
+                    <div class="mt-4 d-flex justify-content-end">
+                      <button [disabled]="state.dataState === DataState.LOADING || newResourceForm.invalid || newResourceForm.pristine || !isCategoryChosen() || (isLoading$ | async)"
+                              (click)="createResource($event, fileInput)"
+                              type="submit" class="btn btn-msg-color">
+                        <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span *ngIf="isLoading$ | async">Saving...</span>
+                        <span *ngIf="!(isLoading$ | async)">Create Resource</span>
+                      </button>
+                    </div>
+                  </ng-container>
                 </form>
               </div>
             </div>

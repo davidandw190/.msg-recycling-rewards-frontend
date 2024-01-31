@@ -4,7 +4,7 @@ import {catchError, Observable, tap, throwError} from "rxjs";
 import {CustomHttpResponse} from "../interface/custom-http-response";
 import {CentersPageResponse} from "../interface/centers-page-response";
 import {LeaderboardPageResponse} from "../interface/leaderboard-page-response";
-import {environment} from "../../environment/environment.dev";
+import {environment} from "../../environments/environment.dev";
 
 @Injectable({
   providedIn: 'root'

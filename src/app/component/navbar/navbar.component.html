@@ -5,34 +5,34 @@
       <span class="brand-name"><i class="fa-solid fa-leaf"></i> .msgRecyclingRewards</span>
     </a>
 
-    <button class="navbar-toggler" type="button" mat-button (click)="isNavbarOpen = !isNavbarOpen">
+    <button class="navbar-toggler" style="cursor: pointer" type="button" mat-button (click)="isNavbarOpen = !isNavbarOpen">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" [ngClass]="{'show': isNavbarOpen}" (click)="isNavbarOpen = false">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item" [routerLinkActive]="['active']" [matMenuTriggerFor]="centersMenu">
-          <a class="nav-link">Centers</a>
+        <li class="nav-item" style="cursor: pointer" [routerLinkActive]="['active']" [matMenuTriggerFor]="centersMenu">
+          <a class="nav-link" style="cursor: pointer">Centers</a>
         </li>
 
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/vouchers']">Vouchers</a>
+        <li class="nav-item" style="cursor: pointer">
+          <a class="nav-link" style="cursor: pointer" [routerLink]="['/vouchers']">Vouchers</a>
         </li>
 
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/leaderboard']">Leaderboard</a>
+        <li class="nav-item" style="cursor: pointer">
+          <a class="nav-link" style="cursor: pointer" [routerLink]="['/leaderboard']">Leaderboard</a>
         </li>
 
-        <li class="nav-item" [matMenuTriggerFor]="challengesMenu">
-          <a class="nav-link">Challenges</a>
+        <li class="nav-item" style="cursor: pointer" [matMenuTriggerFor]="challengesMenu">
+          <a class="nav-link" style="cursor: pointer">Challenges</a>
         </li>
 
-        <li class="nav-item" [matMenuTriggerFor]="ecoLearnMenu">
-          <a class="nav-link" [routerLink]="['/eco-learn']">EcoLearn</a>
+        <li class="nav-item" style="cursor: pointer" [matMenuTriggerFor]="ecoLearnMenu">
+          <a class="nav-link" style="cursor: pointer">EcoLearn</a>
         </li>
 
-        <li class="nav-item" [matMenuTriggerFor]="userMenu">
-          <a class="nav-link">
+        <li class="nav-item" style="cursor: pointer" [matMenuTriggerFor]="userMenu">
+          <a class="nav-link" style="cursor: pointer">
             <img [src]="user?.imageUrl || 'https://img.freepik.com/free-icon/user_318-159711.jpg'" alt="User Avatar" class="user-avatar-md rounded-circle" style="width: 28px; height: 28px;">
           </a>
         </li>
@@ -40,8 +40,8 @@
 
       <!-- Dropdown Menus -->
       <mat-menu #centersMenu="matMenu" class="submenu">
-        <a mat-menu-item [routerLink]="['/centers/all']"><i class="bi bi-person-plus-fill"></i> All Centers</a>
-        <a mat-menu-item [routerLink]="['/centers/new']"><i class="bi bi-people-fill"></i> Create Center</a>
+        <a mat-menu-item [routerLink]="['/centers/all']"><i class="fa-solid fa-leaf"></i> All Centers</a>
+        <a mat-menu-item *ngIf="user?.roleName !== 'ROLE_ADMIN' && user?.roleName !== 'ROLE_SYSADMIN'" [routerLink]="['/centers/new']"><i class="fa-solid fa-square-plus"></i> Create Center</a>
       </mat-menu>
 
 
@@ -51,8 +51,8 @@
       </mat-menu>
 
       <mat-menu #ecoLearnMenu="matMenu" class="submenu">
-        <a mat-menu-item [routerLink]="['/eco-learn']"><i class="bi bi-person-plus-fill"></i> EcoLearn Feed</a>
-        <a mat-menu-item [routerLink]="['/eco-learn/new']"><i class="bi bi-people-fill"></i> Create Post</a>
+        <a mat-menu-item [routerLink]="['/eco-learn']"><i class="fa-solid fa-leaf"></i> EcoLearn Feed</a>
+        <a mat-menu-item *ngIf="user?.roleName !== 'ROLE_ADMIN' && user?.roleName !== 'ROLE_SYSADMIN'" [routerLink]="['/eco-learn/new']"><i class="fa-solid fa-square-plus"></i> Create Post</a>
       </mat-menu>
 
       <mat-menu #userMenu="matMenu" class="submenu">

@@ -19,17 +19,20 @@
             <h4 class="fw-bold text-start">Recycling Centers in <span style="color: #A01540FF">{{state?.appData?.data?.user?.county}}</span> ({{ state?.appData?.data?.page?.totalElements }})</h4>
           </div>
           <div class="col text-end">
-            <button
-              mat-flat-button
-              [matTooltipShowDelay]="500"
-              [matTooltipHideDelay]="500"
-              matTooltip="Create a New Recycling Center with which users can intercat with."
-              (click)="navigateToCreateCenter()"
-              style="background-color: #28a745; color: white; margin-right: 10px"
-              class="m-lg-2-2"
-            >
-              <i class="fa-regular fa-square-plus"></i> New Center
-            </button>
+
+            <ng-container *ngIf="state?.appData?.data?.user?.roleName === 'ROLE_ADMIN' || state?.appData?.data?.user?.roleName === 'ROLE_SYSADMIN'">
+              <button
+                mat-flat-button
+                [matTooltipShowDelay]="500"
+                [matTooltipHideDelay]="500"
+                matTooltip="Create a New Recycling Center with which users can intercat with."
+                (click)="navigateToCreateCenter()"
+                style="background-color: #28a745; color: white; margin-right: 10px"
+                class="m-lg-2-2"
+              >
+                <i class="fa-regular fa-square-plus"></i> New Center
+              </button>
+            </ng-container>
 
             <button
               mat-flat-button
@@ -146,10 +149,12 @@
           <div class="col-md-6 col-xl-6">
             <div class="card bg-c-blue order-card">
               <div class="card-block" [routerLink]="['/vouchers']">
-                <h5 class="m-b-10"><i class="fa-solid fa-ticket"></i> My Vouchers</h5>
-                <!--              <h2 class="text-right"><span>486</span></h2>-->
-                <p class="m-b-0">I need <span style="font-size: 18px"><strong>245</strong></span> more reward Points Needed Until I A Voucher</p>
-                <p class="m-b-0"><span class="f-right">View More</span></p>
+                <h5 class="m-b-20"><i class="fa-solid fa-ticket"></i> My Vouchers</h5>
+                <!-- Content here -->
+                <p class=" card-content">I need <span style="font-size: 18px"><strong>{{ state?.appData?.data?.pointsUntilVoucher }}</strong></span> more reward Points Needed Until I earn a new Voucher</p>
+              </div>
+              <div class="view-more">
+                <span class="f-right">View More</span>
               </div>
             </div>
           </div>
@@ -158,8 +163,11 @@
             <div class="card bg-c-green order-card">
               <div class="card-block" [routerLink]="['/eco-learn']">
                 <h5 class="m-b-20"><i class="fa-solid fa-lightbulb"></i> Eco Learn Daily</h5>
-                <span class="text-right"><p>{{ state?.appData?.data?.ecoTip }}</p></span>
-                <p class="m-b-0"><span class="f-right">View More</span></p>
+                <!-- Content here -->
+                <span class="card-content"><p>{{ state?.appData?.data?.ecoTip }}</p></span>
+              </div>
+              <div class="view-more">
+                <span class="f-right" style="margin-top: -15px; margin-left: -25px">View More</span>
               </div>
             </div>
           </div>

@@ -4,9 +4,9 @@ services:
     build: .
     image: rewardsapp-fe:v1
     ports:
-      - 80:80
+      - 5000:5000
     expose:
-      - 80
+      - 5000
     networks:
       - internalnet
 

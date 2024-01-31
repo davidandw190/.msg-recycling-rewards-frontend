@@ -5,7 +5,7 @@ import {CustomHttpResponse} from "../interface/custom-http-response";
 import {VouchersPageResponse} from "../interface/vouchers-page-response";
 import {VoucherDetailsResponse} from "../interface/voucher-details-response";
 import {VoucherGuidelinesResponse} from "../interface/voucher-guidelines-response";
-import {environment} from "../../environment/environment.dev";
+import {environment} from "../../environments/environment.dev";
 
 @Injectable({
   providedIn: 'root'

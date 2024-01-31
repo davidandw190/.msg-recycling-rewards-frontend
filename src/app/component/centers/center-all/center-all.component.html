@@ -27,23 +27,26 @@
                 </mat-chip>
               </div>
 
-              <button class="btn btn-danger btn-export me-2"
-                      (click)="downloadCentersReport()"
-                      [matTooltipShowDelay]="800"
-                      [matTooltipHideDelay]="500"
-                      matTooltip="Download an Excel report of the current situation of the partner recycling centers"
-              >
-                <i class="fa-regular fa-file-excel"></i> Export
-              </button>
 
-              <button class="btn btn-success btn-create me-3"
-                      (click)="redirectNewCenter()"
-                      [matTooltipShowDelay]="500"
-                      [matTooltipHideDelay]="500"
-                      matTooltip="Register a new Recycling Center that users can engage with"
-              >
-                <i class="fa-regular fa-square-plus"></i> Create
-              </button>
+              <ng-container *ngIf="state?.appData?.data?.user?.roleName === 'ROLE_ADMIN' || state?.appData?.data?.user?.roleName === 'ROLE_SYSADMIN'">
+                <button class="btn btn-danger btn-export me-2"
+                        (click)="downloadCentersReport()"
+                        [matTooltipShowDelay]="500"
+                        [matTooltipHideDelay]="500"
+                        matTooltip="Download an Excel report of the current situation of the partner recycling centers"
+                >
+                  <i class="fa-regular fa-file-excel"></i> Export
+                </button>
+
+                <button class="btn btn-success btn-create me-3"
+                        (click)="redirectNewCenter()"
+                        [matTooltipShowDelay]="500"
+                        [matTooltipHideDelay]="500"
+                        matTooltip="Register a new Recycling Center that users can engage with"
+                >
+                  <i class="fa-regular fa-square-plus"></i> Create
+                </button>
+              </ng-container>
 
               <div class="btn-group btn-group-container">
                 <button

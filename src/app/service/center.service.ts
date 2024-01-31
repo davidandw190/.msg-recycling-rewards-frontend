@@ -9,7 +9,7 @@ import {RecyclingCenter} from "../interface/recycling-center";
 import {CenterNewResponse} from "../interface/center-new-response";
 import {CenterDetailsResponse} from "../interface/center-details-response";
 import {NgForm} from "@angular/forms";
-import {environment} from "../../environment/environment.dev";
+import {environment} from "../../environments/environment.dev";
 
 @Injectable({
   providedIn: 'root'

@@ -31,7 +31,7 @@ body {
 
 .accepted-materials {
   display: flex;
-  gap: 5px; /* Adjust the spacing between badges as needed */
+  gap: 5px;
 }
 
 
@@ -77,10 +77,31 @@ body {
   font-size: 26px;
 }
 
+.card-content {
+  flex-grow: 1;
+  padding: 25px;
+  text-align: left
+}
 
 
 .f-right {
   float: right;
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
+.view-more {
+  float: right;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: -15px;
+  margin-bottom: 30px;
+  margin-right: 20px;
+}
+
+.card-row .order-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}

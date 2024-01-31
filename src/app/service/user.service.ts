@@ -7,7 +7,7 @@ import {Key} from "../enum/key.enum";
 import {User} from "../interface/user";
 import {JwtHelperService} from "@auth0/angular-jwt";
 import {AccountType} from "../interface/account-type";
-import {environment} from "../../environment/environment.dev";
+import {environment} from "../../environments/environment.dev";
 
 @Injectable({
   providedIn: 'root'

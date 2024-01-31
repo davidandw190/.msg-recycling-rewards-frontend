@@ -7,7 +7,7 @@ import {NgForm} from "@angular/forms";
 import {CenterNewResponse} from "../interface/center-new-response";
 import {User} from "../interface/user";
 import {ResourceNewPageResponse} from "../interface/resource-new-page-response";
-import {environment} from "../../environment/environment.dev";
+import {environment} from "../../environments/environment.dev";
 
 @Injectable({
   providedIn: 'root'
