@@ -121,24 +121,6 @@ export class VouchersComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  searchVouchersSubmit(event: Event): void {
-
-    event.preventDefault();
-    const { code, sortBy, sortOrder } = this.searchForm.value;
-    const page = this.currentPageSubject.value;
-    const { redeemed, expired } = this.searchForm.value;
-
-    this.isLoadingSubject.next(true);
-
-    this.voucherService
-      .searchVouchers$(code, sortBy, sortOrder, page, redeemed, expired)
-      .pipe(
-        tap((response) => this.dataSubject.next(response)),
-        catchError((error: string) => of({ dataState: DataState.ERROR, error }))
-      )
-      .subscribe();
-  }
-
   goToPage(pageNumber?: number): void {
     const { code, sortBy, sortOrder, redeemed, expired } = this.searchForm.value;
 

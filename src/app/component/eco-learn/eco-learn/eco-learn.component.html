@@ -60,9 +60,9 @@
                     <div class="post-body">
                       <p [innerHTML]="sanitizeHtml(getDisplayedContent(resource))" [class.expanded]="isExpanded[resource.resourceId]"></p>
                       <a *ngIf="isContentTooLong(resource.content)" (click)="toggleContent(resource.resourceId.toString())" class="view-more">
-                        <span class="content-collapse-trigger">{{ isExpanded[resource.resourceId] ? 'View Less' : 'View More' }}</span>
+                        <span class="content-collapse-trigger" style="margin-bottom: 10px">{{ isExpanded[resource.resourceId] ? 'View Less' : 'View More' }}</span>
                       </a>
-                      <ng-container  *ngIf="resource.contentType !== 'VIDEO' && resource.mediaUrl != null"  >
+                      <ng-container *ngIf="resource.contentType !== 'VIDEO' && resource.mediaUrl != null"  >
 
                         <img [src]="resource.mediaUrl" width="780px" height="480px" class="img-responsive post-media" loading="eager" alt="">
                       </ng-container>
@@ -143,10 +143,7 @@
                 <ng-template ngbPaginationNext>Next <i class="fa-solid fa-angle-right"></i></ng-template>
               </ngb-pagination>
             </nav>
-
           </ng-template>
-
-
 
 
           <aside class="filter-sidebar">

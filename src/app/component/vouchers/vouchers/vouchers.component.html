@@ -18,7 +18,7 @@
         </div>
 
         <!-- Search Form -->
-        <form [formGroup]="searchForm" (ngSubmit)="searchVouchersSubmit($event)" class="d-flex justify-content-end">
+        <form [formGroup]="searchForm" (ngSubmit)="searchVouchers()" (keydown.enter)="$event.preventDefault()" class="d-flex justify-content-end">
           <div class="d-flex align-items-center">
             <label class="visually-hidden">Voucher Code</label>
             <input type="text" formControlName="code" class="form-control mt-3" style="margin-bottom: -8px" placeholder="Voucher Code" />
@@ -41,9 +41,6 @@
 
           </form>
       </div>
-
-
-
 
       <nav ngbNav [animation]="false" #nav="ngbNav" class="nav-pills mb-4" style="margin-top: -30px;">
         <ng-container ngbNavItem *ngFor="let tab of ['Available', 'Redeemed', 'Expired', 'All Vouchers']" >
@@ -108,8 +105,6 @@
           <mat-icon style="color: #a01540">info</mat-icon>
         </button>
       </nav>
-
-
 
       <div [ngbNavOutlet]="nav" class="mt-1"></div>
 

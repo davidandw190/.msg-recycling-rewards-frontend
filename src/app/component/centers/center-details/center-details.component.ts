@@ -293,8 +293,7 @@ export class CenterDetailsComponent implements OnInit, OnDestroy {
     return material ? material.materialId : null;
   }
 
-  contribute(event: Event): void {
-    event.preventDefault();
+  contribute(): void {
     this.isLoadingSubject.next(true);
 
     const recycledMaterialType = this.recyclingForm.get('recycledMaterialType').value;
@@ -399,9 +398,7 @@ export class CenterDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateCenter(event: Event): void {
-    event.preventDefault();
-
+  updateCenter(): void {
     const formData = {
       ...this.updateCenterForm.value,
       materials: this.selectedMaterials,

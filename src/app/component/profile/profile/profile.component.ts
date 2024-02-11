@@ -113,9 +113,7 @@ export class ProfileComponent implements OnInit {
       .subscribe();
   }
 
-  updateProfile(event: Event): void {
-    event.preventDefault();
-
+  updateProfile(): void {
     const formData = this.profileForm.value
     this.profileState$ = this.userService.updateUser$(formData)
       .pipe(

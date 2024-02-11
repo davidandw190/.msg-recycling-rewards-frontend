@@ -28,7 +28,7 @@
                   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
 
-                <form (ngSubmit)="createCenter($event)" [formGroup]="newCenterForm" class="mb-4">
+                <form [formGroup]="newCenterForm" (ngSubmit)="createCenter()" (keydown.enter)="$event.preventDefault()" class="mb-4">
                   <div class="row">
                     <div class="col-md-6 mb-3">
                       <div class="form-group">
@@ -98,7 +98,6 @@
                              matTooltip="Indicates if the center is operational 24/7"></i>
                         </label>
                       </div>
-
                       <div></div>
 
                       <!-- Conditional Timepickers -->
@@ -114,13 +113,8 @@
                       </ng-container>
                     </div>
 
-
-
-
                     <ng-container *ngIf="selectedMaterials.length > 0">
-
                       <label class="mt-3">Accepted Recycling Materials:</label>
-
                       <div mat-basic-chip-row>
                         <mat-chip *ngFor="let material of selectedMaterials" class="chip-set">
                           {{ material }}
@@ -130,10 +124,7 @@
                         </mat-chip>
                       </div>
                     </ng-container>
-
                   </div>
-
-
 
                   <div class="mt-4 d-flex justify-content-end">
                     <button [disabled]="state.dataState === DataState.LOADING || newCenterForm.invalid || newCenterForm.pristine ||

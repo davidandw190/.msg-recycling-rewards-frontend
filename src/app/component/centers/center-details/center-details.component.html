@@ -155,7 +155,7 @@
             <div class="card border rounded-3 mb-3">
               <div class="card-body">
                 <h5 class="card-title">Profile Details</h5>
-                <form [formGroup]="updateCenterForm" (ngSubmit)="updateCenter($event)">
+                <form [formGroup]="updateCenterForm" (ngSubmit)="updateCenter()" (keydown.enter)="$event.preventDefault()">
 
                   <input formControlName="centerId" type="hidden">
 
@@ -285,7 +285,7 @@
                   </a>
                 </h5>
 
-                <form [formGroup]="recyclingForm" (ngSubmit)="contribute($event)">
+                <form [formGroup]="recyclingForm" (ngSubmit)="contribute()" (keydown.enter)="$event.preventDefault()">
                   <div class="row">
                     <!-- Column 1: Recycled Material Type -->
                     <div class="col-md-4 mb-3">
@@ -313,7 +313,7 @@
                   <!-- Display Added Value -->
                   <div *ngIf="earnedRewardPoints !== null && earnedSustainabilityIndex != null" class="mb-3">
                     <div class="alert alert-success" role="alert">
-                      + {{ earnedRewardPoints }} Reward Points for recycling
+                      + {{ earnedRewardPoints }} Reward Points earned
                       <br>
                       + {{ earnedSustainabilityIndex }}% Sustainability Impact earned
                     </div>
