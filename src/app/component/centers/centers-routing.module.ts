@@ -4,11 +4,20 @@ import {CenterAllComponent} from "./center-all/center-all.component";
 import {AuthenticationGuard} from "../../guard/authentication.guard";
 import {CenterNewComponent} from "./center-new/center-new.component";
 import {CenterDetailsComponent} from "./center-details/center-details.component";
+import {VouchersComponent} from "../vouchers/vouchers/vouchers.component";
+import {VoucherDetailsComponent} from "../vouchers/voucher-details/voucher-details.component";
+
 
 const centerRoutes: Routes = [
-  { path: 'centers/all', component: CenterAllComponent, canActivate: [AuthenticationGuard] },
-  { path: 'centers/new', component: CenterNewComponent, canActivate: [AuthenticationGuard] },
-  { path: 'centers/:id', component: CenterDetailsComponent, canActivate: [AuthenticationGuard] },
+  {
+    path: 'centers',
+    canActivate: [AuthenticationGuard],
+    children: [
+      { path: 'all', component: CenterAllComponent, },
+      { path: 'new', component: CenterNewComponent, },
+      { path: ':id', component: CenterDetailsComponent, },
+    ],
+  },
 ];
 
 @NgModule({

@@ -4,10 +4,16 @@ import {NgModule} from "@angular/core";
 import {EcoLearnComponent} from "./eco-learn/eco-learn.component";
 import {EcoLearnNewComponent} from "./eco-learn-new/eco-learn-new.component";
 
-const ecoLearnRoutes: Routes = [
-  { path: 'eco-learn', component: EcoLearnComponent, canActivate: [AuthenticationGuard] },
-  { path: 'eco-learn/new', component: EcoLearnNewComponent, canActivate: [AuthenticationGuard] },
 
+const ecoLearnRoutes: Routes = [
+  {
+    path: 'eco-learn',
+    canActivate: [AuthenticationGuard],
+    children: [
+      { path: '', component: EcoLearnComponent, },
+      { path: 'new', component: EcoLearnNewComponent, },
+    ],
+  },
 ];
 
 @NgModule({
