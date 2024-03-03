@@ -10,7 +10,7 @@ The application is divided into modules, fully Dockerized, build for multiple en
 
 ## Table of Contents
 
-- [Frontend Tech Stack](#backend-tech-stack)
+- [Frontend Tech Stack](#frontend-tech-stack)
 - [Gallery](#gallery)
 - [TODO](#TODO)
 - [License](#license)
@@ -50,7 +50,7 @@ The application is divided into modules, fully Dockerized, build for multiple en
 
 ## TODO
 
-- [ ] Add Lazy-Loading
+- [x] Add Lazy-Loading
 - [ ] Deploy on AWS EC2
 - [ ] Integrate Security Logs
 - [ ] Improve Modularity

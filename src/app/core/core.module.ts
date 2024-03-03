@@ -9,9 +9,11 @@ import {LeaderboardService} from "../service/leaderboard.service";
 import {EcoLearnService} from "../service/eco-learn.service";
 import {LocationService} from "../service/location.service";
 import {NotificationService} from "../service/notification.service";
+import {BrowserModule} from "@angular/platform-browser";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
-  imports: [HttpClientModule],
+  imports: [HttpClientModule, BrowserModule, BrowserAnimationsModule],
   providers: [
     UserService,
     CenterService,
@@ -21,6 +23,7 @@ import {NotificationService} from "../service/notification.service";
     LocationService,
     HttpCacheService,
     NotificationService,
+
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     // { provide: HttpCacheService, useClass: HttpCacheService },
   ]
